@@ -1,6 +1,54 @@
-li a {
-    color: red;
+body, ul, li {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
+
 body {
-    background: white url("images/Mocsie.jpg") no-repeat;
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+}
+
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #cf202f; 
+    color: #fff;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 1000;
+    border-bottom: 10px solid #1e419a;
+}
+
+.logo {
+    width: 125px; 
+    height: auto;
+    display: block;
+}
+
+.navbar-links {
+    list-style: none;
+    display: flex;
+    gap: 20px; 
+    padding-right: 10px;
+}
+
+.navbar-links li a {
+    color: #fff; 
+    text-decoration: none;
+    font-size: 22px;
+    transition: color 0.3s;
+    font-family: sans-serif;
+    font-weight: bold;
+}
+
+.navbar-links li a:hover {
+    color: #1e419a; 
+}
+
+.content {
+    padding-top: 70px; 
+    padding: 20px;
 }

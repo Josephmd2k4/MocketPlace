@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}My Website{% endblock %}</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'posts/style.css' %}">
+</head>
+<body>
+    <div class="navbar">
+        <div>
+            <a href="{% url 'home' %}">
+                <img src="{% static 'posts/images/logo.jpg' %}" alt="Logo" class="logo">
+            </a>
+        </div>
+        <nav>
+            <ul class = "navbar-links">
+                <li><a href="/">LOGIN</a></li>
+            </ul>
+        </nav>
+    </div>
+
+    <div class="content">
+        {% block content %}
+        {% endblock %}
+    </div>
+</body>
+</html>
