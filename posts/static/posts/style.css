@@ -7,9 +7,11 @@ body, ul, li {
 body {
     font-family: Arial, sans-serif;
     line-height: 1.6;
+    padding-bottom: 60px; 
+    justify-content: space-between;
 }
 
-.navbar {
+header {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -50,5 +52,19 @@ body {
 
 .content {
     padding-top: 70px; 
-    padding: 20px;
+    padding-bottom: 60px; 
+    min-height: 100vh;
 }
+
+footer {
+    background-color: #cf202f;
+    color: #fff;
+    padding: 10px 0;
+    position: fixed;
+    bottom:0;
+    height: 10px;
+    flex-shrink: 0;
+    width: 100%;
+    border-top: 5px solid #1e419a;
+  }
+
