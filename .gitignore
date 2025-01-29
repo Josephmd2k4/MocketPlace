@@ -1,0 +1,6 @@
+# Ignore Python bytecode
+*.pyc
+__pycache__/
+
+# Ignore migration caches
+posts/migrations/__pycache__/
