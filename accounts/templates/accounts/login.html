@@ -3,16 +3,24 @@
 
 <head>
     <title>Login</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'accounts/style.css' %}">
 </head>
 
 <body>
-    <h2>Login</h2>
-    <form method="post">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Login</button>
-    </form>
-    <a href="{% url 'register' %}">Don't have an account? Register here.</a>
+    {% include "posts/navbar.html" %}
+
+    <div class="container">
+        <h2>Login</h2>
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit">Login</button>
+        </form>
+        <a href="{% url 'accounts:register' %}">Don't have an account? Register here.</a>
+    </div>
+
+    {% include "posts/footer.html" %}
 </body>
 
 </html>
