@@ -4,3 +4,6 @@ __pycache__/
 
 # Ignore migration caches
 posts/migrations/__pycache__/
+
+# Ignore sqlite
+db.sqlite3
