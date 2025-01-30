@@ -56,6 +56,60 @@ header {
     min-height: 100vh;
 }
 
+.listingTitle {
+    font-family: sans-serif;
+    color: #cf202f;
+    margin-top: 150px;
+    text-align: center;
+}
+
+form {
+    max-width: 800px;
+    margin: 5px auto;
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    max-height: 500px;
+    box-shadow: 0px 0px 15px rgba(30, 65, 154, 0.8);
+}
+
+form input {
+    width: 100%;
+    padding: 10px;
+    margin: 8px 0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-family: sans-serif;
+}
+
+form textarea{
+    height: 80px;  
+    resize: none;  
+    width: 100%;
+    padding: 10px;
+    margin: 8px 0;
+    border: 1px solid #ccc;
+    font-family: sans-serif;
+}
+
+form button {
+    background-color: #1e419a;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    border-radius: 5px;
+    margin-left: 375px;
+    justify-content: center;
+    align-self: center;
+    display: flex;
+}
+
+form button:hover {
+    background-color: #0a1e52;
+}
+
 footer {
     background-color: #cf202f;
     color: #fff;
