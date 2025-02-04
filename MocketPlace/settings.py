@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 
+import os
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -38,6 +39,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'webpush',
+    'notifications',
 ]
 
 MIDDLEWARE = [
@@ -55,7 +58,7 @@ ROOT_URLCONF = 'MocketPlace.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR, 'notifications/templateS')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -99,6 +102,12 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
+
+WEBPUSH_SETTINGS = {
+    "VAPID_PUBLIC_KEY": "BCxOqxj2UUqwurebsRzMQjaC4uyzRArgylqNiQyqd5LjaRe-46mYu0jNcnRokgN-lrS6He7LG5PZmAeJgjDwBFY",
+    "VAPID_PRIVATE_KEY": "ZG8AUK2pn7RPts1fzGRt-KWwn36uk6vOiyyyJE35IHk",
+    "VAPID_ADMIN_EMAIL": "ant4801jeff@gmail.com",
+}
 
 
 # Internationalization
