@@ -122,7 +122,7 @@ footer {
     padding: 10px 0;
     position: fixed;
     bottom: 0;
-    height: 5vh;
+    height: 3vh;
     flex-shrink: 0;
     width: 100%;
     border-top: 0.5vh solid #1e419a;
