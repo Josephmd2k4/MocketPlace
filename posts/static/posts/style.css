@@ -1,4 +1,6 @@
-body, ul, li {
+body,
+ul,
+li {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
@@ -7,7 +9,7 @@ body, ul, li {
 body {
     font-family: Arial, sans-serif;
     line-height: 1.6;
-    padding-bottom: 60px; 
+    padding-bottom: 60px;
     justify-content: space-between;
 }
 
@@ -15,44 +17,48 @@ header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background-color: #cf202f; 
+    background-color: #cf202f;
     color: #fff;
     position: fixed;
     top: 0;
     width: 100%;
     z-index: 1000;
-    border-bottom: 10px solid #1e419a;
+    border-bottom: 1vh solid #1e419a;
+    height: 10vh;
+    padding: 0 2vw;
 }
 
 .logo {
-    width: 125px; 
-    height: auto;
+    height: 100%;
+    width: auto;
+    max-height: 8vh;
+    object-fit: contain;
     display: block;
 }
 
 .navbar-links {
     list-style: none;
     display: flex;
-    gap: 20px; 
-    padding-right: 10px;
+    gap: 2vw;
+    padding-right: 2vw;
 }
 
 .navbar-links li a {
-    color: #fff; 
+    color: #fff;
     text-decoration: none;
-    font-size: 22px;
+    font-size: 1.5vw;
     transition: color 0.3s;
     font-family: sans-serif;
     font-weight: bold;
 }
 
 .navbar-links li a:hover {
-    color: #1e419a; 
+    color: #1e419a;
 }
 
 .content {
-    padding-top: 70px; 
-    padding-bottom: 60px; 
+    padding-top: 12vh;
+    padding-bottom: 60px;
     min-height: 100vh;
 }
 
@@ -61,10 +67,9 @@ footer {
     color: #fff;
     padding: 10px 0;
     position: fixed;
-    bottom:0;
-    height: 10px;
+    bottom: 0;
+    height: 5vh;
     flex-shrink: 0;
     width: 100%;
-    border-top: 5px solid #1e419a;
-  }
-
+    border-top: 0.5vh solid #1e419a;
+}
