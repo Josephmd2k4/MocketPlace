@@ -1,11 +1,18 @@
 .container {
-    padding: 15px;
+    width: 30vw;
     max-width: 400px;
-    margin: 0 auto;
-    background-color: #fff; 
+    min-width: 280px;
+    height: 74vh;
+    margin: 8vh auto 0 auto;
+    padding: 2vw;
+    background: white;
     border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.568);
-    margin-top: 200px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    box-shadow: 0px 0px 15px rgba(30, 65, 154, 0.8);
 }
 
 h2 {
@@ -54,4 +61,60 @@ a {
     display: block;  
     width: 100%;  
     text-align: center; 
+}
+
+.form-group {
+    margin-bottom: 15px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    width: 100%;
+}
+
+.form-group label {
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.form-group input {
+    width: 100%;
+    max-width: 400px;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    height: 40px;
+    box-sizing: border-box;
+}
+
+.error-message {
+    color: #d9534f;
+    font-size: 14px;
+    margin-top: 5px;
+    background-color: #f8d7da;
+    padding: 5px;
+    border-radius: 5px;
+    display: block;
+    max-width: 400px;
+    width: 100%;
+}
+
+.messages {
+    list-style: none;
+    padding: 10px;
+}
+
+.messages li {
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+}
+
+.success {
+    background-color: #d4edda;
+    color: #155724;
+}
+
+.error {
+    background-color: #f8d7da;
+    color: #721c24;
 }

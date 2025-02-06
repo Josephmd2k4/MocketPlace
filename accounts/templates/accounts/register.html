@@ -3,16 +3,65 @@
 
 <head>
     <title>Register</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'accounts/style.css' %}">
 </head>
 
 <body>
-    <h2>Register</h2>
-    <form method="post">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Register</button>
-    </form>
-    <a href="{% url 'login' %}">Already have an account? Login here.</a>
+    {% include "posts/navbar.html" %}
+
+    <div class="container">
+        <h2>Register</h2>
+
+        <!-- Display Django messages -->
+        {% if messages %}
+        <ul class="messages">
+            {% for message in messages %}
+            <li class="{{ message.tags }}">{{ message }}</li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+
+        <form method="post">
+            {% csrf_token %}
+
+            <div class="form-group">
+                <label for="{{ form.username.id_for_label }}">Username:</label>
+                {{ form.username }}
+                {% if form.username.errors %}
+                <div class="error-message">
+                    {{ form.username.errors.as_text }}
+                </div>
+                {% endif %}
+            </div>
+
+            <div class="form-group">
+                <label for="{{ form.password1.id_for_label }}">Password:</label>
+                {{ form.password1 }}
+                {% if form.password1.errors %}
+                <div class="error-message">
+                    {{ form.password1.errors.as_text }}
+                </div>
+                {% endif %}
+            </div>
+
+            <div class="form-group">
+                <label for="{{ form.password2.id_for_label }}">Confirm Password:</label>
+                {{ form.password2 }}
+                {% if form.password2.errors %}
+                <div class="error-message">
+                    {{ form.password2.errors.as_text }}
+                </div>
+                {% endif %}
+            </div>
+
+            <button type="submit">Register</button>
+        </form>
+
+        <a href="{% url 'accounts:login' %}">Already have an account? Login here.</a>
+    </div>
+
+    {% include "posts/footer.html" %}
 </body>
 
 </html>
