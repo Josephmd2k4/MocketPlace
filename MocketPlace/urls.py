@@ -16,14 +16,14 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import include, path
-
 from notifications.views import home, send_push
+from django.conf import settings
+from django.conf.urls.static import static
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('posts.urls')),
-    path('', home),
     path('send_push', send_push),
     path('webpush/', include('webpush.urls')),
-    path('', include('notifications.urls')),
-]
+    path('notifications/', include('notifications.urls')),
+] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
