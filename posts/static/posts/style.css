@@ -116,6 +116,35 @@ header {
     background-color: #0a1e52;
 }
 
+.createPostButton{
+    position: fixed;
+    bottom: 70px; 
+    right: 20px; 
+    padding: 10px 20px;
+    background-color: #1e419a;
+    color: white;
+    border: none;
+    border-radius: 90%;
+    cursor: pointer;
+    font-size: x-large;
+}
+
+.createPostButton:hover {
+    animation: pulse 1.1s infinite ease-in-out;
+}
+
+@keyframes pulse{
+    0%{
+        transform: scale(1);
+    }
+    50%{
+        transform: scale(1.25);
+    }
+    100%{
+        transform: scale(1);
+    }
+}
+
 footer {
     background-color: #cf202f;
     color: #fff;

@@ -1,7 +1,9 @@
 {% include "posts/navbar.html" %}
 
 {% block content %}
-    <button type="submit" class="createPostButton">+</button>
+    <a href="{% url 'createPost' %}">
+        <button type="submit" class="createPostButton">+</button>
+    </a>
 {% endblock %}
 
 {% include "posts/footer.html" %}
