@@ -3,6 +3,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib import messages
 from django.urls import reverse
+from django.contrib.auth.models import User
 
 def register_view(request):
     if request.method == 'POST':
@@ -11,6 +12,9 @@ def register_view(request):
             form.save()
             messages.success(request, 'Account created successfully!')
             return redirect('login')
+        else:
+            if User.objects.filter(username=form.cleaned_data['username']).exists():
+                messages.error(request, 'A user with that username already exists.')
     else:
         form = UserCreationForm()
     return render(request, 'accounts/register.html', {'form': form})

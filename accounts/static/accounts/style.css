@@ -2,17 +2,32 @@
     width: 30vw;
     max-width: 400px;
     min-width: 280px;
-    height: 74vh;
-    margin: 11vh  auto 1vh auto;
+    min-height: 68vh;
+    margin: 13vh  auto 1vh auto;
     padding: 2vw;
     background: white;
     border-radius: 8px;
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
     text-align: center;
-    display: flex;
     flex-direction: column;
     justify-content: center;
     box-shadow: 0px 0px 15px rgba(30, 65, 154, 0.8);
+    position: relative;
+}
+
+.containerLogin{
+    width: 30vw;
+    max-width: 400px;
+    min-width: 280px;
+    min-height: 70vh;
+    margin: 13vh  auto 1vh auto;
+    padding: 2vw;
+    background: white;
+    border-radius: 8px;
+    text-align: center;
+    flex-direction: column;
+    justify-content: center;
+    box-shadow: 0px 0px 15px rgba(30, 65, 154, 0.8);
+    position: relative;
 }
 
 h2 {
@@ -21,6 +36,7 @@ h2 {
     font-family: sans-serif;
     font-size: 40px;
     font-weight: 750;
+    padding-top: 1vh;
 }
 
 form button {
@@ -41,7 +57,7 @@ form button:hover {
 form {
     display: flex;
     flex-direction: column;
-    gap: 15px; 
+    gap: 10px; 
     align-items: center; 
 }
 
@@ -73,7 +89,7 @@ a {
 
 .form-group label {
     font-weight: bold;
-    margin-bottom: 5px;
+    margin-bottom: 4px;
 }
 
 .form-group input {

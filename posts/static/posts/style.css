@@ -31,16 +31,19 @@ header {
 .logo {
     height: 100%;
     width: auto;
-    max-height: 8vh;
+    max-height: 10vh;
     object-fit: contain;
     display: block;
+    position: absolute;  
+    top: 0;             
+    left: 0; 
 }
 
 .navbar-links {
     list-style: none;
     display: flex;
     gap: 2vw;
-    padding-right: 2vw;
+    padding-right: 4vw;
 }
 
 .navbar-links li a {
@@ -65,17 +68,19 @@ header {
 .listingTitle {
     font-family: sans-serif;
     color: #cf202f;
-    margin-top: 150px;
     text-align: center;
+    margin-bottom: 1vh;
 }
 
-#createListingForm {
+.listings {
     max-width: 800px;
-    margin: 5px auto;
+    margin: 1vh auto;
+    margin-top: 13vh;
     background: white;
     padding: 20px;
+    padding-top: 1.5vh;
     border-radius: 8px;
-    max-height: 500px;
+    max-height: 73.5vh;
     box-shadow: 0px 0px 15px rgba(30, 65, 154, 0.8);
 }
 
