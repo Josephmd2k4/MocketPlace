@@ -11,7 +11,7 @@ def register_view(request):
         if form.is_valid():
             form.save()
             messages.success(request, 'Account created successfully!')
-            return redirect('login')
+            return redirect('accounts:login')
         else:
             if User.objects.filter(username=form.cleaned_data['username']).exists():
                 messages.error(request, 'A user with that username already exists.')
