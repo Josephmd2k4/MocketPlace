@@ -1,39 +1,79 @@
-from django.http.response import HttpResponse, JsonResponse
-from django.views.decorators.http import require_GET, require_POST
-from django.shortcuts import render, get_object_or_404
-from django.contrib.auth.models import User
-from django.views.decorators.csrf import csrf_exempt
+from django.shortcuts import render
+from django.contrib.auth.decorators import login_required
+from django.http import JsonResponse
 from webpush import send_user_notification
-import json
-from django.conf import settings
+from .models import Notification
+from django.contrib.contenttypes.models import ContentType
+from posts.models import Post
+from django.contrib.auth.models import User
 
-@require_GET # decorator that only allows get requests
-def home(request):
-    webpush_settings = getattr(settings, 'WEBPUSH_SETTINGS', {})
-    vapid_key = webpush_settings.get('VAPID_PUBLIC_KEY') # gets vpk from the obj to send to client, checked against priv key for security purposes
-    user = request.user # incoming requests get their user info saved here 
-    return render(request, 'notifHome.html', {user: user, 'vapid_key': vapid_key})
+@login_required
+def send_dm_notification(request, recipient_id):
+    if request.method == 'POST':
+        try:
+            recipient = User.objects.get(id=recipient_id)
+            
+            # Create notification record
+            notification = Notification.objects.create(
+                recipient=recipient,
+                sender=request.user,
+                notification_type='DM',
+                title=request.POST.get('subject'),
+                message=request.POST.get('message')
+            )
+            
+            # Prepare payload for WebPush
+            payload = {
+                'head': f'New Message from {request.user.username}',
+                'body': request.POST.get('message'),
+                'icon': 'your-icon-url',
+                'url': f'/messages/{notification.id}/'
+            }
 
-# restricts view to post requests only,
-# exempts view from CrossSiteRequestForgery protection,
-# expects post data, gets request body, and converts JSON doc to py
-@require_POST 
-@csrf_exempt
-def send_push(request):
-    try:  
-        body = request.body
-        data = json.loads(body)
-    # head = notif title, body = notif contents, id = requesting user's id
-        if 'head' not in data or 'body' not in data or 'id' not in data:
-            return JsonResponse(status=400, data={"message": "Invalid data format"})
-    # if anything is missing 404 is given, otherwise returns a matching pk w get_object_or_404
-        user_id = data['id']
-        user = get_object_or_404(User, pk=user_id)
-        payload = {'head': data['head'], 'body': data['body']}
-        send_user_notification(user=user, payload=payload, ttl=1000)
-    # here user=recipient of notif, pld=notif info(head&body), ttl=max seconds notif should be stored
+            # Send WebPush notification
+            send_user_notification(user=recipient, payload=payload, ttl=1000)
+            
+            return JsonResponse({'status': 'success'})
+        except Exception as e:
+            return JsonResponse({'status': 'error', 'message': str(e)})
 
-        return JsonResponse(status=200, data={"message": "Web push successful"})
-    # return success status
-    except TypeError:
-        return JsonResponse(status=500, data={"message": "An error occurred"})
+@login_required
+def send_post_notification(request, post_id):
+    try:
+        post = Post.objects.get(id=post_id)
+        # Get all users who should be notified (you can customize this based on your requirements)
+        users_to_notify = User.objects.exclude(id=request.user.id)
+        
+        for user in users_to_notify:
+            # Create notification record
+            notification = Notification.objects.create(
+                recipient=user,
+                sender=request.user,
+                notification_type='POST',
+                title=f'New Post: {post.title[:50]}',
+                message=f'{request.user.username} has created a new post',
+                content_type=ContentType.objects.get_for_model(post),
+                object_id=post.id
+            )
+            
+            # Prepare payload for WebPush
+            payload = {
+                'head': 'New Post',
+                'body': f'{request.user.username} has created a new post: {post.title[:50]}',
+                'icon': 'your-icon-url',
+                'url': f'/posts/{post.id}/'
+            }
+            
+            # Send WebPush notification
+            send_user_notification(user=user, payload=payload, ttl=1000)
+            
+        return JsonResponse({'status': 'success'})
+    except Exception as e:
+        return JsonResponse({'status': 'error', 'message': str(e)})
+
+@login_required
+def notification_list(request):
+    notifications = Notification.objects.filter(recipient=request.user)
+    return render(request, 'notifications/notification_list.html', {
+        'notifications': notifications
+    })

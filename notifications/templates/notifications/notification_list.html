@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+{% load webpush_notifications %}
+
+{% block content %}
+    {% webpush_header %}  {# Include WebPush related headers #}
+    
+    <div class="notifications-container">
+        <h2>Your Notifications</h2>
+        {% for notification in notifications %}
+            <div class="notification {% if not notification.is_read %}unread{% endif %}">
+                <h3>{{ notification.title }}</h3>
+                <p>{{ notification.message }}</p>
+                <small>From: {{ notification.sender.username }} - {{ notification.created_at|timesince }} ago</small>
+            </div>
+        {% empty %}
+            <p>No notifications yet.</p>
+        {% endfor %}
+    </div>
+{% endblock %}

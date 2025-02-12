@@ -26,4 +26,4 @@ urlpatterns = [
     path('send_push', send_push),
     path('webpush/', include('webpush.urls')),
     path('notifications/', include('notifications.urls')),
-] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+]
