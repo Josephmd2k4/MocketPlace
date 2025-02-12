@@ -1,0 +1,20 @@
+<html> 
+<head> 
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'posts/style.css' %}">
+</head> 
+<body> 
+  <header> 
+        <div>
+            <a href="/">  
+                <img src="{% static 'posts/images/logo.jpg' %}" alt="Logo" class="logo">
+            </a>
+        </div>
+        <nav>
+            <ul class = "navbar-links">
+                <li><a href="{% url 'accounts:login' %}">LOGIN</a></li>
+            </ul>
+        </nav>
+  </header>
+
+

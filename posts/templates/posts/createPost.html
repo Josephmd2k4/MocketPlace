@@ -1,0 +1,18 @@
+{% include "posts/navbar.html" %}
+
+{% load static %}
+    <link rel="stylesheet" href="{% static 'posts/style.css' %}">
+
+{% block content %}
+    <div class="listings">
+        <h1 class="listingTitle">CREATE A NEW LISTING:</h1>
+        <form method="post" enctype="multipart/form-data" id="createListingForm">
+            {% csrf_token %}
+            {{ form.as_p }} 
+            <button type="submit">Post</button>
+        </div>
+    </form>
+{% endblock %}
+
+{% include "posts/footer.html" %}
+
