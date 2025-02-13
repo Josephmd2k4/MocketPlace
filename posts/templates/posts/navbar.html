@@ -15,8 +15,10 @@
         <nav>
             <ul class="navbar-links">
                 {% if user.is_authenticated %}
-                <li><a href="{% url 'accounts:profile' %}" class="navbar-button">Welcome, {{ user.first_name }} {{
-                        user.last_name }}!</a></li>
+            <li><a href="{% url 'accounts:profile' %}" class="navbar-button">
+                    Welcome, {{ user.first_name }} {{ user.last_name }}!
+                    </a></li>
+
                 <li><a href="{% url 'accounts:logout' %}" class="navbar-button">LOGOUT</a></li>
                 {% else %}
                 <li><a href="{% url 'accounts:login' %}">LOGIN</a></li>
