@@ -1,12 +1,53 @@
 {% include "posts/navbar.html" %}
+<link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+
 
 {% block content %}
+    <div class="post-grid">
+        {% for post in posts %}
+            <div class="post">
+                <!-- Link to open modal on click -->
+                <a
+                    href="#postModal{{ post.id }}"
+                    data-toggle="modal"
+                    data-target="#postModal{{ post.id }}"
+                >
+                    <img src="{{ post.image.url }}" alt="{{ post.title }}" class="imageHome">
+                    <h4 class="imageTitle">{{ post.title }}</h4>
+                </a>
+            </div>
+
+            <!-- Modal for each post -->
+            <div class="modal fade" id="postModal{{ post.id }}" tabindex="-1" role="dialog" aria-labelledby="postModalLabel{{ post.id }}" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <!-- <img src="{{ post.image.url }}" alt="{{ post.title }}" class="imageHome"> -->
+                            <h5 class="modal-title" id="postModalLabel{{ post.id }}">{{ post.title }}</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <img src="{{ post.image.url }}" alt="{{ post.title }}" class="modal-image">
+                            <p><strong>Description:</strong> {{ post.description }}</p>
+                            <p><strong>Price:</strong> ${{ post.price }}</p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+
     <a href="{% url 'createPost' %}">
         <button type="submit" class="createPostButton">+</button>
     </a>
 {% endblock %}
 
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
+
 {% include "posts/footer.html" %}
-
-
-
