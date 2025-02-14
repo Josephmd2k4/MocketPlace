@@ -161,3 +161,130 @@ footer {
     width: 100%;
     border-top: 0.5vh solid #1e419a;
 }
+
+.imageContainer {
+    padding-top: 14vh;
+    display: flex;
+    justify-content: flex-end;
+    gap: 3vh;
+}
+
+.post-grid {
+    display: grid;
+    padding-left: 40vh;
+    padding-top: 14vh;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5vh;
+}
+
+.post {
+    background-color: #e8e8e8;
+    border-radius: 3vh;
+    padding: 1vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.imageHome {
+    width: 25vh;
+    height: 25vh; 
+    border-radius: 3vh;
+    object-fit: cover; 
+    margin-bottom: 1vh;
+    margin-top: 4vh;
+    margin-left: 2vh;
+    margin-right: 2vh;
+}
+
+.imageTitle {
+    text-align: center;
+    color: black;
+    text-decoration: none;  
+}
+
+.imageTitle:hover {
+    text-decoration: none;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;  
+}
+
+a:hover {
+    text-decoration: none; 
+    color: inherit;
+}
+
+.modal-open {
+    overflow: hidden;
+}
+
+.modal-backdrop {
+    backdrop-filter: blur(10px);
+    background-color: rgba(55, 55, 55, 0.6); 
+    -webkit-backdrop-filter: blur(10px);
+}
+
+.modal-dialog {
+    max-width: 800px;  
+    margin: 30px auto; 
+}
+
+.modal-content {
+    margin-top: 12vh;
+}
+
+.modal-dialog-centered {
+    display: flex;
+    align-items: center;  
+    justify-content: center;
+    min-height: 100vh; 
+}
+
+
+.modal-image {
+    width: 50vh; 
+    height: 50vh; 
+    object-fit: cover; 
+    border-radius: 3vh; 
+    margin-bottom: 3vh;  
+    display: block; /* Ensures the image is a block-level element */
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.modal-title {
+    font-size: 1.5rem;
+    font-weight: bold;
+    flex-grow: 1;
+    text-align: center; 
+}
+
+.modal-header {
+    display: flex;
+    justify-content: center;
+    align-items: center; 
+    width: 100%; 
+}
+
+.modal-body p {
+    font-size: 1rem;
+    color: #333; 
+    text-align: center;
+}
+
+.modal-footer {
+    display: flex;
+    justify-content: center; 
+    padding: 1vh 2vh;
+    border-top: 1vh solid #e9ecef;
+}
+
+.btn-secondary {
+    background-color: #1e419a;
+    border: none;
+    color: white;
+}
