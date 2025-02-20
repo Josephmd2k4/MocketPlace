@@ -2,7 +2,7 @@
 <html>
 
 <head>
-    <title>Profile</title>
+    <title>Edit Profile</title>
     {% load static %}
     <link rel="stylesheet" href="{% static 'accounts/style.css' %}">
 </head>
@@ -15,7 +15,7 @@
         <div class="sidebar">
             <h3>Profile Menu</h3>
             <ul>
-                <li><a href="#">Overview</a></li>
+                <li><a href="{% url 'accounts:profile' %}">Overview</a></li>
                 <li><a href="{% url 'accounts:edit_profile' %}">Edit Profile</a></li>
                 <li><a href="#">Settings</a></li>
                 <li><a href="{% url 'accounts:logout' %}">Logout</a></li>
@@ -24,14 +24,14 @@
 
         <!-- Main Content -->
         <div class="main-content">
-            <h2>PROFILE</h2>
+            <h2>Edit Profile</h2>
 
-            <div class="profile-details">
-                <p><strong>Username:</strong> {{ user.username }}</p>
-                <p><strong>First Name:</strong> {{ user.first_name }}</p>
-                <p><strong>Last Name:</strong> {{ user.last_name }}</p>
-                <p><strong>Email:</strong> {{ user.email }}</p>
-            </div>
+            <form method="post">
+                {% csrf_token %}
+                {{ form.as_p }}
+
+                <button type="submit" class="button">Save Changes</button>
+            </form>
         </div>
     </div>
 
