@@ -288,3 +288,27 @@ a:hover {
     border: none;
     color: white;
 }
+
+.searchNav {
+    justify-content: center; 
+    align-items: center;
+    display: flex;
+    margin-top: 2vh;
+    margin-left: 30vh;
+}
+
+.searchBar {
+    width: 40vh;
+    border-radius: 5vh;
+    border: 0.3vh solid #1e419a;
+    padding-left: 2vh;
+}
+
+.searchBar::placeholder{
+    padding-left: 2vh;
+}
+
+.searchBar:focus{
+    border-color: #1e419a;
+    outline: none;
+}

@@ -12,6 +12,13 @@
                 <img src="{% static 'posts/images/logo.jpg' %}" alt="Logo" class="logo">
             </a>
         </div>
+        {% if request.path == '/' %}
+            <div class="searchNav">
+                <form method="GET" action="{% url 'home' %}" >
+                    <input class="searchBar" type="text" name="q" placeholder="Search posts..." value="{{ request.GET.q|default:'' }}">
+                </form>
+            </div>
+        {% endif %}
         <nav>
             <ul class="navbar-links">
                 {% if user.is_authenticated %}

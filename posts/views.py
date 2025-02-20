@@ -7,7 +7,11 @@ from django.contrib.auth.decorators import login_required
 
 def home(request):
     template = loader.get_template("posts/home.html")
-    posts = Post.objects.all().order_by('created_at')
+    query = request.GET.get('q')
+    if query:
+        posts = Post.objects.filter(title__icontains=query)
+    else:
+        posts = Post.objects.all().order_by('created_at')
     return render(request, 'posts/home.html', {'posts': posts})
 
 @login_required
