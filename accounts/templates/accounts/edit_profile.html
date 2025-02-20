@@ -26,9 +26,18 @@
         <div class="main-content">
             <h2>Edit Profile</h2>
 
+            <!-- Display success or error messages -->
+            {% for message in messages %}
+            <div class="message {{ message.tags }}">{{ message }}</div>
+            {% endfor %}
+
             <form method="post">
                 {% csrf_token %}
-                {{ form.as_p }}
+                <h3>Update Profile Info</h3>
+                {{ user_form.as_p }}
+
+                <h3>Change Password</h3>
+                {{ password_form.as_p }}
 
                 <button type="submit" class="button">Save Changes</button>
             </form>
