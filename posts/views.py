@@ -9,7 +9,6 @@ def home(request):
     template = loader.get_template("posts/home.html")
     posts = Post.objects.all().order_by('created_at')
     return render(request, 'posts/home.html', {'posts': posts})
-    return HttpResponse(template.render({}, request))
 
 @login_required
 def createPost(request):
@@ -23,8 +22,3 @@ def createPost(request):
 
     return render(request, 'posts/createPost.html', {'form': form})
 
-def postDetail(request):
-    pass
-
-def myPosts(request):
-    pass
