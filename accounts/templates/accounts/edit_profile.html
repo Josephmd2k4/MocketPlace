@@ -2,7 +2,7 @@
 <html>
 
 <head>
-    <title>Profile</title>
+    <title>Edit Profile</title>
     {% load static %}
     <link rel="stylesheet" href="{% static 'accounts/style.css' %}">
 </head>
@@ -24,14 +24,23 @@
 
         <!-- Main Content -->
         <div class="main-content">
-            <h2>PROFILE</h2>
+            <h2>Edit Profile</h2>
 
-            <div class="profile-details">
-                <p><strong>Username:</strong> {{ user.username }}</p>
-                <p><strong>First Name:</strong> {{ user.first_name }}</p>
-                <p><strong>Last Name:</strong> {{ user.last_name }}</p>
-                <p><strong>Email:</strong> {{ user.email }}</p>
-            </div>
+            <!-- Display success or error messages -->
+            {% for message in messages %}
+            <div class="message {{ message.tags }}">{{ message }}</div>
+            {% endfor %}
+
+            <form method="post">
+                {% csrf_token %}
+                <h3>Update Profile Info</h3>
+                {{ user_form.as_p }}
+
+                <h3>Change Password</h3>
+                {{ password_form.as_p }}
+
+                <button type="submit" class="button">Save Changes</button>
+            </form>
         </div>
     </div>
 
