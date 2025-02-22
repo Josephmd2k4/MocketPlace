@@ -15,6 +15,12 @@
             <div class="notifications-card">
                 <div class="notifications-header">
                     <h1>Notifications</h1>
+                    {% if notifications %}
+                        <form method="post" action="{% url 'mark_all_as_read' %}">
+                            {% csrf_token %}
+                            <button type="submit" class="mark-all-read-btn">Mark All as Read</button>
+                        </form>
+                    {% endif %}
                 </div>
 
                 <div class="notifications-list">
@@ -67,10 +73,23 @@
                         </div>
                     {% empty %}
                         <div class="no-notifications">
-                            <p>No notifications yet</p>
+                            <p>No notifications yet. Check back later or explore our <a href="{% url 'home' %}">latest posts</a>.</p>
                         </div>
                     {% endfor %}
                 </div>
+
+                <!-- Pagination -->
+                {% if notifications %}
+                    <div class="pagination">
+                        {% if notifications.has_previous %}
+                            <a href="?page={{ notifications.previous_page_number }}">Previous</a>
+                        {% endif %}
+                        <span>Page {{ notifications.number }} of {{ notifications.paginator.num_pages }}</span>
+                        {% if notifications.has_next %}
+                            <a href="?page={{ notifications.next_page_number }}">Next</a>
+                        {% endif %}
+                    </div>
+                {% endif %}
             </div>
         </div>
 
