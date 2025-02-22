@@ -1,19 +1,81 @@
-{% extends 'base.html' %}
-{% load webpush_notifications %}
+{% load webpush_notifications %} {% load static %}
 
-{% block content %}
-    {% webpush_header %}  {# Include WebPush related headers #}
-    
-    <div class="notifications-container">
-        <h2>Your Notifications</h2>
-        {% for notification in notifications %}
-            <div class="notification {% if not notification.is_read %}unread{% endif %}">
-                <h3>{{ notification.title }}</h3>
-                <p>{{ notification.message }}</p>
-                <small>From: {{ notification.sender.username }} - {{ notification.created_at|timesince }} ago</small>
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="stylesheet" type="text/css" href="{% static 'notifications/nStyles.css' %}">
+    </head>
+
+    <body>
+        {% include "notifications/navbar.html" %}
+
+        {% block content %}
+
+        <div class="notifications-container">
+            <div class="notifications-card">
+                <div class="notifications-header">
+                    <h1>Notifications</h1>
+                </div>
+
+                <div class="notifications-list">
+                    {% for notification in notifications %}
+                        <div class="notification-item {% if not notification.is_read %}unread{% endif %}" 
+                            data-notification-id="{{ notification.id }}">
+                            <div class="notification-content">
+                                <!-- Notification Icon -->
+                                <div class="notification-icon">
+                                    {% if notification.notification_type == 'DM' %}
+                                        <span class="icon message-icon">✉️</span>
+                                    {% elif notification.notification_type == 'OFFER' %}
+                                        <span class="icon offer-icon">💰</span>
+                                    {% elif notification.notification_type == 'PRICE' %}
+                                        <span class="icon price-icon">💲</span>
+                                    {% elif notification.notification_type == 'SOLD' %}
+                                        <span class="icon sold-icon">🏷️</span>
+                                    {% else %}
+                                        <span class="icon default-icon">📌</span>
+                                    {% endif %}
+                                </div>
+                                
+                                <div class="notification-details">
+                                    <h3 class="notification-title">{{ notification.title }}</h3>
+                                    <p class="notification-message">{{ notification.message }}</p>
+                                    <div class="notification-meta">
+                                        <span class="sender">From: {{ notification.sender.username }}</span>
+                                        <span class="time">{{ notification.created_at|timesince }} ago</span>
+                                        {% if notification.price %}
+                                            <span class="price">${{ notification.price }}</span>
+                                        {% endif %}
+                                        {% if notification.location %}
+                                            <span class="location">📍 {{ notification.location }}</span>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="notification-actions">
+                                {% if not notification.is_read %}
+                                    <form method="post" action="{% url 'mark_as_read' notification.id %}">
+                                        {% csrf_token %}
+                                        <button type="submit" class="mark-read-btn">Mark as Read</button>
+                                    </form>
+                                {% endif %}
+                                {% if notification.notification_type == 'OFFER' %}
+                                    <button class="view-offer-btn">View Offer</button>
+                                {% endif %}
+                            </div>
+                        </div>
+                    {% empty %}
+                        <div class="no-notifications">
+                            <p>No notifications yet</p>
+                        </div>
+                    {% endfor %}
+                </div>
             </div>
-        {% empty %}
-            <p>No notifications yet.</p>
-        {% endfor %}
-    </div>
-{% endblock %}
+        </div>
+
+        {% endblock %}
+
+        {% include "notifications/footer.html" %}
+    </body>
+</html>

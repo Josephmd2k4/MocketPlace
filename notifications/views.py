@@ -1,11 +1,29 @@
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
+from django.views.decorators.http import require_POST
 from django.http import JsonResponse
 from webpush import send_user_notification
 from .models import Notification
 from django.contrib.contenttypes.models import ContentType
 from posts.models import Post
 from django.contrib.auth.models import User
+
+@login_required
+@require_POST
+def mark_notification_read(request, notification_id):
+    try:
+        notification = Notification.objects.get(
+            id=notification_id,
+            recipient=request.user
+        )
+        notification.is_read = True
+        notification.save()
+        return JsonResponse({'success': True})
+    except Notification.DoesNotExist:
+        return JsonResponse(
+            {'success': False, 'error': 'Notification not found'},
+            status=404
+        )
 
 @login_required
 def send_dm_notification(request, recipient_id):
@@ -41,7 +59,7 @@ def send_dm_notification(request, recipient_id):
 def send_post_notification(request, post_id):
     try:
         post = Post.objects.get(id=post_id)
-        # Get all users who should be notified (you can customize this based on your requirements)
+        # Get all users who should be notified 
         users_to_notify = User.objects.exclude(id=request.user.id)
         
         for user in users_to_notify:
@@ -73,7 +91,28 @@ def send_post_notification(request, post_id):
 
 @login_required
 def notification_list(request):
-    notifications = Notification.objects.filter(recipient=request.user)
-    return render(request, 'notifications/notification_list.html', {
-        'notifications': notifications
-    })
+    try:
+        # Get data from models
+        posts = Post.objects.all().order_by('newest_first')
+        notifications = Notification.objects.filter(recipient=request.user).order_by('-created_at')
+        unread_count = notifications.filter(is_read=False).count()
+
+        # Create the context dictionary
+        context = {
+            'notifications': notifications,
+            'unread_notifications_count': unread_count,
+            'posts': posts,
+            'unread_posts_count': posts.filter(is_read=False).count(),
+            'user': request.user,
+            'page_title': 'My Notifications',
+            'is_admin': request.user.is_staff, # limits user abilities
+            'notification_types': {
+                'DM': 'Direct Message',
+                'OFFER': 'New Offer',
+                'PRICE': 'Price Alert'
+            }
+        }
+        return render(request, 'notifications/notification_list.html', context)
+    
+    except Exception as e:
+        return JsonResponse({'status': 'error', 'message': str(e)})
