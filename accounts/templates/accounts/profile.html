@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Profile</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'accounts/style.css' %}">
+</head>
+
+<body>
+    {% include "posts/navbar.html" %}
+
+    <div class="container">
+        <h2>PROFILE</h2>
+
+        <div class="profile-details">
+            <p><strong>Username:</strong> {{ user.username }}</p>
+            <p><strong>First Name:</strong> {{ user.first_name }}</p>
+            <p><strong>Last Name:</strong> {{ user.last_name }}</p>
+            <p><strong>Email:</strong> {{ user.email }}</p>
+        </div>
+
+        <a href="{% url 'accounts:logout' %}" class="button">Logout</a>
+    </div>
+
+    {% include "posts/footer.html" %}
+</body>
+
+</html>

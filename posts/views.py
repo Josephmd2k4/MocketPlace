@@ -3,11 +3,18 @@ from django.template import loader
 from .forms import PostForm  
 from .models import Post
 from django.shortcuts import render, redirect
+from django.contrib.auth.decorators import login_required
 
 def home(request):
     template = loader.get_template("posts/home.html")
-    return HttpResponse(template.render({}, request))
+    query = request.GET.get('q')
+    if query:
+        posts = Post.objects.filter(title__icontains=query)
+    else:
+        posts = Post.objects.all().order_by('created_at')
+    return render(request, 'posts/home.html', {'posts': posts})
 
+@login_required
 def createPost(request):
     if request.method == 'POST':
         form = PostForm(request.POST, request.FILES)
@@ -19,8 +26,3 @@ def createPost(request):
 
     return render(request, 'posts/createPost.html', {'form': form})
 
-def postDetail(request):
-    pass
-
-def myPosts(request):
-    pass
