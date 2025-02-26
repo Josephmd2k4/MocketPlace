@@ -280,7 +280,8 @@ a:hover {
     display: flex;
     justify-content: center; 
     padding: 1vh 2vh;
-    border-top: 1vh solid #e9ecef;
+    border-top: 1vh solid lightgray;
+    background-color: lightgray;
 }
 
 .btn-secondary {
@@ -311,4 +312,47 @@ a:hover {
 .searchBar:focus{
     border-color: #1e419a;
     outline: none;
+}
+
+.comments-section {
+    background-color: lightgray; 
+    padding: 15px;
+    width: 100%; 
+}
+
+.comments-section h5 {
+    margin-bottom: 10px;
+    font-weight: bold;
+}
+
+.comments-section p {
+    margin-bottom: 5px;
+    padding: 8px;
+    border-radius: 5px;
+    font-size: 17px;
+    text-align: start;
+    margin-left: 5vh;
+}
+
+.modal-body{
+    padding: 0px;
+}
+
+.commentForm{
+    background-color: lightgray; 
+    padding: 0px;
+    margin: 0px;
+}
+
+.commentButton{
+    background-color: #1e419a;
+    color: white;
+    border-radius: 1vh;
+    margin-left: 5vh;
+    margin-top: 1vh;
+}
+
+.form-control{
+    width: 96%;
+    margin-left: 2vh;
 }
