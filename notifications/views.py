@@ -61,10 +61,10 @@ def send_dm_notification(request, recipient_id):
             }
 
             # Send WebPush notification
-            send_user_notification(user=recipient, payload=payload, ttl=1000)
+            # send_user_notification(user=recipient, payload=payload, ttl=1000)
+            send_dm_notification(request, recipient_id)
             
-            return JsonResponse({'status': 'success'})
-        
+            return redirect('inbox') and render(request, 'notifications/send-dm/<int:recipient_id>/', {'recipient_id': recipient_id})
         except Exception as e:
             return JsonResponse({'status': 'error', 'message': str(e)})
 
@@ -105,26 +105,24 @@ def send_post_notification(request, post_id):
         return JsonResponse({'status': 'error', 'message': str(e)})
 
 @login_required
-def notification_list(request):
+def notifications_list(request):
     try:
-        # Get data from models
-        posts = Post.objects.all().order_by('-created_at')
+        # Get notifications for the logged-in user
         notifications = Notification.objects.filter(recipient=request.user).order_by('-created_at')
         unread_count = notifications.filter(is_read=False).count()
 
-        # Paginate notifications
-        paginator = Paginator(notifications, 10) # show 10 per page
-        page_num = request.GET.get('page')
-        page_obj = paginator.get_page(page_num)
+        # Pagination
+        paginator = Paginator(notifications, 10)  # Show 10 notifications per page
+        page_number = request.GET.get('page')
+        page_obj = paginator.get_page(page_number)
 
         # Create the context dictionary
         context = {
-            'notifications': notifications,
+            'notifications': page_obj,
             'unread_notifications_count': unread_count,
-            'posts': posts,
             'user': request.user,
             'page_title': 'My Notifications',
-            'is_admin': request.user.is_staff, # limits user abilities
+            'is_admin': request.user.is_staff,
             'notification_types': {
                 'DM': 'Direct Message',
                 'OFFER': 'New Offer',

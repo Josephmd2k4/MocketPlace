@@ -8,7 +8,7 @@ class Notification(models.Model):
     sender = models.ForeignKey(User, on_delete=models.CASCADE, related_name='sent_notifications')
     notification_type = models.CharField(max_length=20)
     title = models.CharField(max_length=255)
-    message = models.TextField()
+    dm = models.TextField()
     content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE, null=True, blank=True)
     object_id = models.PositiveIntegerField(null=True, blank=True)
     content_object = GenericForeignKey('content_type', 'object_id')
