@@ -2,7 +2,7 @@ from django.shortcuts import redirect, render
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.http import require_POST
 from django.http import JsonResponse
-from webpush import send_user_notification
+from webpush import send_post_notification
 from .models import Notification
 from django.contrib.contenttypes.models import ContentType
 from posts.models import Post
@@ -97,7 +97,7 @@ def send_post_notification(request, post_id):
             }
             
             # Send WebPush notification
-            send_user_notification(user=user, payload=payload, ttl=1000)
+            send_post_notification(user=user, payload=payload, ttl=1000)
             
         return JsonResponse({'status': 'success'})
     
