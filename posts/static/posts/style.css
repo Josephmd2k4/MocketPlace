@@ -39,6 +39,14 @@ header {
     left: 0; 
 }
 
+i {
+    list-style: none;
+    display: flex;
+    gap: 2vw;
+    align-self: center;
+    margin-top: 1vh;
+}
+
 .navbar-links {
     list-style: none;
     display: flex;
