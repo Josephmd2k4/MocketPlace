@@ -2,6 +2,9 @@
 
 <head>
     {% load static %}
+    
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
     <link rel="stylesheet" href="{% static 'posts/style.css' %}">
     <link rel="icon" type="image/png" href="{% static 'posts/images/snake.png' %}">
     <title>MocketPlace</title>
@@ -28,6 +31,7 @@
                     </a></li>
 
                 <li><a href="{% url 'accounts:logout' %}" class="navbar-button">LOGOUT</a></li>
+                <li><a href="{% url 'notifications:notifications_list' %}" class="navbar-button"><i class="bi bi-bell"></i></a></li>
                 {% else %}
                 <li><a href="{% url 'accounts:login' %}">LOGIN</a></li>
                 <li><a href="{% url 'accounts:register' %}">REGISTER</a></li>
@@ -36,5 +40,7 @@
         </nav>
     </header>
 </body>
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
 
 </html>

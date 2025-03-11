@@ -1,0 +1,100 @@
+{% load webpush_notifications %} {% load static %}
+
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="stylesheet" type="text/css" href="{% static 'notifications/nStyles.css' %}">
+    </head>
+
+    <body>
+        {% include "notifications/navbar.html" %}
+
+        {% block content %}
+
+        <div class="notifications-container">
+            <div class="notifications-card">
+                <div class="notifications-header">
+                    <h1>Notifications</h1>
+                    {% if notifications %}
+                        <form method="post" action="{% url 'mark_all_as_read' %}">
+                            {% csrf_token %}
+                            <button type="submit" class="mark-all-read-btn">Mark All as Read</button>
+                        </form>
+                    {% endif %}
+                </div>
+
+                <div class="notifications-list">
+                    {% for notification in notifications %}
+                        <div class="notification-item {% if not notification.is_read %}unread{% endif %}" 
+                            data-notification-id="{{ notification.id }}">
+                            <div class="notification-content">
+                                <!-- Notification Icon -->
+                                <div class="notification-icon">
+                                    {% if notification.notification_type == 'DM' %}
+                                        <span class="icon message-icon">✉️</span>
+                                    {% elif notification.notification_type == 'OFFER' %}
+                                        <span class="icon offer-icon">💰</span>
+                                    {% elif notification.notification_type == 'PRICE' %}
+                                        <span class="icon price-icon">💲</span>
+                                    {% elif notification.notification_type == 'SOLD' %}
+                                        <span class="icon sold-icon">🏷️</span>
+                                    {% else %}
+                                        <span class="icon default-icon">📌</span>
+                                    {% endif %}
+                                </div>
+                                
+                                <div class="notification-details">
+                                    <h3 class="notification-title">{{ notification.title }}</h3>
+                                    <p class="notification-message">{{ notification.message }}</p>
+                                    <div class="notification-meta">
+                                        <span class="sender">From: {{ notification.sender.username }}</span>
+                                        <span class="time">{{ notification.created_at|timesince }} ago</span>
+                                        {% if notification.price %}
+                                            <span class="price">${{ notification.price }}</span>
+                                        {% endif %}
+                                        {% if notification.location %}
+                                            <span class="location">📍 {{ notification.location }}</span>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="notification-actions">
+                                {% if not notification.is_read %}
+                                    <form method="post" action="{% url 'mark_as_read' notification.id %}">
+                                        {% csrf_token %}
+                                        <button type="submit" class="mark-read-btn">Mark as Read</button>
+                                    </form>
+                                {% endif %}
+                                {% if notification.notification_type == 'OFFER' %}
+                                    <button class="view-offer-btn">View Offer</button>
+                                {% endif %}
+                            </div>
+                        </div>
+                    {% empty %}
+                        <div class="no-notifications">
+                            <p>No notifications yet. Check back later or explore our <a href="{% url 'home' %}">latest posts</a>.</p>
+                        </div>
+                    {% endfor %}
+                </div>
+
+                <!-- Pagination -->
+                {% if notifications %}
+                    <div class="pagination">
+                        {% if notifications.has_previous %}
+                            <a href="?page={{ notifications.previous_page_number }}">Previous</a>
+                        {% endif %}
+                        <span>Page {{ notifications.number }} of {{ notifications.paginator.num_pages }}</span>
+                        {% if notifications.has_next %}
+                            <a href="?page={{ notifications.next_page_number }}">Next</a>
+                        {% endif %}
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+
+        {% endblock %}
+
+        {% include "notifications/footer.html" %}
+    </body>
+</html>
