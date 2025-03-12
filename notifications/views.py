@@ -32,7 +32,7 @@ def mark_all_read(request):
     try:
         notifications = Notification.objects.filter(recipient=request.user, is_read=False)
         notifications.update(is_read=True)
-        return redirect('notifications:notification_list')
+        return redirect('notifications:notifications_list')
     except Exception as e:
         return JsonResponse({'status': 'error', 'message': str(e)})
 
@@ -68,21 +68,20 @@ def send_dm_notification(request, recipient_id):
         except Exception as e:
             return JsonResponse({'status': 'error', 'message': str(e)})
 
-@login_required
-def send_post_notification(request, post_id):
+def send_post_notification(user, post_id):
     try:
         post = Post.objects.get(id=post_id)
-        # Get all users who should be notified 
-        users_to_notify = User.objects.exclude(id=request.user.id)
+        # Get all users who should be notified, excluding the current user
+        users_to_notify = User.objects.exclude(id=user.id)
         
-        for user in users_to_notify:
+        for recipient in users_to_notify:
             # Create notification record
             notification = Notification.objects.create(
-                recipient=user,
-                sender=request.user,
+                recipient=recipient,
+                sender=user,  # The sender is now the user who created the post
                 notification_type='POST',
                 title=f'New Post: {post.title[:50]}',
-                message=f'{request.user.username} has created a new post',
+                message=f'{user.username} has created a new post',
                 content_type=ContentType.objects.get_for_model(post),
                 object_id=post.id,
                 is_read=False  # Initialize is_read attribute
@@ -91,13 +90,13 @@ def send_post_notification(request, post_id):
             # Prepare payload for WebPush
             payload = {
                 'head': 'New Post',
-                'body': f'{request.user.username} has created a new post: {post.title[:50]}',
+                'body': f'{user.username} has created a new post: {post.title[:50]}',
                 'icon': 'your-icon-url',
                 'url': f'/posts/{post.id}/'
             }
             
             # Send WebPush notification
-            send_user_notification(user=user, payload=payload, ttl=1000)
+            send_user_notification(user=recipient, payload=payload, ttl=1000)
             
         return JsonResponse({'status': 'success'})
     

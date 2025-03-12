@@ -6,5 +6,5 @@ from notifications.views import send_post_notification
 @receiver(post_save, sender=Post)
 def new_post(sender, instance, created, **kwargs):
     if created:
-        request = None  # You need to pass the request object if required
-        send_post_notification(request, instance.id)
+        # Pass the user who created the post instead of request
+        send_post_notification(instance.user, instance.id)
