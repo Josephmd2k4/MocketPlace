@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Edit Profile</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'accounts/style.css' %}">
+</head>
+
+<body>
+    {% include "posts/navbar.html" %}
+
+    <div class="profile-container">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <h3>Profile Menu</h3>
+            <ul>
+                <li><a href="{% url 'accounts:profile' %}">Overview</a></li>
+                <li><a href="{% url 'accounts:edit_profile' %}">Edit Profile</a></li>
+                <li><a href="#">Settings</a></li>
+                <li><a href="{% url 'accounts:logout' %}">Logout</a></li>
+            </ul>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <h2>Edit Profile</h2>
+
+            <!-- Display success or error messages -->
+            {% for message in messages %}
+            <div class="message {{ message.tags }}">{{ message }}</div>
+            {% endfor %}
+
+            <form method="post">
+                {% csrf_token %}
+                <h3>Update Profile Info</h3>
+                {{ user_form.as_p }}
+
+                <h3>Change Password</h3>
+                {{ password_form.as_p }}
+
+                <button type="submit" class="button">Save Changes</button>
+            </form>
+        </div>
+    </div>
+
+    {% include "posts/footer.html" %}
+</body>
+
+</html>
