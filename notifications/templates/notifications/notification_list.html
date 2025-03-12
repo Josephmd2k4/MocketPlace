@@ -16,7 +16,7 @@
                 <div class="notifications-header">
                     <h1>Notifications</h1>
                     {% if notifications %}
-                        <form method="post" action="{% url 'mark_all_as_read' %}">
+                        <form method="post" action="{% url 'notifications:mark_all_as_read' %}">
                             {% csrf_token %}
                             <button type="submit" class="mark-all-read-btn">Mark All as Read</button>
                         </form>
@@ -61,7 +61,7 @@
                             
                             <div class="notification-actions">
                                 {% if not notification.is_read %}
-                                    <form method="post" action="{% url 'mark_as_read' notification.id %}">
+                                    <form method="post" action="{% url 'notifications:mark_as_read' notification.id %}">
                                         {% csrf_token %}
                                         <button type="submit" class="mark-read-btn">Mark as Read</button>
                                     </form>
