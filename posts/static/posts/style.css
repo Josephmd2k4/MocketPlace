@@ -26,6 +26,7 @@ header {
     z-index: 1000 !important ;
     border-bottom: 1vh solid #1e419a !important ;
     height: 10vh !important ;
+    box-sizing: unset !important;
 }
 
 .logo {
@@ -165,16 +166,17 @@ footer {
     padding: 10px 0;
     position: fixed;
     bottom: 0;
-    height: 3vh;
     flex-shrink: 0;
     width: 100%;
     border-top: 0.5vh solid #1e419a;
+    box-sizing: unset !important;
 }
 
 .imageContainer {
     padding-top: 14vh;
     display: flex;
     justify-content: flex-end;
+    align-items: center;
     gap: 3vh;
 }
 
@@ -207,25 +209,25 @@ footer {
     margin-top: 4vh;
     margin-left: 2vh;
     margin-right: 2vh;
+    justify-content: center;
+    align-self: center;
+    align-content: center;
 }
 
 .imageTitle {
     text-align: center;
     color: black;
     text-decoration: none;  
+    word-wrap: break-word;  
+    max-width: 100%; 
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .imageTitle:hover {
     text-decoration: none;
 }
 
-.navbar-notifications {
-    color: #fff;
-    text-decoration: none;
-    font-size: 1.5vw;
-    font-family: sans-serif;
-    margin-right: 9vh;
-}
 
 a:hover {
     text-decoration: none; 
@@ -371,6 +373,21 @@ a:hover {
     margin-left: 2vh;
 }
 
-body ::after, body ::before {
-    box-sizing: unset !important;
+.notification-badge{
+    color: #fff;
+    text-decoration: none;
+    font-size: 1.5vw;
+    font-family: sans-serif;
+    margin-right: 3vh;
+    margin-left: 0vh;
+    display: inline-block;
+}
+.navbar-notifications {
+    color: #fff;
+    text-decoration: none;
+    font-size: 1.5vw;
+    font-family: sans-serif;
+    margin-right: 6vh;
+    display: inline-block;
+    list-style: none; 
 }

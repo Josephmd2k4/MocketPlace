@@ -1,7 +1,9 @@
 {% include "posts/navbar.html" %}
+{% load static %}
+
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-
+<link rel="stylesheet" href="{% static 'posts/style.css' %}">
 
 {% block content %}
     <div class="post-grid">
@@ -54,7 +56,9 @@
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Buy</button>
+                            {% if user.is_authenticated %}
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Buy</button>
+                            {% endif %}
                         </div>
                     </div>
                 </div>

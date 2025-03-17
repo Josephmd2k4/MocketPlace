@@ -26,10 +26,17 @@
             </div>
         {% endif %}
         {% if request.resolver_match.url_name == 'notifications_list' %}
-            <ul class="navbar-notifications">Notifications</ul>
             {% if unread_notifications_count > 0 %}
-                <span class="notification-badge">{{ unread_notifications_count }}</span>
-            {% endif %}
+                <ul class="navbar-notifications">
+                    <li>Notifications <span class="notification-badge">{{ unread_notifications_count }}</span></li>
+                </ul>
+            {% else %}
+                <ul class="navbar-notifications">
+                    <li>Notifications</li>
+                </ul>
+    
+    {% endif %}
+    
         {%else%}
         <nav>
             <ul class="navbar-links">
