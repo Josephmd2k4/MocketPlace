@@ -1,4 +1,19 @@
- 
+body,
+ul,
+li {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+    padding-bottom: 60px;
+    justify-content: space-between;
+} 
+
+
 header {
     display: flex !important;
     justify-content: space-between !important ;
@@ -167,8 +182,10 @@ footer {
     display: grid;
     padding-left: 40vh;
     padding-top: 14vh;
+    margin-right: 5vh;
     grid-template-columns: repeat(3, 1fr);
     gap: 1.5vh;
+    
 }
 
 .post {
@@ -352,4 +369,8 @@ a:hover {
 .form-control{
     width: 96%;
     margin-left: 2vh;
+}
+
+body ::after, body ::before {
+    box-sizing: unset !important;
 }
