@@ -1,3 +1,5 @@
+<!DOCTYPE html>
+
 <html>
 
 <head>
@@ -23,6 +25,12 @@
                 </form>
             </div>
         {% endif %}
+        {% if request.resolver_match.url_name == 'notifications_list' %}
+            <ul class="navbar-notifications">Notifications</ul>
+            {% if unread_notifications_count > 0 %}
+                <span class="notification-badge">{{ unread_notifications_count }}</span>
+            {% endif %}
+        {%else%}
         <nav>
             <ul class="navbar-links">
                 {% if user.is_authenticated %}
@@ -38,6 +46,7 @@
                 {% endif %}
             </ul>
         </nav>
+        {% endif %}
     </header>
 </body>
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>

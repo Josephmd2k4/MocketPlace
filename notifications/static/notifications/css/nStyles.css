@@ -14,31 +14,19 @@
     --offer-text: #2e7d32;
 }
 
-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background-color: var(--primary-color);
-    color: #fff;
-    position: fixed;
-    top: 0;
-    width: 100%;
-    z-index: 1000;
-    border-bottom: 1vh solid var(--secondary-color);
-    height: 10vh;
-    padding: 0 2vw;
-}
-
 .notifications-container {
     max-width: 800px;
     margin: 2rem auto;
     padding: 0 1rem;
+    position: relative;
 }
 
 .notifications-card {
     background: white;
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin-top: 13vh;
+    margin-bottom: 13vh;
 }
 
 .notifications-header {

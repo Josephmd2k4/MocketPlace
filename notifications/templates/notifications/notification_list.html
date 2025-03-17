@@ -1,13 +1,13 @@
+{% include "posts/navbar.html" %}
 {% load webpush_notifications %} {% load static %}
 
 <!DOCTYPE html>
 <html>
     <head>
-        <link rel="stylesheet" type="text/css" href="{% static 'notifications/nStyles.css' %}">
+        <link rel="stylesheet" href="{% static 'notifications/css/nStyles.css' %}">
     </head>
 
     <body>
-        {% include "notifications/navbar.html" %}
 
         {% block content %}
 
@@ -95,6 +95,7 @@
 
         {% endblock %}
 
-        {% include "notifications/footer.html" %}
     </body>
+    {% include "posts/footer.html" %}
+
 </html>
