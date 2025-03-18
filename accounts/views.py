@@ -76,3 +76,25 @@ def edit_profile(request):
         'user_form': user_form,
         'password_form': password_form
     })
+@login_required
+def settings_view(request):
+    if request.method == 'POST':
+        user_form = CustomUserChangeForm(request.POST, instance=request.user)
+        password_form = CustomPasswordChangeForm(user=request.user, data=request.POST)
+
+        if user_form.is_valid() and password_form.is_valid():
+            user_form.save()
+            password_form.save()
+            update_session_auth_hash(request, password_form.user)  # Keep the user logged in after password change
+            messages.success(request, 'Your profile has been updated successfully.')
+            return redirect('accounts:profile')
+        else:
+            messages.error(request, 'Please correct the errors below.')
+    else:
+        user_form = CustomUserChangeForm(instance=request.user)
+        password_form = CustomPasswordChangeForm(user=request.user)
+
+    return render(request, 'accounts/edit_profile.html', {
+        'user_form': user_form,
+        'password_form': password_form
+    })
