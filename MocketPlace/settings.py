@@ -73,7 +73,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'MocketPlace.wsgi.application'
+ASGI_APPLICATION = 'MocketPlace.asgi.application'
 
 
 # Database
