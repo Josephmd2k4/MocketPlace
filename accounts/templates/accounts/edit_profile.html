@@ -6,7 +6,15 @@
     {% load static %}
     <link rel="stylesheet" href="{% static 'accounts/style.css' %}">
 </head>
-
+    {% if messages %}
+    <div class="messages">
+        {% for message in messages %}
+        <div class="alert {% if message.tags %}alert-{{ message.tags }}{% endif %}">
+            {{ message }}
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
 <body>
     {% include "posts/navbar.html" %}
 
@@ -22,28 +30,46 @@
             </ul>
         </div>
 
-        <!-- Main Content -->
-        <div class="main-content">
-            <h2>Edit Profile</h2>
-
-            <!-- Display success or error messages -->
-            {% for message in messages %}
-            <div class="message {{ message.tags }}">{{ message }}</div>
-            {% endfor %}
-
-            <form method="post">
+        <div class="container mx-auto p-6">
+            <h2 class="text-2xl font-bold mb-4">Edit Profile</h2>
+            <form method="POST" class="space-y-4">
                 {% csrf_token %}
-                <h3>Update Profile Info</h3>
-                {{ user_form.as_p }}
-
-                <h3>Change Password</h3>
-                {{ password_form.as_p }}
-
-                <button type="submit" class="button">Save Changes</button>
+        
+                <div>
+                    <label class="block text-sm font-medium">First Name</label>
+                    {{ form.first_name }}
+                </div>
+        
+                <div>
+                    <label class="block text-sm font-medium">Last Name</label>
+                    {{ form.last_name }}
+                </div>
+        
+                <div>
+                    <label class="block text-sm font-medium">Email</label>
+                    {{ form.email }}
+                </div>
+        
+                <div>
+                    <label class="block text-sm font-medium">Bio</label>
+                    {{ form.bio }}
+                </div>
+        
+                <div>
+                    <label class="block text-sm font-medium">Year in School</label>
+                    {{ form.year_in_school }}
+                </div>
+        
+                <div>
+                    <label class="block text-sm font-medium">College Major</label>
+                    {{ form.major }}
+                </div>
+        
+                <button type="submit" class="bg-blue-500 text-white p-2 rounded-md">
+                    Save Changes
+                </button>
             </form>
         </div>
-    </div>
-
     {% include "posts/footer.html" %}
 </body>
 
