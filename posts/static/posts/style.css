@@ -90,12 +90,11 @@ i {
     padding: 20px;
     padding-top: 1.5vh;
     border-radius: 8px;
-    max-height: 73.5vh;
     box-shadow: 0px 0px 15px rgba(30, 65, 154, 0.8);
 }
 
 #createListingForm input {
-    width: 100%;
+    width: 105vh;
     padding: 10px;
     margin: 8px 0;
     border: 1px solid #ccc;
@@ -106,7 +105,7 @@ i {
 #createListingForm textarea{
     height: 80px;  
     resize: none;  
-    width: 100%;
+    width: 105vh;
     padding: 10px;
     margin: 8px 0;
     border: 1px solid #ccc;
@@ -387,7 +386,37 @@ a:hover {
     text-decoration: none;
     font-size: 1.5vw;
     font-family: sans-serif;
-    margin-right: 6vh;
+    margin-right: 9vh;
     display: inline-block;
     list-style: none; 
+}
+
+.notification-wrapper {
+    position: relative;
+    display: inline-block;
+}
+
+.notification-circle {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 8px;
+    height: 8px;
+    background-color: #1e419a;
+    border-radius: 50%;
+}
+
+.notification-bell{
+    width: 2vh;
+    height:2vh;
+}
+
+.buy-button{
+    background-color: #1e419a;
+    border: none;
+    color: white;
+    padding: 0.6vh;
+    padding-left: 2vh;
+    padding-right: 2vh;
+    border-radius: 0.5vh;
 }

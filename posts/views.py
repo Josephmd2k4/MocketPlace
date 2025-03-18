@@ -3,16 +3,23 @@ from .models import Post, Comment
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from notifications.views import mark_notification_read, mark_all_read, send_dm_notification, send_post_notification
+from notifications.models import Notification
 
 def home(request):
     query = request.GET.get('q')
     open_modal = request.GET.get('open_modal') 
+
     if query:
         posts = Post.objects.filter(title__icontains=query).prefetch_related("comments").order_by('-created_at')
     else:
         posts = Post.objects.all().prefetch_related("comments").order_by('-created_at')
 
-    return render(request, 'posts/home.html', {'posts': posts, 'open_modal': open_modal})
+    unread_notifications_count = 0
+    if request.user.is_authenticated:
+        notifications = Notification.objects.filter(recipient=request.user).order_by('-created_at')
+        unread_count = notifications.filter(is_read=False).count()
+
+    return render(request, 'posts/home.html', {'posts': posts, 'open_modal': open_modal, 'unread_notifications_count': unread_count})
 
 @login_required
 def createPost(request):

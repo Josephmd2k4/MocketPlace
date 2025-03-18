@@ -1,4 +1,4 @@
-from django.shortcuts import redirect, render
+from django.shortcuts import get_object_or_404, redirect, render
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.http import require_POST
 from django.http import JsonResponse
@@ -132,3 +132,22 @@ def notifications_list(request):
     
     except Exception as e:
         return JsonResponse({'status': 'error', 'message': str(e)})
+    
+def buy_post(request, post_id):
+    post = get_object_or_404(Post, id=post_id)
+    
+    if request.user.is_authenticated:
+        # Create a notification for the post owner
+        message = f"{request.user.username} is interested in your  {post.title}"
+        
+        # Create the notification
+        Notification.objects.create(
+            recipient=post.user,  
+            title=message,
+            sender=request.user
+        )
+        
+        # You can redirect or render a page after processing the action
+        return redirect('/?success=true') 
+    else:
+        return redirect('login')  # Redirect to the login page
