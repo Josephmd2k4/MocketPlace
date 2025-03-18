@@ -27,7 +27,7 @@ def notify_users_on_new_post(sender, instance, created, **kwargs):
 
 @receiver(post_save, sender=Notification)
 def notify_users_on_new_message(sender, instance, created, **kwargs):
-    if created and instance.notification_type == 'POST':  # Avoid recursion by checking notification type
+    if created and instance.notification_type == 'DM':  # Avoid recursion by checking notification type
         Notification.objects.create(
             recipient=instance.recipient,
             sender=instance.sender,

@@ -8,6 +8,7 @@ from .forms import CustomUserCreationForm  # Import the custom form
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import update_session_auth_hash
 from .forms import CustomUserChangeForm, CustomPasswordChangeForm
+from notifications.models import Notification
 
 def register_view(request):
     if request.method == 'POST':
@@ -51,7 +52,11 @@ def logout_view(request):
 
 @login_required
 def profile_view(request):
-    return render(request, 'accounts/profile.html', {'user': request.user})
+    unread_notifications_count = 0
+    if request.user.is_authenticated:
+        notifications = Notification.objects.filter(recipient=request.user).order_by('-created_at')
+        unread_notifications_count = notifications.filter(is_read=False).count()
+    return render(request, 'accounts/profile.html', {'user': request.user, 'unread_notifications_count': unread_notifications_count})
 
 
 @login_required

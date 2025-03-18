@@ -7,7 +7,8 @@ from notifications.models import Notification
 
 def home(request):
     query = request.GET.get('q')
-    open_modal = request.GET.get('open_modal') 
+    open_modal = request.GET.get('open_modal')
+    success = request.GET.get('success')  
 
     if query:
         posts = Post.objects.filter(title__icontains=query).prefetch_related("comments").order_by('-created_at')
@@ -17,9 +18,10 @@ def home(request):
     unread_notifications_count = 0
     if request.user.is_authenticated:
         notifications = Notification.objects.filter(recipient=request.user).order_by('-created_at')
-        unread_count = notifications.filter(is_read=False).count()
+        unread_notifications_count = notifications.filter(is_read=False).count()
 
-    return render(request, 'posts/home.html', {'posts': posts, 'open_modal': open_modal, 'unread_notifications_count': unread_count})
+    return render(request, 'posts/home.html', {'posts': posts, 'open_modal': open_modal, 'unread_notifications_count': unread_notifications_count,
+        'success': success})
 
 @login_required
 def createPost(request):

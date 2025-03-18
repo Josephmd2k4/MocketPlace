@@ -420,3 +420,13 @@ a:hover {
     padding-right: 2vh;
     border-radius: 0.5vh;
 }
+
+.alert {
+    position: fixed;
+    top: 80px; /* Adjust this based on your navbar height */
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1050; /* Ensure it appears above other elements */
+    width: 50%;
+    text-align: center;
+}

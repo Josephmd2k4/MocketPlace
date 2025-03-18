@@ -19,7 +19,7 @@ def mark_notification_read(request, notification_id):
         )
         notification.is_read = True
         notification.save()
-        return JsonResponse({'success': True})
+        return redirect(request.META.get('HTTP_REFERER', 'notifications:list'))  
     except Notification.DoesNotExist:
         return JsonResponse(
             {'success': False, 'error': 'Notification not found'},
