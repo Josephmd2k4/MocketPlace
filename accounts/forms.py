@@ -3,6 +3,47 @@ from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import get_user_model
 from django.contrib.auth.forms import PasswordChangeForm
+from django import forms
+from .models import Profile
+
+class ProfileForm(forms.ModelForm):
+    first_name = forms.CharField(
+        max_length=30,
+        widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'First Name'}),
+        required=True
+    )
+    last_name = forms.CharField(
+        max_length=30,
+        widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Last Name'}),
+        required=True
+    )
+    email = forms.EmailField(
+        widget=forms.EmailInput(attrs={'class': 'form-control', 'placeholder': 'Email'}),
+        required=True
+    )
+
+    class Meta:
+        model = Profile
+        fields = ['first_name', 'last_name', 'email', 'bio', 'year_in_school', 'major']
+        widgets = {
+            'bio': forms.Textarea(attrs={'class': 'form-control', 'placeholder': 'Tell us about yourself...'}),
+            'year_in_school': forms.Select(choices=[
+                ('Freshman', 'Freshman'),
+                ('Sophomore', 'Sophomore'),
+                ('Junior', 'Junior'),
+                ('Senior', 'Senior'),
+                ('Graduate', 'Graduate')
+            ], attrs={'class': 'form-control'}),
+            'major': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Your major...'}),
+        }
+
+    def __init__(self, *args, **kwargs):
+        user = kwargs.pop('user', None)  # Get the user object
+        super().__init__(*args, **kwargs)
+        if user:
+            self.fields['first_name'].initial = user.first_name
+            self.fields['last_name'].initial = user.last_name
+            self.fields['email'].initial = user.email
 
 class CustomUserCreationForm(UserCreationForm):
     first_name = forms.CharField(max_length=30, required=True, help_text="Required.")
@@ -15,14 +56,35 @@ class CustomUserCreationForm(UserCreationForm):
 User = get_user_model()
 
 class CustomUserChangeForm(forms.ModelForm):
+    bio = forms.CharField(
+        widget=forms.Textarea(attrs={'class': 'form-control', 'placeholder': 'Tell us about yourself...'}), 
+        required=False
+    )
+    year_in_school = forms.ChoiceField(
+        choices=[
+            ('Freshman', 'Freshman'),
+            ('Sophomore', 'Sophomore'),
+            ('Junior', 'Junior'),
+            ('Senior', 'Senior'),
+            ('Graduate', 'Graduate')
+        ], 
+        widget=forms.Select(attrs={'class': 'form-control'}), 
+        required=False
+    )
+    major = forms.CharField(
+        widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Your major...'}), 
+        required=False
+    )
+
     class Meta:
         model = User
-        fields = ['first_name', 'last_name', 'email']
+        fields = ['first_name', 'last_name', 'email', 'bio', 'year_in_school', 'major']
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         for field in self.fields.values():
             field.widget.attrs.update({'class': 'form-control'})
+
 
 class CustomPasswordChangeForm(PasswordChangeForm):
     def __init__(self, *args, **kwargs):

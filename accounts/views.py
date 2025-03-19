@@ -8,6 +8,8 @@ from .forms import CustomUserCreationForm  # Import the custom form
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import update_session_auth_hash
 from .forms import CustomUserChangeForm, CustomPasswordChangeForm
+from .forms import ProfileForm
+from .models import Profile
 from notifications.models import Notification
 
 def register_view(request):
@@ -61,23 +63,40 @@ def profile_view(request):
 
 @login_required
 def edit_profile(request):
-    if request.method == 'POST':
-        user_form = CustomUserChangeForm(request.POST, instance=request.user)
-        password_form = CustomPasswordChangeForm(user=request.user, data=request.POST)
+    profile, created = Profile.objects.get_or_create(user=request.user)  # Ensure profile exists
 
-        if user_form.is_valid() and password_form.is_valid():
-            user_form.save()
-            password_form.save()
-            update_session_auth_hash(request, password_form.user)  # Keep the user logged in after password change
-            messages.success(request, 'Your profile has been updated successfully.')
-            return redirect('accounts:profile')
-        else:
-            messages.error(request, 'Please correct the errors below.')
+    if request.method == "POST":
+        form = ProfileForm(request.POST, instance=profile, user=request.user)
+        if form.is_valid():
+            # Save user fields
+            request.user.first_name = form.cleaned_data['first_name']
+            request.user.last_name = form.cleaned_data['last_name']
+            request.user.email = form.cleaned_data['email']
+            request.user.save()  # Save User model changes
+
+            # Save Profile fields
+            form.save()  
+            
+            messages.success(request, "Your profile has been updated successfully.")
+            return redirect('accounts:profile')  # Redirect to profile page
     else:
-        user_form = CustomUserChangeForm(instance=request.user)
-        password_form = CustomPasswordChangeForm(user=request.user)
+        form = ProfileForm(instance=profile, user=request.user)
 
-    return render(request, 'accounts/edit_profile.html', {
-        'user_form': user_form,
-        'password_form': password_form
-    })
+    return render(request, 'accounts/edit_profile.html', {'form': form})
+
+
+@login_required
+def settings_view(request):
+    if request.method == "POST":
+        form = CustomPasswordChangeForm(request.user, request.POST)
+        if form.is_valid():
+            user = form.save()
+            update_session_auth_hash(request, user)  # Keep the user logged in
+            messages.success(request, "Your password has been updated successfully.")
+            return redirect('accounts:settings')  # Stay on the settings page
+        else:
+            messages.error(request, "Please correct the errors below.")
+    else:
+        form = CustomPasswordChangeForm(request.user)
+
+    return render(request, 'accounts/settings.html', {'form': form})
