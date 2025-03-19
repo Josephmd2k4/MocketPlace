@@ -43,6 +43,8 @@ INSTALLED_APPS = [
     'webpush',
     'notifications',
     'accounts.apps.AccountsConfig',
+    'daphne', 
+    'channels',
 ]
 
 MIDDLEWARE = [
