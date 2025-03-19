@@ -38,6 +38,11 @@ def login_view(request):
             password = form.cleaned_data.get('password')
             user = authenticate(request, username=username, password=password)
             if user is not None:
+                try:
+                    user.profile  
+                except Profile.DoesNotExist:
+                    messages.error(request, 'User does not exist.')
+                    return render(request, 'accounts/login.html', {'form': form})
                 login(request, user)
                 return redirect(reverse('home'))
             else:
@@ -46,7 +51,9 @@ def login_view(request):
             messages.error(request, 'Invalid username or password.')
     else:
         form = AuthenticationForm()
+
     return render(request, 'accounts/login.html', {'form': form})
+
 
 def logout_view(request):
     logout(request)

@@ -30,7 +30,7 @@
             </ul>
         </div>
 
-        <div class="container mx-auto p-6">
+        <div class="container-mx-auto-p-6">
             <h2 class="text-2xl font-bold mb-4">Edit Profile</h2>
             <form method="POST" class="space-y-4">
                 {% csrf_token %}
@@ -46,21 +46,21 @@
                 </div>
         
                 <div>
-                    <label class="block text-sm font-medium">Email</label>
+                    <label class="email">Email</label>
                     {{ form.email }}
                 </div>
         
                 <div>
-                    <label class="block text-sm font-medium">Bio</label>
+                    <label class="bio">Bio</label>
                     {{ form.bio }}
                 </div>
         
-                <div>
-                    <label class="block text-sm font-medium">Year in School</label>
+                <div class="year-container">
+                    <label class="year">Year in School</label>
                     {{ form.year_in_school }}
                 </div>
         
-                <div>
+                <div class= "major-box">
                     <label class="block text-sm font-medium">College Major</label>
                     {{ form.major }}
                 </div>

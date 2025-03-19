@@ -153,43 +153,43 @@ body {
 
 /* Sidebar Styles */
 .sidebar {
-    width: 250px;
-    background-color: #1e419a;
-    color: white;
-    padding: 20px;
+    width: 250px !important;
+    background-color: #1e419a !important;
+    color: white !important;
+    padding: 20px !important;
     /* Full height sidebar */
-    position: fixed;
-    left: 0;
-    margin-top: 10vh;
-    height: 100%;
+    position: fixed !important;
+    left: 0 !important;
+    margin-top: 10vh !important;
+    height: 100% !important;
 }
 
 .sidebar h3 {
-    text-align: center;
-    color: #ecf0f1;
+    text-align: center !important;
+    color: #ecf0f1 !important;
 }
 
 .sidebar ul {
-    list-style: none;
-    padding: 0;
+    list-style: none !important;
+    padding: 0 !important;
 }
 
 .sidebar ul li {
-    margin: 20px 0;
+    margin: 20px 0 !important;
 }
 
 .sidebar ul li a {
-    text-decoration: none;
-    color: #bdc3c7;
-    display: block;
-    padding: 10px;
-    border-radius: 4px;
-    transition: background 0.3s;
+    text-decoration: none !important;
+    color: #bdc3c7 !important;
+    display: block !important;
+    padding: 10px !important;
+    border-radius: 4px !important;
+    transition: background 0.3s !important;
 }
 
 .sidebar ul li a:hover {
-    background-color: #001b61;
-    color: white;
+    background-color: #001b61 !important;
+    color: white !important;
 }
 
 /* Main Content Styles */
@@ -218,30 +218,6 @@ h2 {
     font-size: 18px;
     color: #2c3e50;
     margin: 10px 0;
-}
-
-/* Make sure the page is responsive */
-@media screen and (max-width: 768px) {
-    .sidebar {
-        width: 200px;
-        position: relative;
-    }
-
-    .main-content {
-        margin-left: 200px;
-    }
-}
-
-@media screen and (max-width: 480px) {
-    .sidebar {
-        width: 100%;
-        position: relative;
-        min-height: auto;
-    }
-
-    .main-content {
-        margin-left: 0;
-    }
 }
 
 
@@ -276,8 +252,6 @@ form label {
     font-weight: bold;
 }
 
-form input[type="text"],
-form input[type="email"],
 form input[type="password"] {
     width: 100%;
     padding: 10px;
@@ -305,9 +279,12 @@ form button:hover {
 
 /* Message Styles */
 .message {
-    padding: 10px;
-    margin: 10px 0;
-    border-radius: 4px;
+    position: fixed;
+    top: 80px; /* Adjust this based on your navbar height */
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1050; /* Ensure it appears above other elements */
+    width: 50%;
     text-align: center;
 }
 
@@ -359,3 +336,76 @@ form ul.helptext {
     align-self: center;
     margin-left: 60vh;
 }
+
+.custom-alert {
+    position: fixed;
+    top: 80px; /* Adjust this based on your navbar height */
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1050; /* Ensure it appears above other elements */
+    width: 35%;
+    text-align: center;
+    color: #155724;
+    background-color: #d4edda;
+    border-color: #c3e6cb;
+    font-family: sans-serif;
+    justify-content: center;
+    align-items: center;
+    padding: 12px 45px 12px 12px;  
+    margin: 0px 0px 16px 0px;
+}
+
+.close{
+    padding-left: 4rem;
+    border: none;
+    background-color: #d4edda;
+    cursor: pointer;
+}
+
+.container-mx-auto-p-6{
+    width: 40vw;
+    min-width: 280px;
+    min-height: 68vh;
+    margin: 13vh  auto 1vh 60vh;
+    padding: 2vw;
+    background: white;
+    border-radius: 8px;
+    text-align: center;
+    flex-direction: column;
+    justify-content: center;
+    box-shadow: 0px 0px 15px rgba(30, 65, 154, 0.8);
+    position: relative;
+}
+
+.bio{
+    width: 75vh;
+}
+
+.email{
+    width: 75vh;
+    align-self: center;
+}
+
+form input[type="text"]{
+    width: 75vh;
+}
+
+.year-container {
+    display: flex;
+    align-items: center; /* Align items vertically */
+    gap: 10px; /* Space between label and dropdown */
+    flex-wrap: nowrap; /* Prevent wrapping */
+    justify-content: center;
+}
+
+.year-container label {
+    white-space: nowrap; /* Keep the label text in one line */
+    padding-top: 3vh;
+    padding-bottom: 3vh;
+}
+
+.year-container select {
+    padding-top: 1vh;
+    padding-bottom: 1vh;
+}
+
