@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'webpush',
     'notifications',
     'accounts.apps.AccountsConfig',
+    'payments'
 ]
 
 MIDDLEWARE = [
