@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    {% include "posts/navbar.html" %}
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'messaging/style.css' %}">
+  </head>
+  <body>
+    <div class="container">
+      <center><h1>Welcome to the chat, {{ request.user.username }}!</h1></center>
+      
+      <div class="chat__item__container" id="id_chat_item_container" style="height: 400px; overflow-y: auto; display: flex; flex-direction: column-reverse;">
+        <div id="id_messages_container">
+            {% for message in messages %}
+                <div><strong>{{ message.sender }}:</strong> {{ message.content }}</div>
+            {% endfor %}
+        </div>
+    </div>
+    
+    <input type="text" id="id_message_send_input" placeholder="Type a message..." />
+    <button id="send-message">Send</button>
+
+      <script>
+        const currentUser = "{{ request.user.username }}";  // Current logged-in user
+        const targetUser = "{{ target_user }}";  // Target user for chat
+        const ws = new WebSocket(
+            (window.location.protocol === "https:" ? "wss://" : "ws://") +
+            window.location.host +
+            "/ws/chat/" + currentUser + "/" + targetUser + "/"
+        );
+
+        ws.onopen = function () {
+            console.log("Connected to WebSocket.");
+        };
+
+        ws.onclose = function () {
+            console.log("WebSocket connection closed.");
+        };
+
+        ws.onerror = function (error) {
+            console.error("WebSocket error:", error);
+        };
+
+        const chatContainer = document.getElementById("id_chat_item_container");
+        const messagesContainer = document.getElementById("id_messages_container");
+
+        // Ensure the chat starts at the bottom on page load
+        window.onload = function () {
+            chatContainer.scrollTop = 0;
+        };
+
+        // Track if the user is scrolling up
+        let isUserScrollingUp = false;
+
+        chatContainer.addEventListener("scroll", function () {
+            isUserScrollingUp = chatContainer.scrollTop < chatContainer.scrollHeight - chatContainer.clientHeight - 100;
+        });
+
+        ws.onmessage = function (e) {
+            const data = JSON.parse(e.data);
+            console.log("Message received:", data);
+
+            const div = document.createElement("div");
+            div.innerHTML = "<strong>" + data.username + ":</strong> " + data.message;
+            messagesContainer.appendChild(div);  // Add messages normally (below older ones)
+
+            // Auto-scroll to bottom unless user is scrolling up
+            if (!isUserScrollingUp) {
+                scrollToBottom();
+            }
+        };
+
+
+        document.getElementById("send-message").onclick = function () {
+            console.log("Send button clicked!");
+            const messageInput = document.getElementById("id_message_send_input");
+            const message = messageInput.value.trim();
+
+            if (message !== "") {
+                try {
+                    ws.send(JSON.stringify({
+                        'message': message,
+                        'username': currentUser,
+                        'target_username': targetUser
+                    }));
+                    console.log("Message sent:", message);
+                    messageInput.value = ''; // Clear input
+                } catch (error) {
+                    console.error("Failed to send message:", error);
+                }
+            } else {
+                console.log("Message is empty, not sending.");
+            }
+        };
+
+        // Send message on Enter key
+        document.getElementById("id_message_send_input").onkeyup = function (e) {
+            if (e.key === "Enter") {
+                document.getElementById("send-message").click();
+            }
+        };
+      </script>
+  </body>
+</html>

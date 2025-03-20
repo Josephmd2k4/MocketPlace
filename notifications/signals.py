@@ -28,13 +28,14 @@ def notify_users_on_new_post(sender, instance, created, **kwargs):
 @receiver(post_save, sender=Notification)
 def notify_users_on_new_message(sender, instance, created, **kwargs):
     if created and instance.notification_type == 'DM':  # Avoid recursion by checking notification type
+        # Assuming the `sender` and `recipient` are user instances
         Notification.objects.create(
-            recipient=instance.recipient,
-            sender=instance.sender,
-            notification_type='DM',
+            recipient=instance.recipient,  # Target user for notification
+            sender=instance.sender,        # User who sent the message
+            notification_type='DM',        # Type of notification (direct message)
             title=f'New Message from {instance.sender.username}',
-            dm=instance.dm,  # Use the 'dm' field
+            dm=instance.dm,                # Assuming the message object is attached to `dm`
             content_type=ContentType.objects.get_for_model(instance),
-            object_id=instance.id,
-            is_read=False
+            object_id=instance.id,         # Link back to the Notification model instance
+            is_read=False,                 # Notification is unread by default
         )
