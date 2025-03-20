@@ -1,0 +1,97 @@
+.container {
+    max-height: 100%;
+}
+
+/* chat box */
+.chat__item__container {
+    max-width: 120vh;
+    height: 65vh;
+    margin-left: 40vh;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+}
+
+/* div for input and buttons */
+.dmForm {
+    margin-left: 40vh;
+    margin-top: 2vh;
+}
+
+/* Header of the chat */
+.chat-header {
+    margin-left: 90vh;
+    font-size: 24px;
+    margin-top: 15vh;
+}
+
+/* Display for messages */
+.messages {
+    max-height: 400px;
+    overflow-y: scroll;
+    margin-bottom: 10px;
+    padding: 10px;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+/* Each message block */
+.messages div {
+    margin-bottom: 10px;
+}
+
+#message-input {
+    width: 80%;
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+.message {
+    padding: 5px;
+    color: white;
+    margin-bottom: 10px;
+    background-color: #f9f9f9;
+    border: none;
+    border-radius: 2vh;
+}
+
+
+#id_message_send_input {
+    width: 110vh;
+    height: 4vh;
+    border-radius: 2vh;
+    border: 1px solid #ccc;
+    background-color: #f9f9f9;
+    padding-left: 2vh;
+}
+
+#send-message {
+    padding: 10px 15px;
+    margin-left: 5px;
+    background-color: #1e419a;
+    color: white;
+    border: none;
+    border-radius: 5px;
+}
+
+.received, .sent {
+    border-radius: 2vh;
+    padding: 1vh 2vh;
+    max-width: 50vh; /* Ensures it wraps after 50vh */
+    word-wrap: break-word; 
+    overflow-wrap: break-word;
+    min-height: 4vh; /* Prevents it from being too small */
+}
+
+.received {
+    background-color: #cf202f;
+    justify-self: start;
+}
+
+.sent {
+    background-color: #1e419a;
+    color: white;
+    justify-self: end;
+}

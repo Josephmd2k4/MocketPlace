@@ -43,7 +43,9 @@
                             <img src="{{ post.image.url }}" alt="{{ post.title }}" class="modal-image">
                             <p><strong>Description:</strong> {{ post.description }}</p>
                             <p><strong>Price:</strong> ${{ post.price }}</p>
-                            <p><strong>User:</strong> {{ post.user }}</p>
+                            <p><strong>User:</strong> 
+                                <a href="{% url 'messaging:dm' post.user.username %}">{{ post.user.username }}</a>
+                            </p>
             
                             <!-- Comments Section -->
                             <div class="comments-section">

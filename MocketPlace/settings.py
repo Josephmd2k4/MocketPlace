@@ -39,10 +39,13 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
+    'daphne', 
     'django.contrib.staticfiles',
     'webpush',
     'notifications',
     'accounts.apps.AccountsConfig',
+    'channels',
+    'messaging',
 ]
 
 MIDDLEWARE = [
@@ -137,3 +140,9 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 MEDIA_URL = "/media/"
 MEDIA_ROOT = os.path.join(BASE_DIR / "posts/media")
+
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "channels.layers.InMemoryChannelLayer"
+    }
+}
