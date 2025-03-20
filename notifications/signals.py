@@ -21,7 +21,6 @@ def notify_users_on_new_post(sender, instance, created, **kwargs):
                 sender=instance.user,
                 notification_type='POST',
                 title=f'New Post: {instance.title[:50]}',
-                dm=f'{instance.user.username} has created a new post',
                 content_type=ContentType.objects.get_for_model(instance),
                 object_id=instance.id,
                 is_read=False

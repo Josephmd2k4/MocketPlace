@@ -1,18 +1,28 @@
-/* Container for the entire chat box */
-.chat-container {
-    max-width: 600px;
-    margin: 20px auto;
-    padding: 10px;
+.container {
+    max-height: 100%;
+}
+
+/* chat box */
+.chat__item__container {
+    max-width: 120vh;
+    height: 65vh;
+    margin-left: 40vh;
     border: 1px solid #ccc;
     border-radius: 5px;
     background-color: #f9f9f9;
 }
 
+/* div for input and buttons */
+.dmForm {
+    margin-left: 40vh;
+    margin-top: 2vh;
+}
+
 /* Header of the chat */
 .chat-header {
-    text-align: center;
+    margin-left: 90vh;
     font-size: 24px;
-    margin-bottom: 20px;
+    margin-top: 15vh;
 }
 
 /* Display for messages */
@@ -31,13 +41,6 @@
     margin-bottom: 10px;
 }
 
-/* Input field and send button */
-.message-input-container {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
 #message-input {
     width: 80%;
     padding: 8px;
@@ -45,37 +48,50 @@
     border-radius: 5px;
 }
 
-#send-message:hover {
-    background-color: #0056b3;
-}
-
-#message-container {
-    max-height: 400px;
-    overflow-y: scroll;
-    padding: 10px;
-}
-
 .message {
     padding: 5px;
+    color: white;
     margin-bottom: 10px;
     background-color: #f9f9f9;
-    border-radius: 5px;
-    box-shadow: 0px 0px 3px rgba(0, 0, 0, 0.1);
+    border: none;
+    border-radius: 2vh;
 }
 
-#message-input {
-    width: 80%;
-    padding: 10px;
-    margin-top: 20px;
-    border-radius: 5px;
-    border: 1px solid #ddd;
+
+#id_message_send_input {
+    width: 110vh;
+    height: 4vh;
+    border-radius: 2vh;
+    border: 1px solid #ccc;
+    background-color: #f9f9f9;
+    padding-left: 2vh;
 }
 
 #send-message {
     padding: 10px 15px;
     margin-left: 5px;
-    background-color: #4CAF50;
+    background-color: #1e419a;
     color: white;
     border: none;
     border-radius: 5px;
+}
+
+.received, .sent {
+    border-radius: 2vh;
+    padding: 1vh 2vh;
+    max-width: 50vh; /* Ensures it wraps after 50vh */
+    word-wrap: break-word; 
+    overflow-wrap: break-word;
+    min-height: 4vh; /* Prevents it from being too small */
+}
+
+.received {
+    background-color: #cf202f;
+    justify-self: start;
+}
+
+.sent {
+    background-color: #1e419a;
+    color: white;
+    justify-self: end;
 }

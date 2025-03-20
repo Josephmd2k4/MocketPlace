@@ -7,18 +7,34 @@
   </head>
   <body>
     <div class="container">
-      <center><h1>Welcome to the chat, {{ request.user.username }}!</h1></center>
       
-      <div class="chat__item__container" id="id_chat_item_container" style="height: 400px; overflow-y: auto; display: flex; flex-direction: column-reverse;">
-        <div id="id_messages_container">
-            {% for message in messages %}
-                <div><strong>{{ message.sender }}:</strong> {{ message.content }}</div>
-            {% endfor %}
+    <h2 class="chat-header ">{{ target_user  }}</h2>
+        
+      <div class="chat__item__container" id="id_chat_item_container" style="overflow-y: auto; display: flex; flex-direction: column-reverse;">
+        
+            <div id="id_messages_container">
+                {% for message in messages %}
+                    <div class="message">
+                        {% if message.sender.username == request.user.username %}
+                            <div class="sent">
+                                {{ message.content }}
+                            </div>
+                        {% else %}
+                            <div class="received">
+                                {{ message.content }}
+                            </div>
+                        {% endif %}"
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    
+        <div class="dmForm">
+            <input type="text" id="id_message_send_input" placeholder="Type a message..." />
+            <button id="send-message">Send</button>
         </div>
     </div>
-    
-    <input type="text" id="id_message_send_input" placeholder="Type a message..." />
-    <button id="send-message">Send</button>
 
       <script>
         const currentUser = "{{ request.user.username }}";  // Current logged-in user
@@ -59,12 +75,15 @@
         ws.onmessage = function (e) {
             const data = JSON.parse(e.data);
             console.log("Message received:", data);
-
             const div = document.createElement("div");
-            div.innerHTML = "<strong>" + data.username + ":</strong> " + data.message;
-            messagesContainer.appendChild(div);  // Add messages normally (below older ones)
-
-            // Auto-scroll to bottom unless user is scrolling up
+            div.classList.add("message");
+            if (data.username === currentUser) {
+                div.classList.add("sent");
+            } else {
+                div.classList.add("received");
+            }
+            div.innerHTML = data.message;
+            messagesContainer.appendChild(div);
             if (!isUserScrollingUp) {
                 scrollToBottom();
             }
@@ -100,5 +119,8 @@
             }
         };
       </script>
+
+        
   </body>
+  {% include "posts/footer.html" %}
 </html>
