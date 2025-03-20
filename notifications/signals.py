@@ -4,6 +4,10 @@ from posts.models import Post
 from .models import Notification
 from django.contrib.auth.models import User
 from django.contrib.contenttypes.models import ContentType
+import threading
+
+# Thread-local variable to prevent recursion
+notification_creation_in_progress = threading.local()
 
 # To prevent recursion, you can add a flag to check if the notification was already created by the first signal
 @receiver(post_save, sender=Post)
@@ -27,15 +31,14 @@ def notify_users_on_new_post(sender, instance, created, **kwargs):
 
 @receiver(post_save, sender=Notification)
 def notify_users_on_new_message(sender, instance, created, **kwargs):
+    # Prevent recursion by checking if the flag is set
+    if getattr(notification_creation_in_progress, 'flag', False):
+        print("Skipping notification creation to avoid recursion.")
+        return
+
     if created and instance.notification_type == 'DM':  # Avoid recursion by checking notification type
-        # Assuming the `sender` and `recipient` are user instances
-        Notification.objects.create(
-            recipient=instance.recipient,  # Target user for notification
-            sender=instance.sender,        # User who sent the message
-            notification_type='DM',        # Type of notification (direct message)
-            title=f'New Message from {instance.sender.username}',
-            dm=instance.dm,                # Assuming the message object is attached to `dm`
-            content_type=ContentType.objects.get_for_model(instance),
-            object_id=instance.id,         # Link back to the Notification model instance
-            is_read=False,                 # Notification is unread by default
-        )
+        # Flag set to prevent recursion
+        notification_creation_in_progress.flag = True
+
+        # Reset the flag after processing
+        notification_creation_in_progress.flag = False
