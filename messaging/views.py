@@ -4,6 +4,7 @@ from .models import Message  # Assuming Message model is where messages are stor
 from django.db.models import Q
 from notifications.models import Notification
 
+
 @login_required
 def dm_view(request, target_user):
     # Get all messages between the current user and the target user

@@ -14,13 +14,13 @@ from messaging.models import Message
 @require_POST
 def mark_notification_read(request, notification_id):
     try:
-        notification = Notification.objects.get(
-            id=notification_id,
-            recipient=request.user
-        )
+        notification = get_object_or_404(Notification, id=notification_id, recipient=request.user)
         notification.is_read = True
         notification.save()
-        return redirect(request.META.get('HTTP_REFERER', 'notifications:list'))  
+
+        # Return JSON response indicating success
+        return redirect('notifications:notifications_list')
+
     except Notification.DoesNotExist:
         return JsonResponse(
             {'success': False, 'error': 'Notification not found'},
@@ -147,6 +147,7 @@ def buy_post(request, post_id):
         # Create the notification
         Notification.objects.create(
             recipient=post.user,  
+            notification_type='OFFER',
             title=message,
             sender=request.user
         )
