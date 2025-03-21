@@ -1,3 +1,7 @@
+body{
+    padding: 0 !important;
+}
+
 .container {
     max-height: 100%;
 }
@@ -16,6 +20,49 @@
 .dmForm {
     margin-left: 40vh;
     margin-top: 2vh;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.input-container {
+    position: relative;
+    width: 110vh;
+}
+
+#id_message_send_input {
+    width: 94%;
+    height: 2vh;
+    border-radius: 2vh;
+    border: 1px solid #ccc;
+    background-color: #f9f9f9;
+    padding: 8px 40px 8px 2vh; /* Added right padding for the button */
+    font-size: 16px;
+}
+
+.file-upload-btn {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: #1e419a;
+    color: white;
+    font-size: 18px;
+    font-weight: bold;
+    width: 20px;
+    height: 20px;
+    text-align: center;
+    line-height: 20px;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+.file-upload-btn:hover {
+    background-color: #163577;
+}
+
+#send-message:hover {
+    background-color: #163577;
 }
 
 /* Header of the chat */
@@ -58,14 +105,6 @@
 }
 
 
-#id_message_send_input {
-    width: 110vh;
-    height: 4vh;
-    border-radius: 2vh;
-    border: 1px solid #ccc;
-    background-color: #f9f9f9;
-    padding-left: 2vh;
-}
 
 #send-message {
     padding: 10px 15px;
@@ -110,4 +149,77 @@
     align-items: flex-end;
     display: block;  /* Makes span behave like a div */
     text-align: right;
+}
+
+.chat-media {
+    max-width: 250px;
+    max-height: 250px;
+    border-radius: 10px;
+}
+
+/* Sent Message Media */
+.sent-chat-media {
+    max-width: 80% ;
+    max-height: 400px ;
+    display: block ;
+    border-radius: 8px ;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1) ;
+    align-self: flex-end ; /* Align to the right for sent media */
+    max-width: 250px ;
+    max-height: 250px ;
+    border-radius: 10px ;
+    background-color: #1e419a;
+    color: white;
+    justify-self: end;
+    margin: 10px 0;
+}
+
+.new-sent-chat-media {
+    max-width: 80% ;
+    max-height: 400px ;
+    display: block ;
+    border-radius: 8px ;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1) ;
+    align-self: flex-end ; /* Align to the right for sent media */
+    max-width: 250px ;
+    max-height: 250px ;
+    border-radius: 10px ;
+    background-color: #1e419a;
+    color: white;
+    justify-self: end;
+    padding: 1.5vh 2.5vh;
+    margin: 10px 0;
+}
+
+/* Received Message Media */
+.received-chat-media {
+    max-width: 80%;
+    max-height: 400px;
+    margin: 10px 0;
+    display: block;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    align-self: flex-start; /* Align to the left for received media */
+    max-width: 250px;
+    max-height: 250px;
+    border-radius: 10px;
+    background-color: #cf202f;
+    justify-self: start;
+}
+
+.new-received-chat-media {
+    max-width: 80%;
+    max-height: 400px;
+    margin: 10px 0;
+    display: block;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    align-self: flex-start; /* Align to the left for received media */
+    max-width: 250px;
+    max-height: 250px;
+    border-radius: 10px;
+    background-color: #cf202f;
+    justify-self: start;
+    padding: 1.5vh 2.5vh;
+    margin: 10px 0;
 }
