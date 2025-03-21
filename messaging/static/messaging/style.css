@@ -95,3 +95,19 @@
     color: white;
     justify-self: end;
 }
+
+.message-time {
+    font-size: 0.8em;  /* Smaller font size */
+    color: #888;  /* Light gray color */
+    margin-top: 5px;
+}
+
+.sent-message-time{
+    font-size: 0.8em;  /* Smaller font size */
+    color: #888;  /* Light gray color */
+    margin-top: 5px;
+    justify-self: end;
+    align-items: flex-end;
+    display: block;  /* Makes span behave like a div */
+    text-align: right;
+}

@@ -169,3 +169,13 @@ button {
         flex-wrap: wrap;
     }
 }
+
+a{
+    color: black;
+    font-weight: 5%;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}

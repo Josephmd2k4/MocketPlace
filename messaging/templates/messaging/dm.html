@@ -3,6 +3,8 @@
   <head>
     {% include "posts/navbar.html" %}
     {% load static %}
+    {% load custom_filters %}
+    {% load humanize %}
     <link rel="stylesheet" href="{% static 'messaging/style.css' %}">
   </head>
   <body>
@@ -19,11 +21,13 @@
                             <div class="sent">
                                 {{ message.content }}
                             </div>
+                            <div class="sent-message-time">{{ message.timestamp|naturaltime }}</div>
                         {% else %}
                             <div class="received">
                                 {{ message.content }}
                             </div>
-                        {% endif %}"
+                            <div class="message-time">{{ message.timestamp|naturaltime }}</div>
+                        {% endif %}
                     </div>
                     {% endfor %}
                 </div>
@@ -75,19 +79,38 @@
         ws.onmessage = function (e) {
             const data = JSON.parse(e.data);
             console.log("Message received:", data);
+        
+            // Create the message container div
             const div = document.createElement("div");
             div.classList.add("message");
-            if (data.username === currentUser) {
-                div.classList.add("sent");
+        
+            // Create the message content div
+            const messageContent = document.createElement("div");
+            messageContent.classList.add(data.username === currentUser ? "sent" : "received");
+            messageContent.innerHTML = data.message;
+            div.appendChild(messageContent);
+        
+            // Check if the timestamp is less than a minute
+            let displayTimestamp = data.timestamp;
+        
+            // Create the timestamp div
+            const timestamp = document.createElement("div");
+            timestamp.classList.add(data.username === currentUser ? "sent-message-time" : "message-time");
+            if (displayTimestamp === "Just Now") {
+                timestamp.innerHTML = displayTimestamp;  // Just the text "Just Now"
             } else {
-                div.classList.add("received");
+                timestamp.innerHTML = displayTimestamp + " ago";  // Append " ago" for other times
             }
-            div.innerHTML = data.message;
+            div.appendChild(timestamp);  // Append timestamp below message
+        
+            // Append the message container div
             messagesContainer.appendChild(div);
+        
+            // Scroll to the bottom if needed
             if (!isUserScrollingUp) {
                 scrollToBottom();
             }
-        };
+        };        
 
 
         document.getElementById("send-message").onclick = function () {
@@ -100,7 +123,9 @@
                     ws.send(JSON.stringify({
                         'message': message,
                         'username': currentUser,
-                        'target_username': targetUser
+                        'target_username': targetUser,
+                        'timestamp': new Date().toISOString(),
+
                     }));
                     console.log("Message sent:", message);
                     messageInput.value = ''; // Clear input
