@@ -73,7 +73,7 @@ def edit_profile(request):
     profile, created = Profile.objects.get_or_create(user=request.user)  # Ensure profile exists
 
     if request.method == "POST":
-        form = ProfileForm(request.POST, instance=profile, user=request.user)
+        form = ProfileForm(request.POST, request.FILES,  instance=request.user.profile, user=request.user)
         if form.is_valid():
             # Save user fields
             request.user.first_name = form.cleaned_data['first_name']
@@ -82,7 +82,10 @@ def edit_profile(request):
             request.user.save()  # Save User model changes
 
             # Save Profile fields
-            form.save()  
+            profile = form.save(commit=False)  # Don't save to DB yet, we need to handle profile_image
+            if form.cleaned_data.get('profile_image'):
+                profile.profile_image = form.cleaned_data['profile_image']
+            profile.save()  # Save Profile model changes
             
             messages.success(request, "Your profile has been updated successfully.")
             return redirect('accounts:profile')  # Redirect to profile page

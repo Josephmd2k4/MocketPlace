@@ -21,10 +21,14 @@ class ProfileForm(forms.ModelForm):
         widget=forms.EmailInput(attrs={'class': 'form-control', 'placeholder': 'Email'}),
         required=True
     )
+    profile_image = forms.ImageField(
+        required=False, 
+        widget=forms.FileInput(attrs={'class': 'form-control'})
+    )
 
     class Meta:
         model = Profile
-        fields = ['first_name', 'last_name', 'email', 'bio', 'year_in_school', 'major']
+        fields = ['first_name', 'last_name', 'email', 'bio', 'year_in_school', 'major', 'profile_image']
         widgets = {
             'bio': forms.Textarea(attrs={'class': 'form-control', 'placeholder': 'Tell us about yourself...'}),
             'year_in_school': forms.Select(choices=[
@@ -56,6 +60,10 @@ class CustomUserCreationForm(UserCreationForm):
 User = get_user_model()
 
 class CustomUserChangeForm(forms.ModelForm):
+    profile_image = forms.ImageField(
+        required=False, 
+        widget=forms.FileInput(attrs={'class': 'form-control'})
+    )
     bio = forms.CharField(
         widget=forms.Textarea(attrs={'class': 'form-control', 'placeholder': 'Tell us about yourself...'}), 
         required=False
@@ -78,7 +86,7 @@ class CustomUserChangeForm(forms.ModelForm):
 
     class Meta:
         model = User
-        fields = ['first_name', 'last_name', 'email', 'bio', 'year_in_school', 'major']
+        fields = ['first_name', 'last_name', 'email', 'bio', 'year_in_school', 'major', 'profile_image']
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
