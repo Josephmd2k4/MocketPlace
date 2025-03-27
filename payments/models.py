@@ -1,24 +1,20 @@
 from django.db import models
 import stripe
+import posts
 
 def Order():
     stripe.Order.create(
     currency="usd",
-    email="jenny.rosen@example.com",
+    email="student@mocs.flsouthern.edu",
     items=[
         {
-        "type": "sku",
-        "parent": "sku_xxxxxxxxxxxxx",
+        "post id": "post.id",
+        "title": "post.title",
+        "price": "post.price"
         },
     ],
     shipping={
-        "name": "Jenny Rosen",
-        "address": {
-        "line1": "1234 Main Street",
-        "city": "San Francisco",
-        "state": "CA",
-        "country": "US",
-        "postal_code": "94111",
-        },
+        "name": "Mocsie Rogers",
+        "housing": "Spivey",
     },
 )
