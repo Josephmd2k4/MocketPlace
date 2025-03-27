@@ -50,6 +50,7 @@ def webhook():
         print(f"Payment succeeded: {payment_intent['id']}")
 
     return jsonify(success=True)
+
 if event['type'] == 'payment_intent.succeeded':
     order_id = intent['metadata']['order_id']
 
