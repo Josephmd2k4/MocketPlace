@@ -39,11 +39,18 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
+    'daphne', 
     'django.contrib.staticfiles',
     'webpush',
     'notifications',
     'accounts.apps.AccountsConfig',
+<<<<<<< HEAD
     'payments'
+=======
+    'channels',
+    'messaging',
+    'django.contrib.humanize',
+>>>>>>> dd6ac2a5342c8ca376b6a5d05e9940de1b3c7f74
 ]
 
 MIDDLEWARE = [
@@ -118,7 +125,7 @@ WEBPUSH_SETTINGS = {
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'America/New_York'
 
 USE_I18N = True
 
@@ -138,3 +145,9 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 MEDIA_URL = "/media/"
 MEDIA_ROOT = os.path.join(BASE_DIR / "posts/media")
+
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "channels.layers.InMemoryChannelLayer"
+    }
+}

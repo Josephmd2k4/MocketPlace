@@ -1,0 +1,244 @@
+body{
+    padding: 0 !important;
+}
+
+.container {
+    max-height: 100%;
+}
+
+/* chat box */
+.chat__item__container {
+    max-width: 120vh;
+    height: 65vh;
+    margin-left: 40vh;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+}
+
+/* div for input and buttons */
+.dmForm {
+    margin-left: 40vh;
+    margin-top: 2vh;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.input-container {
+    position: relative;
+    width: 110vh;
+}
+
+#id_message_send_input {
+    width: 94%;
+    height: 2vh;
+    border-radius: 2vh;
+    border: 1px solid #ccc;
+    background-color: #f9f9f9;
+    padding: 8px 40px 8px 2vh; /* Added right padding for the button */
+    font-size: 16px;
+}
+
+.file-upload-btn {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: #1e419a;
+    color: white;
+    font-size: 18px;
+    font-weight: bold;
+    width: 20px;
+    height: 20px;
+    text-align: center;
+    line-height: 20px;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+.file-upload-btn:hover {
+    background-color: #163577;
+}
+
+#send-message:hover {
+    background-color: #163577;
+}
+
+/* Header of the chat */
+.chat-header {
+    margin-left: 90vh;
+    font-size: 24px;
+    margin-top: 15vh;
+}
+
+/* Display for messages */
+.messages {
+    max-height: 400px;
+    overflow-y: scroll;
+    margin-bottom: 10px;
+    padding: 10px;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+/* Each message block */
+.messages div {
+    margin-bottom: 10px;
+}
+
+#message-input {
+    width: 80%;
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+.message {
+    padding: 5px;
+    color: white;
+    margin-bottom: 10px;
+    background-color: #f9f9f9;
+    border: none;
+    border-radius: 2vh;
+}
+
+
+
+#send-message {
+    padding: 10px 15px;
+    margin-left: 5px;
+    background-color: #1e419a;
+    color: white;
+    border: none;
+    border-radius: 5px;
+}
+
+.received, .sent {
+    border-radius: 2vh;
+    padding: 1vh 2vh;
+    max-width: 50vh; /* Ensures it wraps after 50vh */
+    word-wrap: break-word; 
+    overflow-wrap: break-word;
+    min-height: 4vh; /* Prevents it from being too small */
+}
+
+.received {
+    background-color: #cf202f;
+    justify-self: start;
+}
+
+.sent {
+    background-color: #1e419a;
+    color: white;
+    justify-self: end;
+}
+
+.message-time {
+    font-size: 0.8em;  /* Smaller font size */
+    color: #888;  /* Light gray color */
+    margin-top: 5px;
+}
+
+.sent-message-time{
+    font-size: 0.8em;  /* Smaller font size */
+    color: #888;  /* Light gray color */
+    margin-top: 5px;
+    justify-self: end;
+    align-items: flex-end;
+    display: block;  /* Makes span behave like a div */
+    text-align: right;
+}
+
+.chat-media {
+    max-width: 250px;
+    max-height: 250px;
+    border-radius: 10px;
+}
+
+/* Sent Message Media */
+.sent-chat-media {
+    max-width: 80% ;
+    max-height: 400px ;
+    display: block ;
+    border-radius: 8px ;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1) ;
+    align-self: flex-end ; /* Align to the right for sent media */
+    max-width: 250px ;
+    max-height: 250px ;
+    border-radius: 10px ;
+    background-color: #1e419a;
+    color: white;
+    justify-self: end;
+    margin: 10px 0;
+}
+
+.new-sent-chat-media {
+    max-width: 80% ;
+    max-height: 400px ;
+    display: block ;
+    border-radius: 8px ;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1) ;
+    align-self: flex-end ; /* Align to the right for sent media */
+    max-width: 250px ;
+    max-height: 250px ;
+    border-radius: 10px ;
+    background-color: #1e419a;
+    color: white;
+    justify-self: end;
+    padding: 1.5vh 2.5vh;
+    margin: 10px 0;
+}
+
+/* Received Message Media */
+.received-chat-media {
+    max-width: 80%;
+    max-height: 400px;
+    margin: 10px 0;
+    display: block;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    align-self: flex-start; /* Align to the left for received media */
+    max-width: 250px;
+    max-height: 250px;
+    border-radius: 10px;
+    background-color: #cf202f;
+    justify-self: start;
+}
+
+.new-received-chat-media {
+    max-width: 80%;
+    max-height: 400px;
+    margin: 10px 0;
+    display: block;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    align-self: flex-start; /* Align to the left for received media */
+    max-width: 250px;
+    max-height: 250px;
+    border-radius: 10px;
+    background-color: #cf202f;
+    justify-self: start;
+    padding: 1.5vh 2.5vh;
+    margin: 10px 0;
+}
+
+/* Profile Image Style */
+.profile-picture {
+    width: 150px; /* Adjust size */
+    height: 150px; /* Adjust size */
+    object-fit: cover; /* Ensures correct cropping */
+    border-radius: 50%; /* Makes it circular */
+    margin: 0 auto; /* Center if needed */
+}
+
+/* Main Content Styling */
+.main-content {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    text-align: center;
+    padding: 20px;
+}

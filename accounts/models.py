@@ -17,6 +17,7 @@ class Profile(models.Model):
         null=True
     )
     major = models.CharField(max_length=100, blank=True, null=True)
+    profile_image = models.ImageField(upload_to="accounts/images/", blank=True, null=True)
 
     def __str__(self):
         return self.user.username

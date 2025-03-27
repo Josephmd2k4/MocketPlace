@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html>
+<head>
+    {% include "posts/navbar.html" %}
+    {% load static %}
+    {% load custom_filters %}
+    {% load humanize %}
+    <link rel="stylesheet" href="{% static 'messaging/style.css' %}">
+</head>
+<body>
+    <div class="container">
+        <h2 class="chat-header">{{ target_user }}</h2>
+        
+        <div class="chat__item__container" id="id_chat_item_container" style="overflow-y: auto; display: flex; flex-direction: column-reverse;">
+            <div id="id_messages_container">
+                {% for message in messages %}
+                    <div class="message">
+                        {% if message.sender.username == request.user.username %}
+                            <div class="sent">
+                                {% if message.message != '' %}
+                                    {{ message.content }}
+                                {% endif %}
+                                {% if message.media %}
+                                    {% if message.media|is_image %}
+                                        <img src="{{ message.media }}" alt="Sent image" class="sent-chat-media">
+                                    {% elif message.media|is_video %}
+                                        <video controls class="sent-chat-media">
+                                            <source src="{{ message.media }}" type="video/mp4">
+                                            Your browser does not support the video tag.
+                                        </video>
+                                    {% endif %}
+                                {% endif %}
+                            </div>
+                            <div class="sent-message-time">{{ message.timestamp|naturaltime }}</div>
+                        {% else %}
+                            <div class="received">
+                                {% if message.content != " " %}
+                                    {{ message.content }}
+                                {% endif %}
+                                {% if message.media %}
+                                    {% if message.media|is_image %}
+                                        <img src="{{ message.media }}" alt="Received image" class="received-chat-media">
+                                    {% elif message.media|is_video %}
+                                        <video controls class="received-chat-media">
+                                            <source src="{{ message.media }}" type="video/mp4">
+                                            Your browser does not support the video tag.
+                                        </video>
+                                    {% endif %}
+                                {% endif %}
+                            </div>
+                            <div class="message-time">{{ message.timestamp|naturaltime }}</div>
+                        {% endif %}
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <form id="message-form" method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="dmForm">
+                <div class="input-container">
+                    <input type="text" id="id_message_send_input" name="message" placeholder="Type a message..." />
+                    <label for="id_media_upload" class="file-upload-btn">+</label>
+                </div>  
+                <input type="file" id="id_media_upload" name="media" accept="image/*,video/*" hidden>   
+                <button type="submit" id="send-message">Send</button>
+            </div>
+        </form>        
+    </div>
+
+    <script>
+        const currentUser = "{{ request.user.username }}";  // Current logged-in user
+        const targetUser = "{{ target_user }}";  // Target user for chat
+        const ws = new WebSocket(
+            (window.location.protocol === "https:" ? "wss://" : "ws://") +
+            window.location.host +
+            "/ws/chat/" + currentUser + "/" + targetUser + "/"
+        );
+
+        ws.onopen = function () {
+            console.log("Connected to WebSocket.");
+        };
+
+        ws.onclose = function () {
+            console.log("WebSocket connection closed.");
+        };
+
+        ws.onerror = function (error) {
+            console.error("WebSocket error:", error);
+        };
+
+        const chatContainer = document.getElementById("id_chat_item_container");
+        const messagesContainer = document.getElementById("id_messages_container");
+
+        window.onload = function () {
+            chatContainer.scrollTop = 0;
+        };
+
+        let isUserScrollingUp = false;
+
+        chatContainer.addEventListener("scroll", function () {
+            isUserScrollingUp = chatContainer.scrollTop < chatContainer.scrollHeight - chatContainer.clientHeight - 100;
+        });
+
+        ws.onmessage = function (e) {
+            const data = JSON.parse(e.data);
+            console.log("Websocket Received message data:", data);  // Debug log for received data
+        
+            const div = document.createElement("div");
+        
+            if(data.message != ''){
+                div.classList.add("message");
+                const messageContent = document.createElement("div");
+                messageContent.classList.add(data.username === currentUser ? "sent" : "received");
+                messageContent.innerHTML = data.message;
+                div.appendChild(messageContent);
+            }
+        
+            if (data.media) {
+                let mediaElement;
+                console.log("Displaying media URL:", data.media);  // Debug log for media URL
+                if (data.media.match(/\.(jpeg|jpg|png|gif)$/)) {
+                    mediaElement = document.createElement("img");
+                    mediaElement.src = data.media;
+                    mediaElement.classList.add(data.username === currentUser ? "new-sent-chat-media" : "new-received-chat-media");
+                } else if (data.media.match(/\.(mp4|webm|ogg)$/)) {
+                    mediaElement = document.createElement("video");
+                    mediaElement.src = data.media;
+                    mediaElement.controls = true;
+                    mediaElement.classList.add(data.username === currentUser ? "new-sent-chat-media" : "new-received-chat-media");
+                }
+                div.appendChild(mediaElement);
+            }
+        
+            const timestamp = document.createElement("div");
+            timestamp.classList.add(data.username === currentUser ? "sent-message-time" : "message-time");
+            timestamp.innerHTML = data.timestamp === "Just Now" ? "Just Now" : data.timestamp + " ago";
+            div.appendChild(timestamp);
+        
+            messagesContainer.appendChild(div);
+            if (data.media_url) {
+                const images = document.querySelectorAll('img.chat-media');
+                images.forEach(img => img.src = img.src); // Force the browser to reload images
+                window.location.reload(true);  // Hard reload
+            }
+        
+            if (!isUserScrollingUp) {
+                scrollToBottom();
+            }
+        };
+
+        // Prevent the page from reloading when submitting the form
+        document.getElementById("message-form").addEventListener("submit", async function (e) {
+            
+            const messageInput = document.getElementById("id_message_send_input");
+            const mediaInput = document.getElementById("id_media_upload");
+            const message = messageInput.value.trim();
+            let mediaUrl = null;
+
+            e.preventDefault()
+        
+            // Get the CSRF token from the page's cookie or hidden input
+            const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+        
+            // Handle file upload if there's a file selected
+            if (mediaInput.files.length > 0) {
+                const file = mediaInput.files[0];
+                const formData = new FormData();
+                formData.append("file", file);
+        
+                try {
+                    const response = await fetch("/messaging/upload/", {
+                        method: "POST",
+                        body: formData,
+                        headers: {
+                            'X-CSRFToken': csrfToken  // Add the CSRF token to the request headers
+                        }
+                    });
+                    const data = await response.json();
+                    mediaUrl = data.file_url;  // Get uploaded file URL
+                } catch (error) {
+                    console.error("Error uploading media:", error);
+                    return;
+                }
+            }
+        
+            if (message !== "" || mediaUrl) {
+                try {
+                    // Send message via WebSocket
+                    ws.send(JSON.stringify({
+                        "message": message,
+                        "username": currentUser,
+                        "target_username": targetUser,
+                        "timestamp": new Date().toISOString(),
+                        "media_url": mediaUrl  // Send media URL only if available
+                    }));
+                    console.log("Message sent:", message, mediaUrl);   
+                    // Clear inputs after sending the message
+                    messageInput.value = '';
+                    mediaInput.value = '';
+                } catch (error) {
+                    console.error("Failed to send message:", error);
+                }
+            } else {
+                console.log("Message is empty, not sending.");
+            }
+        });
+        
+        // Send message on Enter key
+        document.getElementById("id_message_send_input").onkeyup = function (e) {
+            if (e.key === "Enter") {
+                document.getElementById("send-message").click();
+            }
+        };
+    </script>
+</body>
+{% include "posts/footer.html" %}
+</html>

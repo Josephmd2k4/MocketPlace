@@ -33,6 +33,9 @@
                     {% if unread_notifications_count > 0 %}
                         <span class="notification-badge">{{ unread_notifications_count }}</span>
                     {% endif %}
+                    {% if unread_notifications_count == 0 %}
+                        <span class="notification-badge">0</span>
+                    {% endif %}
                 </li>
             </ul>
         {% else %}
@@ -53,6 +56,7 @@
                             {% if unread_notifications_count > 0 %}
                                 <span class="notification-circle"></span>
                             {% endif %}
+                            
                         </a>
                     </li>
                 {% else %}

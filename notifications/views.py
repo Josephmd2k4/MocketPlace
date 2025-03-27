@@ -8,18 +8,19 @@ from django.contrib.contenttypes.models import ContentType
 from posts.models import Post
 from django.contrib.auth.models import User
 from django.core.paginator import Paginator
+from messaging.models import Message
 
 @login_required
 @require_POST
 def mark_notification_read(request, notification_id):
     try:
-        notification = Notification.objects.get(
-            id=notification_id,
-            recipient=request.user
-        )
+        notification = get_object_or_404(Notification, id=notification_id, recipient=request.user)
         notification.is_read = True
         notification.save()
-        return redirect(request.META.get('HTTP_REFERER', 'notifications:list'))  
+
+        # Return JSON response indicating success
+        return redirect('notifications:notifications_list')
+
     except Notification.DoesNotExist:
         return JsonResponse(
             {'success': False, 'error': 'Notification not found'},
@@ -36,37 +37,40 @@ def mark_all_read(request):
     except Exception as e:
         return JsonResponse({'status': 'error', 'message': str(e)})
 
-@login_required
-def send_dm_notification(request, recipient_id):
-    if request.method == 'POST':
-        try:
-            recipient = User.objects.get(id=recipient_id)
-            
-            # Create notification record
+
+from django.db import transaction
+
+def send_dm_notification(sender_username, receiver_username, message_id):
+    try:
+        with transaction.atomic():  # Ensure atomic transaction
+            sender = User.objects.get(username=sender_username)
+            receiver = User.objects.get(username=receiver_username)
+
             notification = Notification.objects.create(
-                recipient=recipient,
-                sender=request.user,
+                recipient=receiver,
+                sender=sender,  
                 notification_type='DM',
-                title=request.POST.get('subject'),
-                message=request.POST.get('message'),
-                is_read=False  # Initialize attribute
+                title=f'New Message from {sender_username}',
+                object_id=message_id,
+                is_read=False  
             )
-            
+
             # Prepare payload for WebPush
             payload = {
-                'head': f'New Message from {request.user.username}',
-                'body': request.POST.get('message'),
-                'icon': 'your-icon-url', # TODO ADD USER ICONS
-                'url': f'/messages/{notification.id}/'
+                'head': 'New DM',
+                'body': f'{sender.username} has sent you a message',
+                'icon': 'your-icon-url',
             }
 
             # Send WebPush notification
-            # send_user_notification(user=recipient, payload=payload, ttl=1000)
-            send_dm_notification(request, recipient_id)
-            
-            return redirect('inbox') and render(request, 'notifications/send-dm/<int:recipient_id>/', {'recipient_id': recipient_id})
-        except Exception as e:
-            return JsonResponse({'status': 'error', 'message': str(e)})
+            send_user_notification(user=receiver, payload=payload, ttl=1000)
+
+            return JsonResponse({'status': 'success'})
+
+    except Exception as e:
+        print(f"Error creating notification: {e}")
+        return JsonResponse({'status': 'error', 'message': str(e)})
+
 
 def send_post_notification(user, post_id):
     try:
@@ -81,7 +85,7 @@ def send_post_notification(user, post_id):
                 sender=user,  # The sender is now the user who created the post
                 notification_type='POST',
                 title=f'New Post: {post.title[:50]}',
-                message=f'{user.username} has created a new post',
+                message_text=f'{user.username} has created a new post',
                 content_type=ContentType.objects.get_for_model(post),
                 object_id=post.id,
                 is_read=False  # Initialize is_read attribute
@@ -143,6 +147,7 @@ def buy_post(request, post_id):
         # Create the notification
         Notification.objects.create(
             recipient=post.user,  
+            notification_type='OFFER',
             title=message,
             sender=request.user
         )
