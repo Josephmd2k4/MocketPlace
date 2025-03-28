@@ -9,7 +9,6 @@ li {
 body {
     font-family: Arial, sans-serif;
     line-height: 1.6;
-    padding-bottom: 60px;
     justify-content: space-between;
 } 
 
@@ -186,7 +185,7 @@ footer {
     margin-right: 5vh;
     grid-template-columns: repeat(3, 1fr);
     gap: 1.5vh;
-    
+    margin-bottom: 7vh;
 }
 
 .post {
