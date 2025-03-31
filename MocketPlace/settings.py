@@ -12,7 +12,17 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 
 import os
 from pathlib import Path
-import os
+import paypalrestsdk
+
+PAYPAL_CLIENT_ID = "your-client-id"
+PAYPAL_CLIENT_SECRET = "your-client-secret"
+PAYPAL_MODE = "sandbox"  # Change to "live" for production
+
+paypalrestsdk.configure({
+    "mode": PAYPAL_MODE,  # sandbox or live
+    "client_id": PAYPAL_CLIENT_ID,
+    "client_secret": PAYPAL_CLIENT_SECRET
+})
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -44,13 +54,10 @@ INSTALLED_APPS = [
     'webpush',
     'notifications',
     'accounts.apps.AccountsConfig',
-<<<<<<< HEAD
     'payments'
-=======
     'channels',
     'messaging',
     'django.contrib.humanize',
->>>>>>> dd6ac2a5342c8ca376b6a5d05e9940de1b3c7f74
 ]
 
 MIDDLEWARE = [
