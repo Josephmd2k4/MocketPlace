@@ -1,7 +1,7 @@
 {% include "posts/navbar.html" %}
 
 {% load static %}
-    <link rel="stylesheet" href="{% static 'posts/style.css' %}">
+<link rel="stylesheet" href="{% static 'posts/style.css' %}">
 
 {% block content %}
     <div class="listings">
@@ -9,10 +9,13 @@
         <form method="post" enctype="multipart/form-data" id="createListingForm">
             {% csrf_token %}
             {{ form.as_p }} 
+            
+            <label for="id_files">Upload Images/Videos:</label>
+            <input type="file" name="files" id="id_files" multiple>  
+
             <button type="submit">Post</button>
-        </div>
-    </form>
+        </form>
+    </div>
 {% endblock %}
 
 {% include "posts/footer.html" %}
-

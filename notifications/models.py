@@ -3,6 +3,7 @@ from django.contrib.auth.models import User
 from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.contenttypes.models import ContentType
 from messaging.models import Message
+from django.urls import reverse
 
 class Notification(models.Model):
     recipient = models.ForeignKey(User, on_delete=models.CASCADE, related_name='notifications')
@@ -22,8 +23,18 @@ class Notification(models.Model):
     location = models.CharField(max_length=255, null=True, blank=True)  # For pickup locations
     scheduled_time = models.DateTimeField(null=True, blank=True)  # For pickup scheduling
 
+    def get_absolute_url(self):
+        # This function should return the URL of the post or resource related to the notification
+        if self.notification_type == 'POST':
+            return reverse('post_detail', args=[self.object_id])
+        elif self.notification_type == 'COMMENT':
+            return reverse('post_detail', args=[self.object_id])
+        return '#'
+    
     def __str__(self):
         return self.title
+    
+    
     
     class Meta:
         ordering = ['-created_at']

@@ -429,3 +429,33 @@ a:hover {
     width: 50%;
     text-align: center;
 }
+
+.carousel-inner .carousel-item img {
+    max-width: 100%;    /* Ensure images don't overflow their container */
+    max-height: 400px;  /* Set a maximum height for the images */
+    object-fit: contain;  /* Keep the aspect ratio of the images */
+    margin: 0 auto;      /* Center the images horizontally */
+}
+
+.carousel-control-prev-icon, .carousel-control-next-icon {
+    filter: brightness(0) saturate(100%) invert(38%) sepia(72%) saturate(4454%) hue-rotate(180deg) brightness(104%) contrast(100%); /* Change the arrow icon color */
+}
+
+.carousel-control-prev:hover, .carousel-control-next:hover {
+    background-color: rgba(0, 0, 0, 0.7); /* Darker shade on hover */
+}
+
+.carousel-control-prev-icon:hover, .carousel-control-next-icon:hover {
+    filter: brightness(0) saturate(100%) invert(38%) sepia(72%) saturate(4454%) hue-rotate(180deg) brightness(104%) contrast(100%); /* Adjust icon color on hover */
+}
+
+.d-block.w-100 {
+    max-width: 100%;         /* Ensure the video does not overflow horizontally */
+    max-height: 80vh;        /* Limit the height of the video to 80% of the viewport height */
+    object-fit: contain;     /* This will make sure the aspect ratio of the video is preserved */
+    margin: auto;            /* Centers the video horizontally */
+}
+
+.homeVideo{
+    height: 27vh;
+}
