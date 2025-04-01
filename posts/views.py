@@ -6,6 +6,7 @@ from notifications.views import mark_notification_read, mark_all_read, send_dm_n
 from notifications.models import Notification
 from .models import Media
 from django.urls import reverse
+from django.db.models import Q
 
 
 def home(request):
@@ -14,7 +15,11 @@ def home(request):
     success = request.GET.get('success')
 
     if query:
-        posts = Post.objects.filter(title__icontains=query).prefetch_related("comments").order_by('-created_at')
+        posts = Post.objects.filter(
+            Q(title__icontains=query) |  
+            Q(user__username__icontains=query)  
+        )
+
     else:
         posts = Post.objects.all().prefetch_related("comments").order_by('-created_at')
 

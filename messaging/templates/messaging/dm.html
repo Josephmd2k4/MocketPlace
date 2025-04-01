@@ -9,7 +9,14 @@
 </head>
 <body>
     <div class="container">
-        <h2 class="chat-header">{{ target_user }}</h2>
+        <h2 class="chat-header">
+            {% if target_user.profile.profile_image and target_user.profile.profile_image.name %}
+                <img src="{{ target_user.profile.profile_image.url }}" alt="Profile Image" class="profile-pic">
+            {% else %}
+                <img src="{% static 'accounts/images/default.jpg' %}" alt="Default Profile Picture" class="profile-pic">
+            {% endif %}
+            {{ target_user.username }}
+        </h2>
         
         <div class="chat__item__container" id="id_chat_item_container" style="overflow-y: auto; display: flex; flex-direction: column-reverse;">
             <div id="id_messages_container">
