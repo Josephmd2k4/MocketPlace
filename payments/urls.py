@@ -1,11 +1,7 @@
-from django.urls import re_path
-from django.http import HttpResponse
-from django.core.handlers.wsgi import WSGIRequest
-from MocketPlace.payments.flask.app import flask
-from werkzeug.wsgi import DispatcherMiddleware
-from django.core.wsgi import get_wsgi_application
+from django.urls import path
+from .views import paypal_webhook, payout_status_view
 
-# Create a combined WSGI application
-application = DispatcherMiddleware(get_wsgi_application(), {
-    '/flask': flask  # all routes under /flask/ go to Flask
-})
+urlpatterns = [
+    path("webhook/paypal/", paypal_webhook, name="paypal_webhook"),
+    path("payouts/status/", payout_status_view, name="payout_status")
+]
