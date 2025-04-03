@@ -1,0 +1,81 @@
+{% include "posts/navbar.html" %}
+{% load webpush_notifications %} 
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Transaction Status</title>
+    <link rel="stylesheet" href="{% static 'css/payStyles.css' %}">
+</head>
+<body>
+    <div class="payout-container">
+        <div class="payout-card">
+            <div class="payout-header">
+                <h1>Payout Status</h1>
+            </div>
+            
+            {% if payouts %}
+                <table class="payout-table">
+                    <thead>
+                        <tr>
+                            <th>Transaction ID</th>
+                            <th>Email</th>
+                            <th>Amount</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for payout in payouts %}
+                            <tr>
+                                <td class="payout-id">{{ payout.payout_id }}</td>
+                                <td>{{ payout.email }}</td>
+                                <td class="payout-amount">${{ payout.amount }}</td>
+                                <td>
+                                    {% if payout.status == "completed" %}
+                                        <span class="payout-status status-completed">Completed</span>
+                                    {% elif payout.status == "pending" %}
+                                        <span class="payout-status status-pending">Pending</span>
+                                    {% else %}
+                                        <span class="payout-status status-failed">Failed</span>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            {% else %}
+                <div class="no-payouts">
+                    <p>No transactions found</p>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+    <div class="payout-filters">
+        <form method="get" action="" class="filter-form">
+            <div class="form-group">
+                <label for="status">Transactions:</label>
+                <select name="status" id="status">
+                    <option value="">All</option>
+                    <option value="SUCCESS" {% if status_filter == 'SUCCESS' %}selected{% endif %}>Completed</option>
+                    <option value="PENDING" {% if status_filter == 'PENDING' %}selected{% endif %}>Pending</option>
+                    <option value="FAILED" {% if status_filter == 'FAILED' %}selected{% endif %}>Failed</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label for="days">Time period:</label>
+                <select name="days" id="days">
+                    <option value="7" {% if days == 7 %}selected{% endif %}>Last 7 days</option>
+                    <option value="30" {% if days == 30 %}selected{% endif %}>Last 30 days</option>
+                    <option value="90" {% if days == 90 %}selected{% endif %}>Last 90 days</option>
+                </select>
+            </div>
+            
+            <button type="submit" class="filter-btn">Apply Filters</button>
+        </form>
+    </div>
+</body>
+</html>

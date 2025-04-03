@@ -13,15 +13,13 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 import os
 from pathlib import Path
 import paypalrestsdk
-
-PAYPAL_CLIENT_ID = "your-client-id"
-PAYPAL_CLIENT_SECRET = "your-client-secret"
-PAYPAL_MODE = "sandbox"  # Change to "live" for production
+from django.conf import settings
+from datetime import datetime
 
 paypalrestsdk.configure({
-    "mode": PAYPAL_MODE,  # sandbox or live
-    "client_id": PAYPAL_CLIENT_ID,
-    "client_secret": PAYPAL_CLIENT_SECRET
+    "mode": 'sandbox',  # sandbox or live
+    "client_id": 'AR-8QjzWUOHJdpjWTMqTFgtvExqk42tC2wPZLNp-qFHGHqjV11VAVEFzqe_HbvyzituEcGSWxWtok6sD',
+    "client_secret": 'EI0eUZjgUu5lfgCHzWuHswCylR2ZSimbAhfzOwV4ed7tdhlVRMWGcuZ4CMajmpkMajQwis6iI3Ov4Uao'
 })
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -143,7 +141,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
 STATIC_URL = '/static/'
-STATICFILES_DIRS = [BASE_DIR / "posts/static", "notifications/static"]
+STATICFILES_DIRS = [BASE_DIR / "posts/static", "notifications/static", "payments/static"]
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field

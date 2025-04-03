@@ -1,7 +1,7 @@
 from django.urls import path
-from .views import paypal_webhook, payout_status_view
+from .views import transact_status_view, create_new_payout
 
 urlpatterns = [
-    path("webhook/paypal/", paypal_webhook, name="paypal_webhook"),
-    path("payouts/status/", payout_status_view, name="payout_status")
+    path("checkout/", create_new_payout, name="paypal_checkout"),
+    path("status/", transact_status_view, name="transaction_status")
 ]

@@ -2,10 +2,12 @@
 *.pyc
 __pycache__/
 .env
+django
 
 # Ignore migration caches
 posts/migrations/__pycache__/
 notifications/migrations/__pycache__/
+payments/migrations/__pycache__
 
 # Ignore sqlite
 db.sqlite3
