@@ -35,9 +35,8 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 20px 0;
     border-bottom: 1px solid var(--gray);
-    margin-bottom: 30px;
+    margin-bottom: 10px;
   }
   
   .logo {
@@ -161,6 +160,12 @@
     margin-bottom: 30px;
   }
   
+  a:link, a:visited{
+    background-color: var(--light-gray);
+    color: var(--dark-gray);
+    line-height: 1.6;
+  }
+
   .payment-method {
     border: 2px solid var(--gray);
     border-radius: 6px;
@@ -266,7 +271,7 @@
   }
   
   footer {
-    margin-top: 40px;
+    margin-top: 20px;
     padding: 20px 0;
     text-align: center;
     font-size: 14px;
@@ -277,7 +282,7 @@
     margin-bottom: 15px;
   }
   
-  .footer-links a {
+  .footer-links a1 {
     color: var(--blue);
     text-decoration: none;
     margin: 0 10px;

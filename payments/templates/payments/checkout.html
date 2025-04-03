@@ -1,51 +1,48 @@
 {% include "posts/navbar.html" %}
 {% load webpush_notifications %} 
 {% load static %}
+{% load bootstrap_icons %}
 
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>PayPal Checkout</title>
   <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+
+  <div class="secure-badge">
+    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24">
+      <path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 10.99h7c-.53 4.12-3.28 7.79-7 8.94V12H5V6.3l7-3.11v8.8z"/>
+    </svg>
+    Secure Checkout
+  </div>
+  
 </head>
+
 <body>
   <div class="container">
-    <header>
-      <div class="logo">
-        <span>Pay</span><span>Pal</span>
-      </div>
-      <div class="secure-badge">
-        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24">
-          <path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 10.99h7c-.53 4.12-3.28 7.79-7 8.94V12H5V6.3l7-3.11v8.8z"/>
-        </svg>
-        Secure Checkout
-      </div>
-    </header>
-    
     <main>
       <div class="checkout-form">
         <h2>Payment Information</h2>
         
         <div class="payment-methods">
           <div class="payment-method active">
-            <img src="/api/placeholder/80/40" alt="Credit Card" />
+            {% bs_icon 'credit-card-fill' %}
             <p>Credit Card</p>
           </div>
           <div class="payment-method">
-            <img src="/api/placeholder/80/40" alt="PayPal" />
-            <p>PayPal</p>
+            {% bs_icon 'paypal' %}
+            <a href="{% url 'payout_form' %}">Paypal</a>
           </div>
           <div class="payment-method">
-            <img src="/api/placeholder/80/40" alt="Apple Pay" />
-            <p>Apple Pay</p>
+            {% bs_icon 'apple' %}
+            <a href="https://www.icloud.com/">Apple Pay</a>
           </div>
         </div>
         
         <div class="input-group">
           <label for="cardName">Name on Card</label>
-          <input type="text" id="cardName" placeholder="John Doe" />
+          <input type="text" id="cardName" placeholder="Mocsie Rogers" />
         </div>
         
         <div class="input-group">
@@ -63,91 +60,70 @@
             <input type="text" id="cardCvv" placeholder="123" />
           </div>
         </div>
-        
-        <div class="section-divider"></div>
-        
-        <h2>Billing Address</h2>
-        
-        <div class="input-group">
-          <label for="country">Country</label>
-          <select id="country">
-            <option value="us">United States</option>
-            <option value="ca">Canada</option>
-            <option value="uk">United Kingdom</option>
-            <option value="au">Australia</option>
-          </select>
-        </div>
-        
-        <div class="input-group">
-          <label for="address">Address</label>
-          <input type="text" id="address" placeholder="123 Main St" />
-        </div>
-        
-        <div class="input-group">
-          <label for="city">City</label>
-          <input type="text" id="city" placeholder="New York" />
-        </div>
-        
-        <div class="card-inputs">
-          <div class="input-group">
-            <label for="state">State</label>
-            <select id="state">
-              <option value="ny">New York</option>
-              <option value="ca">California</option>
-              <option value="tx">Texas</option>
-              <option value="fl">Florida</option>
-            </select>
-          </div>
-          <div class="input-group">
-            <label for="zipCode">Zip Code</label>
-            <input type="text" id="zipCode" placeholder="10001" />
-          </div>
-        </div>
-      </div>
       
       <div class="order-summary">
         <h2>Order Summary</h2>
+        <p><strong>Order Number:</strong> <span id="order-number"></span></p>
         
         <div class="order-item">
           <div class="item-image">🛍️</div>
           <div class="item-details">
-            <div class="item-name">Premium Package</div>
-            <div class="item-description">1-month subscription</div>
+            <div class="item-name">Item</div>
+            <div class="item-description">Item Description</div>
           </div>
-          <div class="item-price">$29.99</div>
+          <div class="item-price">$<span id="item-price">29.99</span></div>
         </div>
         
         <div class="order-totals">
           <div class="total-row">
             <div>Subtotal</div>
-            <div>$29.99</div>
+            <div>$<span id="subtotal">29.99</span></div>
           </div>
           <div class="total-row">
-            <div>Tax</div>
-            <div>$2.40</div>
+            <div>Service Fee</div>
+            <div>$<span id="tax-amount">5.00</span></div>
           </div>
           <div class="total-row final">
             <div>Total</div>
-            <div>$32.39</div>
+            <div>$<span id="total-price">34.99</span></div>
           </div>
         </div>
         
         <button class="button button-primary">Complete Payment</button>
         
         <div class="payment-info">
-          <p>You will be charged $32.39 for this purchase. By clicking "Complete Payment", you agree to our Terms of Service.</p>
+          <p4>By clicking Complete, you agree to our <a href="https://www.paypalobjects.com/marketing/ua/pdf/US/en/privacy-full-021325.pdf">Terms</a>.</p4>
         </div>
+
+        <div class="order-details">
+          <p><strong>Next Steps:</strong></p>
+          <ul>
+            <li>Contact the seller through messaging.</li>
+            <li>Agree on a <em>safe</em> meetup location.</li>
+            <li>Confirm item condition before payment.</li>
+          </ul>
+        </div>
+        
       </div>
     </main>
     
     <footer>
-      <div class="footer-links">
-        <a href="#">Privacy Policy</a>
-        <a href="#">Terms of Service</a>
-        <a href="#">Contact Support</a>
-      </div>
-      <div>© 2025 PayPal. All rights reserved.</div>
-    </footer>
-  </div>
+    <div class="footer-links">
+      <a1 href="https://www.paypal.com/us/legalhub/paypal/privacy-full">Privacy Policy</a1>
+      <a1 href="https://www.paypalobjects.com/marketing/ua/pdf/US/en/privacy-full-021325.pdf">Terms of Service</a1>
+      <a1 href="https://www.paypal.com/us/cshelp/contact-us">Contact Support</a1>
+    </div>
+    <div>© 2025 PayPal. All rights reserved.</div>
+  </footer>
+</div>
+
+<script>
+function generateOrderNumber() {
+  let orderNum = "ORD-" + Math.floor(100000 + Math.random() * 900000);
+  document.getElementById("order-number").textContent = orderNum;
+}
+window.onload = generateOrderNumber;
+</script>
+
 </body>
 </html>

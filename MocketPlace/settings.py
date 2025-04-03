@@ -56,6 +56,7 @@ INSTALLED_APPS = [
     'channels',
     'messaging',
     'django.contrib.humanize',
+    'django_bootstrap_icons',
 ]
 
 MIDDLEWARE = [

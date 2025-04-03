@@ -1,7 +1,9 @@
 from django.urls import path
-from .views import transact_status_view, create_new_payout
+from . import views
 
 urlpatterns = [
-    path("checkout/", create_new_payout, name="paypal_checkout"),
-    path("status/", transact_status_view, name="transaction_status")
+    path("checkout/", views.create_new_payout, name="general_checkout"),
+    path("status/", views.transact_status_view, name="transaction_status"),
+    path("paypal/", views.paypal_webhook, name="paypal_webhook"),
+    path("form/", views.payout_form, name="payout_form"),
 ]
