@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     'channels',
     'messaging',
     'django.contrib.humanize',
+    'friends',
 ]
 
 MIDDLEWARE = [

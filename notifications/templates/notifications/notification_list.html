@@ -26,7 +26,35 @@
 
                 <div class="notifications-list">
                     {% for notification in notifications %}
-                        {% if notification.notification_type == 'DM' or notification.notification_type == 'OFFER' %}
+                        {% if notification.notification_type == 'FRIEND_REQUEST' %}
+                            <div class="notification-item {% if not notification.is_read %}unread{% endif %}" 
+                            data-notification-id="{{ notification.id }}">
+                            <div class="notification-content">
+                                <div class="notification-icon">
+                                    <span class="icon default-icon">🤝</span>
+                                </div>
+                                <div class="notification-details">
+                                    <h3 class="notification-title">
+                                        {{ notification.title }}
+                                    </h3>
+                                    <div class="notification-meta">
+                                        <span class="sender">From: {{ notification.sender.username }}</span>
+                                        <span class="time">{{ notification.created_at|timesince }} ago</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="notification-actions">
+                                <form method="post" action="{% url 'friends:accept_friend_request' notification.friend_request_id %}">
+                                    {% csrf_token %}
+                                    <button type="submit" class="accept-btn">Accept</button>
+                                </form>
+                                <form method="post" action="{% url 'friends:reject_friend_request' notification.friend_request_id %}">
+                                    {% csrf_token %}
+                                    <button type="submit" class="reject-btn">Reject</button>
+                                </form>
+                            </div>
+                        </div>
+                        {% elif notification.notification_type == 'DM' or notification.notification_type == 'OFFER' %}
                             <a href="{% url 'messaging:dm' target_user=notification.sender.username %}">
                                 <div class="notification-item {% if not notification.is_read %}unread{% endif %}" 
                                     data-notification-id="{{ notification.id }}">

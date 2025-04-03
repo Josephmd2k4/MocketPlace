@@ -179,3 +179,23 @@ a{
 a:hover {
     text-decoration: underline;
 }
+
+.accept-btn {
+    background-color: #4CAF50; /* Green */
+    color: white;
+    padding: 10px;
+    border: none;
+    cursor: pointer;
+}
+
+.reject-btn {
+    background-color: #f44336; /* Red */
+    color: white;
+    padding: 10px;
+    border: none;
+    cursor: pointer;
+}
+
+.accept-btn:hover, .reject-btn:hover {
+    opacity: 0.8;
+}
