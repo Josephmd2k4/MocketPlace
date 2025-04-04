@@ -2,13 +2,16 @@ from .forms import PostForm
 from .models import Post, Comment
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
-from notifications.views import mark_notification_read, mark_all_read, send_dm_notification, send_post_notification
+from notifications.views import mark_notification_read, mark_all_read, send_dm_notification, send_post_notification, send_comment_notification
 from notifications.models import Notification
+from .models import Media
+from django.urls import reverse
+
 
 def home(request):
     query = request.GET.get('q')
     open_modal = request.GET.get('open_modal')
-    success = request.GET.get('success')  
+    success = request.GET.get('success')
 
     if query:
         posts = Post.objects.filter(title__icontains=query).prefetch_related("comments").order_by('-created_at')
@@ -26,12 +29,19 @@ def home(request):
 @login_required
 def createPost(request):
     if request.method == 'POST':
-        form = PostForm(request.POST, request.FILES)
+        form = PostForm(request.POST)
+        files = request.FILES.getlist('files')  # Fetch multiple files
+
         if form.is_valid():
             post = form.save(commit=False)
             post.user = request.user  
             post.save()
-            return redirect('/')  
+
+            # Save multiple media files
+            for file in files:
+                Media.objects.create(post=post, file=file)
+
+            return redirect('/')  # Redirect to homepage or post detail
     else:
         form = PostForm()
 
@@ -39,12 +49,16 @@ def createPost(request):
 
 @login_required
 def add_comment(request, post_id):
-    post = get_object_or_404(Post, id=post_id)
-    
-    if request.method == "POST":
-        content = request.POST.get("content")
-        if content:
-            Comment.objects.create(post=post, user=request.user, content=content)
+    if request.method == 'POST':
+        content = request.POST.get('content')
+        post = get_object_or_404(Post, id=post_id)
 
-    return redirect(f"/?open_modal={post.id}")
+        # Create the comment
+        comment = Comment.objects.create(post=post, user=request.user, content=content)
+
+        # Trigger the new comment notification
+        send_comment_notification(request.user, post, comment.id)
+
+        # Redirect back to the post page (with a modal or open section)
+        return redirect(f"{reverse('home')}?open_modal={post_id}")
 

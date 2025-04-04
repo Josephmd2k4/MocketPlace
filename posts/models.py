@@ -24,15 +24,19 @@ class Post(models.Model):
     title = models.CharField(max_length=100)
     description = models.TextField()
     price = models.DecimalField(max_digits=10, decimal_places=2)
-    image = models.ImageField(upload_to='posts/images/', null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True, null=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE, default=1)
+
+class Media(models.Model):
+    post = models.ForeignKey('Post', related_name='media_set', on_delete=models.CASCADE)
+    file = models.FileField(upload_to='posts/media/')
+    created_at = models.DateTimeField(auto_now_add=True)
 
 class Comment(models.Model):
     post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name="comments")
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     content = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
-    
+     
     def __str__(self):
         return self.title

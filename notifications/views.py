@@ -156,3 +156,37 @@ def buy_post(request, post_id):
         return redirect('/?success=true') 
     else:
         return redirect('login')  # Redirect to the login page
+    
+def send_comment_notification(commenter, post, comment_id):
+    try:
+        # Get the post owner (recipient of the comment notification)
+        post_owner = post.user  # This is the user who created the post
+
+        # Ensure that the commenter isn't notified for their own comment
+        if commenter != post_owner:
+            notification = Notification.objects.create(
+                recipient=post_owner,
+                sender=commenter,  # The sender is the person who made the comment
+                notification_type='COMMENT',  # Define a new type for comment notifications
+                title=f'New Comment on Your Post: {post.title[:50]}',
+                message_text=f'{commenter.username} commented on your post',
+                content_type=ContentType.objects.get_for_model(post),
+                object_id=post.id,
+                is_read=False  # The notification is unread initially
+            )
+
+            # Prepare the payload for WebPush
+            payload = {
+                'head': f'New Comment on {post.title[:50]}',
+                'body': f'{commenter.username} commented on your post',
+                'icon': 'your-icon-url',
+                'url': f'/{post.id}/'  # Direct URL to the post
+            }
+
+            # Send the WebPush notification
+            send_user_notification(user=post_owner, payload=payload, ttl=1000)
+
+        return JsonResponse({'status': 'success'})
+
+    except Exception as e:
+        return JsonResponse({'status': 'error', 'message': str(e)})

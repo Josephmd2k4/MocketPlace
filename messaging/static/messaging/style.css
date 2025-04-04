@@ -224,21 +224,4 @@ body{
     margin: 10px 0;
 }
 
-/* Profile Image Style */
-.profile-picture {
-    width: 150px; /* Adjust size */
-    height: 150px; /* Adjust size */
-    object-fit: cover; /* Ensures correct cropping */
-    border-radius: 50%; /* Makes it circular */
-    margin: 0 auto; /* Center if needed */
-}
 
-/* Main Content Styling */
-.main-content {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    text-align: center;
-    padding: 20px;
-}

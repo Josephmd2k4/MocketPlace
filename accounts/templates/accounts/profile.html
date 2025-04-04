@@ -1,6 +1,6 @@
     {% load static %}
-    <link rel="stylesheet" href="{% static 'accounts/style.css' %}">
     {% include "posts/navbar.html" %}
+    <link rel="stylesheet" href="{% static 'accounts/style.css' %}">
     {% if messages %}
         {% for message in messages %}
             {% if message.tags == 'success' %}

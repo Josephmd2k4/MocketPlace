@@ -36,7 +36,7 @@ h2 {
     font-family: sans-serif;
     font-size: 40px;
     font-weight: 750;
-    padding-top: 1vh;
+    padding-top: 0;
 }
 
 form button {
@@ -138,8 +138,8 @@ a {
 body {
     font-family: Arial, sans-serif;
     line-height: 1.6;
-    padding-bottom: 60px;
     justify-content: sp;
+    padding-bottom: 0;
 }
 
 
@@ -203,7 +203,7 @@ body {
 
 h2 {
     border-bottom: 2px solid #1e419a;
-    padding-bottom: 10px;
+    padding-bottom: 8px;
     color: #1e419a;
 }
 
@@ -375,6 +375,7 @@ form ul.helptext {
     justify-content: center;
     box-shadow: 0px 0px 15px rgba(30, 65, 154, 0.8);
     position: relative;
+    margin-bottom: 5vh;
 }
 
 .bio{
@@ -408,4 +409,24 @@ form input[type="text"]{
     padding-top: 1vh;
     padding-bottom: 1vh;
 }
+ 
+/* Profile Image Style */
+.profile-picture {
+    width: 150px; /* Adjust size */
+    height: 150px; /* Adjust size */
+    object-fit: cover; /* Ensures correct cropping */
+    border-radius: 50%; /* Makes it circular */
+    margin-bottom: 0; /* Center if needed */
+    border: 0.5vh solid black;
+}
 
+/* Main Content Styling */
+.main-content {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    text-align: center;
+    padding: 5vh;
+    margin-top: 12vh;
+}
