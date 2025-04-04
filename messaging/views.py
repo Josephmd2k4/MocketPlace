@@ -8,6 +8,8 @@ from django.http import JsonResponse
 from django.conf import settings
 import os
 from django.core.files.storage import default_storage
+from django.shortcuts import get_object_or_404
+from django.contrib.auth.models import User
 
 
 @login_required
@@ -18,6 +20,8 @@ def dm_view(request, target_user):
         Q(sender__username=target_user, receiver=request.user)
     ).order_by('timestamp')  # Order by the timestamp to show in chronological order
 
+    target_user_obj = get_object_or_404(User, username=target_user)
+
     unread_notifications_count = 0
     if request.user.is_authenticated:
         notifications = Notification.objects.filter(recipient=request.user).order_by('-created_at')
@@ -25,7 +29,7 @@ def dm_view(request, target_user):
 
     return render(request, 'messaging/dm.html', {
         'current_user': request.user.username,
-        'target_user': target_user,
+        'target_user': target_user_obj,
         'messages': messages,
         'unread_notifications_count': unread_notifications_count,
     })

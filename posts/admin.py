@@ -3,7 +3,7 @@ from django.utils.html import format_html
 from .models import Post
 
 class PostAdmin(admin.ModelAdmin):
-    list_display = ('title', 'description', 'price', 'image_tag')  
+    list_display = ('title', 'description', 'price')  
     search_fields = ('title',)
 
     def image_tag(self, obj):
