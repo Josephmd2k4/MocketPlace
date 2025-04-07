@@ -2,6 +2,7 @@ from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from .models import Message  # Assuming Message model is where messages are stored
 from django.db.models import Q
+from friends.models import Friendship
 from notifications.models import Notification
 from django.core.files.storage import FileSystemStorage
 from django.http import JsonResponse
@@ -27,11 +28,23 @@ def dm_view(request, target_user):
         notifications = Notification.objects.filter(recipient=request.user).order_by('-created_at')
         unread_notifications_count = notifications.filter(is_read=False).count()
 
+    search_term = request.GET.get('friend_search')
+    if search_term:
+            friends = User.objects.filter(
+                Q(username__icontains=search_term)
+            )
+    elif request.user.is_authenticated:
+        friendships = Friendship.objects.filter(user=request.user).select_related('friend')
+        friends = [friendship.friend for friendship in friendships]
+    else:
+        friends = []
+
     return render(request, 'messaging/dm.html', {
         'current_user': request.user.username,
         'target_user': target_user_obj,
         'messages': messages,
         'unread_notifications_count': unread_notifications_count,
+        'friends': friends,
     })
 
 

@@ -188,6 +188,39 @@ footer {
     margin-bottom: 7vh;
 }
 
+.friends-box {
+    position: fixed;
+    top: 12vh;
+    left: 2vh;
+    height: 83%;
+    width: 35vh; 
+    background-color: #144ddf;
+    border-radius: 1vh;
+    padding: 2vh;
+}
+
+.friendsSearchBar {
+    width: 90%;
+    border-radius: 3vh;
+    margin-bottom: 1vh; 
+}
+
+.friendsSearchBar::placeholder {
+    padding-left: 2vh;
+    font-size: 1.8vh;
+}
+
+#friendsList {
+    background-color: #708fde;
+    border: none;
+    list-style-type: none;
+    border-radius: 2vh;
+}
+
+.friend {
+    margin-left: 1vh;
+}
+
 .post {
     background-color: #e8e8e8;
     border-radius: 3vh;
@@ -458,4 +491,14 @@ a:hover {
 
 .homeVideo{
     height: 27vh;
+}
+
+.profile-pic {
+    width: 5vh;  
+    height: 5vh; 
+    border-radius: 50%; 
+    object-fit: cover; 
+    border: .2vh solid #000000; 
+    margin-right: 10px; 
+    vertical-align: middle; 
 }

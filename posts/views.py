@@ -1,10 +1,12 @@
 from .forms import PostForm  
 from .models import Post, Comment
+from friends.models import Friendship
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from notifications.views import mark_notification_read, mark_all_read, send_dm_notification, send_post_notification, send_comment_notification
 from notifications.models import Notification
 from .models import Media
+from accounts.models import User
 from django.urls import reverse
 from django.db.models import Q
 
@@ -28,8 +30,20 @@ def home(request):
         notifications = Notification.objects.filter(recipient=request.user).order_by('-created_at')
         unread_notifications_count = notifications.filter(is_read=False).count()
 
+    search_term = request.GET.get('friend_search')
+    if search_term:
+            friends = User.objects.filter(
+                Q(username__icontains=search_term)
+            )
+    elif request.user.is_authenticated:
+        friendships = Friendship.objects.filter(user=request.user).select_related('friend')
+        friends = [friendship.friend for friendship in friendships]
+    else:
+        friends = []
+        
+
     return render(request, 'posts/home.html', {'posts': posts, 'open_modal': open_modal, 'unread_notifications_count': unread_notifications_count,
-        'success': success})
+        'success': success,'friends': friends})
 
 @login_required
 def createPost(request):

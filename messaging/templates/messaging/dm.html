@@ -9,11 +9,36 @@
 </head>
 <body>
     <div class="container">
+        <div class="friends-box2">
+            <form method="GET" action="{% url 'messaging:dm' target_user %}">
+                <input 
+                    class="friendsSearchBar2" 
+                    type="text" 
+                    name="friend_search" 
+                    placeholder="Search for a user..." 
+                    value="{{ request.GET.friend_search|default:'' }}">
+            </form>
+        
+            <ul id="friendsList2">
+                {% for friend in friends %}
+                    <li class="friend2">
+                        {% if friend.profile.profile_image and friend.profile.profile_image.name %}
+                            <img src="{{ friend.profile.profile_image.url }}" alt="Profile Image" class="profile-pic2">
+                        {% else %}
+                            <img src="{% static 'accounts/images/default.jpg' %}" alt="Default Profile Picture" class="profile-pic2">
+                        {% endif %}
+                        {{ friend.username }}
+                    </li>
+                {% empty %}
+                    <li class="friend2">No friends found.</li>
+                {% endfor %}
+            </ul>
+        </div>
         <h2 class="chat-header">
             {% if target_user.profile.profile_image and target_user.profile.profile_image.name %}
-                <img src="{{ target_user.profile.profile_image.url }}" alt="Profile Image" class="profile-pic">
+                <img src="{{ target_user.profile.profile_image.url }}" alt="Profile Image" class="profile-pic2">
             {% else %}
-                <img src="{% static 'accounts/images/default.jpg' %}" alt="Default Profile Picture" class="profile-pic">
+                <img src="{% static 'accounts/images/default.jpg' %}" alt="Default Profile Picture" class="profile-pic2">
             {% endif %}
             {{ target_user.username }}
             <button class="add-friend-btn" onclick="sendFriendRequest({{ target_user.id }})">
