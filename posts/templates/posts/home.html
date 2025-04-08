@@ -38,7 +38,7 @@
                         {% else %}
                             <img src="{% static 'accounts/images/default.jpg' %}" alt="Default Profile Picture" class="profile-pic">
                         {% endif %}
-                        {{ friend.username }}
+                        <a href="{% url 'messaging:dm' friend.username %}">{{ friend.username }}</a>
                     </li>
                 {% empty %}
                     <li class="friend">No friends found.</li>
