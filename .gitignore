@@ -11,3 +11,4 @@ payments/migrations/__pycache__/
 # Ignore sqlite
 db.sqlite3
 django
+django
