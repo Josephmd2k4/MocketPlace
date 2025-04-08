@@ -10,7 +10,7 @@ class PaymentsViewsTestCase(TestCase):
     def setUp(self):
         self.client = Client()
         self.payout = Payout.objects.create(
-            payout_id="TEST123",
+            payout_batch_id="TEST123",
             status="PENDING"
         )
 
@@ -36,7 +36,7 @@ class PaymentsViewsTestCase(TestCase):
             {"payout_item_id": "TEST123", "receiver": "test@example.com", "amount": {"value": "50.00"}, "transaction_status": "SUCCESS"}
         ]})()
 
-        response = self.client.get(reverse("transact_status_view"), {"days": "30", "status": "SUCCESS"})
+        response = self.client.get(reverse("transaction_status"), {"days": "30", "status": "SUCCESS"})
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, "test@example.com")
         self.assertContains(response, "50.00")

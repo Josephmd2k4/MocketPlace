@@ -13,35 +13,81 @@ from django.shortcuts import redirect
 import paypalrestsdk
 import time, datetime, requests
 
+PAYPAL_WEBHOOK_ID = '86705871774279913' 
+PAYPAL_CLIENT_ID = 'AR-8QjzWUOHJdpjWTMqTFgtvExqk42tC2wPZLNp-qFHGHqjV11VAVEFzqe_HbvyzituEcGSWxWtok6sD'
+PAYPAL_SECRET = 'EI0eUZjgUu5lfgCHzWuHswCylR2ZSimbAhfzOwV4ed7tdhlVRMWGcuZ4CMajmpkMajQwis6iI3Ov4Uao'
+PAYPAL_MODE = 'sandbox'
+
+def get_paypal_access_token():
+    url = f"https://api.{PAYPAL_MODE}.paypal.com/v1/oauth2/token"
+    headers = {
+        "Accept": "application/json",
+        "Accept-Language": "en_US"
+    }
+    data = {'grant_type': 'client_credentials'}
+    response = requests.post(url, headers=headers, data=data, auth=(PAYPAL_CLIENT_ID, PAYPAL_SECRET))
+    response.raise_for_status()
+    return response.json()['access_token']
+
+def verify_webhook_signature(headers, body):
+    access_token = get_paypal_access_token()
+    
+    verification_url = f"https://api.{PAYPAL_MODE}.paypal.com/v1/notifications/verify-webhook-signature"
+
+    payload = {
+        "auth_algo": headers.get('PAYPAL-AUTH-ALGO'),
+        "cert_url": headers.get('PAYPAL-CERT-URL'),
+        "transmission_id": headers.get('PAYPAL-TRANSMISSION-ID'),
+        "transmission_sig": headers.get('PAYPAL-TRANSMISSION-SIG'),
+        "transmission_time": headers.get('PAYPAL-TRANSMISSION-TIME'),
+        "webhook_id": PAYPAL_WEBHOOK_ID,
+        "webhook_event": body,
+    }
+
+    response = requests.post(
+        verification_url,
+        headers={
+            "Content-Type": "application/json",
+            "Authorization": f"Bearer {access_token}"
+        },
+        data=json.dumps(payload)
+    )
+
+    return response.json().get('verification_status') == 'SUCCESS'
+
 @csrf_exempt
 def paypal_webhook(request):
-    if request.method == "POST":
-        # Parse the incoming webhook JSON
-        data = json.loads(request.body)
-        event_type = data.get("event_type")
-        resource = data.get("resource", {})
+    if request.method != "POST":
+        return JsonResponse({"status": "error", "message": "Invalid request method"}, status=405)
 
-        # Verify the webhook signature (optional but recommended)
-        if not verify_webhook_signature(request):
-            return JsonResponse({"status": "error", "message": "Invalid signature"}, status=400)
+    try:
+        raw_body = request.body.decode('utf-8')
+        json_body = json.loads(raw_body)
 
-        # Handle different event types
+        # Verify webhook
+        if not verify_webhook_signature(request.headers, json_body):
+            return JsonResponse({"status": "error", "message": "Invalid webhook signature"}, status=400)
+
+        # Proceed with event handling
+        event_type = json_body.get("event_type")
+        resource = json_body.get("resource", {})
+
         if event_type == "PAYMENT.PAYOUTSBATCH.SUCCESS":
-            # Handle successful payout event
             payout_batch_id = resource.get("payout_batch_id")
-            Payout.objects.filter(payout_id=payout_batch_id).update(status="SUCCESS")
+            Payout.objects.filter(payout_batch_id=payout_batch_id).update(status="SUCCESS")
             return JsonResponse({"status": "success", "message": "Payout success"})
 
         elif event_type == "PAYMENT.PAYOUTSBATCH.DENIED":
-            # Handle failed payout event
             payout_batch_id = resource.get("payout_batch_id")
-            Payout.objects.filter(payout_id=payout_batch_id).update(status="FAILED")
-            return JsonResponse({"status": "success", "message": "Payout failed"})
+            Payout.objects.filter(payout_batch_id=payout_batch_id).update(status="FAILED")
+            return JsonResponse({"status": "success", "message": "Payout denied"})
 
-        # Add more events as needed
         return JsonResponse({"status": "error", "message": "Unhandled event type"}, status=400)
 
-    return JsonResponse({"status": "error", "message": "Invalid request"}, status=400)
+    except Exception as e:
+        print(f"[Webhook Error] {e}")
+        return JsonResponse({"status": "error", "message": "Internal server error"}, status=500)
+
 
 def verify_webhook_signature(request): 
     # Implement PayPal signature verification (optional but recommended for security)
@@ -75,7 +121,7 @@ def transact_status_view(request):
             # This structure depends on the exact response format from PayPal
             # Adjust according to what your API returns
             payout = {
-                'payout_id': item.get('payout_item_id', ''),
+                'payout_batch_id': item.get('payout_item_id', ''),
                 'email': item.get('receiver', ''),
                 'amount': item.get('amount', {}).get('value', 0),
                 'status': item.get('transaction_status', '').lower()
@@ -461,7 +507,7 @@ def payout_form(request):
                 )
                 
                 messages.success(request, f"Payout initiated successfully! Batch ID: {batch_id}")
-                return redirect('payout_success', payout_id=payout.id)
+                return redirect('payout_success', payout_batch_id=payout.id)
             else:
                 # Handle API error
                 error_message = payout_batch.error.get('message', 'An error occurred')
