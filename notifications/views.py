@@ -191,3 +191,18 @@ def send_comment_notification(commenter, post, comment_id):
 
     except Exception as e:
         return JsonResponse({'status': 'error', 'message': str(e)})
+    
+@login_required
+def delete_notification(request, notification_id):
+    try:
+        notification = Notification.objects.get(id=notification_id, recipient=request.user)
+        notification.delete()
+    except Notification.DoesNotExist:
+        pass
+    return redirect('notifications:notifications_list')
+
+@login_required
+def delete_all_notifications(request):
+    notifications = Notification.objects.filter(recipient=request.user)
+    notifications.delete()
+    return redirect('notifications:notifications_list')
