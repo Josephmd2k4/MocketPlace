@@ -194,15 +194,17 @@ footer {
     left: 2vh;
     height: 83%;
     width: 35vh; 
-    background-color: #144ddf;
+    background-color: #1e419a;
     border-radius: 1vh;
     padding: 2vh;
 }
 
 .friendsSearchBar {
-    width: 90%;
+    width: 100%;
     border-radius: 3vh;
     margin-bottom: 1vh; 
+    padding-left: 1em;
+
 }
 
 .friendsSearchBar::placeholder {
@@ -211,7 +213,7 @@ footer {
 }
 
 #friendsList {
-    background-color: #708fde;
+    background-color: #e8e8e8;
     border: none;
     list-style-type: none;
     border-radius: 2vh;

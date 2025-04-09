@@ -18,4 +18,4 @@ COPY . /code
 
 EXPOSE 8080
 
-CMD ["gunicorn", "--bind", ":8080", "--workers", "2", "MocketPlace.asgi:application"]
+CMD ["daphne", "-b", "0.0.0.0", "-p", "8080", "MocketPlace.asgi:application"]

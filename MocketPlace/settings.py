@@ -25,25 +25,25 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-%jwl*%^!6an106-3o-qw8h@_kqe+wyibew(gy89a$%^&edoag('
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['mocketplace.fly.dev']
 
 
 # Application definition
 
 INSTALLED_APPS = [
-    "posts.apps.PostsConfig",
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
-    'django.contrib.messages',
+    "posts.apps.PostsConfig",
     'daphne', 
     'django.contrib.staticfiles',
     'webpush',
     'notifications',
     'accounts.apps.AccountsConfig',
+    'django.contrib.messages',
     'channels',
     'messaging',
     'django.contrib.humanize',
