@@ -12,7 +12,7 @@ body{
     left: 2vh;
     height: 80%;
     width: 32vh; 
-    background-color: #144ddf;
+    background-color: #1e419a;
     border-radius: 1vh;
     padding: 2vh;
 }
@@ -22,6 +22,7 @@ body{
     padding: 1vh;
     border-radius: 3vh;
     margin-bottom: 1vh;
+    padding-left: 1em;
 }
 
 .friendsSearchBar2::placeholder {
@@ -30,7 +31,7 @@ body{
 }
 
 #friendsList2 {
-    background-color: #708fde;
+    background-color: #e8e8e8;
     border: none;
     list-style-type: none;
     border-radius: 2vh;

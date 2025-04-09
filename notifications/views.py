@@ -9,6 +9,7 @@ from posts.models import Post
 from django.contrib.auth.models import User
 from django.core.paginator import Paginator
 from messaging.models import Message
+from friends.models import Friendship
 
 @login_required
 @require_POST
@@ -76,7 +77,8 @@ def send_post_notification(user, post_id):
     try:
         post = Post.objects.get(id=post_id)
         # Get all users who should be notified, excluding the current user
-        users_to_notify = User.objects.exclude(id=user.id)
+        friend_ids = Friendship.objects.filter(user=user).values_list('friend', flat=True)
+        users_to_notify = User.objects.filter(id__in=friend_ids)
         
         for recipient in users_to_notify:
             # Create notification record
@@ -84,8 +86,7 @@ def send_post_notification(user, post_id):
                 recipient=recipient,
                 sender=user,  # The sender is now the user who created the post
                 notification_type='POST',
-                title=f'New Post: {post.title[:50]}',
-                message_text=f'{user.username} has created a new post',
+                title=f'Your friend {user.username} has a new post',
                 content_type=ContentType.objects.get_for_model(post),
                 object_id=post.id,
                 is_read=False  # Initialize is_read attribute
