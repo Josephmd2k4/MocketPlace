@@ -28,7 +28,7 @@ SECRET_KEY = 'django-insecure-%jwl*%^!6an106-3o-qw8h@_kqe+wyibew(gy89a$%^&edoag(
 DEBUG = True
 
 APP_NAME = os.environ.get("MocketPlace")
-ALLOWED_HOSTS = [f"{APP_NAME}.fly.dev"]
+ALLOWED_HOSTS = [f"{APP_NAME}.fly.dev", "127.0.0.1"]
 
 
 # Application definition

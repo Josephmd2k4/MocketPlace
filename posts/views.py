@@ -9,6 +9,7 @@ from .models import Media
 from accounts.models import User
 from django.urls import reverse
 from django.db.models import Q
+from notifications.views import send_post_notification
 
 
 def home(request):
