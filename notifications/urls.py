@@ -10,4 +10,6 @@ urlpatterns = [
     path('mark-read/<int:notification_id>/', views.mark_notification_read, name='mark_as_read'),
     path('mark-all-as-read/', views.mark_all_read, name='mark_all_as_read'),
     path('buy/<int:post_id>/', views.buy_post, name='buy_post'),
+    path('delete/<int:notification_id>/', views.delete_notification, name='delete_notification'),  
+    path('delete_all/', views.delete_all_notifications, name='delete_all_notifications'),  
 ]

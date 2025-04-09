@@ -14,6 +14,10 @@ def send_friend_request(request, receiver_id):
         # Prevent duplicate requests
         if FriendRequest.objects.filter(sender=request.user, receiver=receiver, status='pending').exists():
             return JsonResponse({"message": "Friend request already sent."}, status=400)
+        
+        if Friendship.objects.filter(user=request.user, friend=receiver).exists():
+            response_message = f"You and {receiver} are already friends!" 
+            return JsonResponse({"message": response_message}, status=400)
 
         # Create the friend request
         friend_request = FriendRequest.objects.create(sender=request.user, receiver=receiver)
