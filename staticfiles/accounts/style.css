@@ -1,0 +1,432 @@
+.container {
+    width: 30vw;
+    max-width: 400px;
+    min-width: 280px;
+    min-height: 68vh;
+    margin: 13vh  auto 1vh auto;
+    padding: 2vw;
+    background: white;
+    border-radius: 8px;
+    text-align: center;
+    flex-direction: column;
+    justify-content: center;
+    box-shadow: 0px 0px 15px rgba(30, 65, 154, 0.8);
+    position: relative;
+}
+
+.containerLogin{
+    width: 30vw;
+    max-width: 400px;
+    min-width: 280px;
+    min-height: 70vh;
+    margin: 13vh  auto 1vh auto;
+    padding: 2vw;
+    background: white;
+    border-radius: 8px;
+    text-align: center;
+    flex-direction: column;
+    justify-content: center;
+    box-shadow: 0px 0px 15px rgba(30, 65, 154, 0.8);
+    position: relative;
+}
+
+h2 {
+    text-align: center;
+    color: #cf202f;
+    font-family: sans-serif;
+    font-size: 40px;
+    font-weight: 750;
+    padding-top: 0;
+}
+
+form button {
+    padding: 10px;
+    background-color: #cf202f; 
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin-bottom: 10px;
+}
+
+form button:hover {
+    background-color: #a21a2f; 
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px; 
+    align-items: center; 
+}
+
+form input {
+    padding: 10px;
+    width: 100%; 
+    max-width: 300px; 
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    margin-bottom: 10px;
+}
+
+a {
+    color: #1e419a;
+    text-decoration: none;
+    text-align: center;
+    display: block;  
+    width: 100%;  
+    text-align: center; 
+}
+
+.form-group {
+    margin-bottom: 15px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    width: 100%;
+}
+
+.form-group label {
+    font-weight: bold;
+    margin-bottom: 4px;
+}
+
+.form-group input {
+    width: 100%;
+    max-width: 400px;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    height: 40px;
+    box-sizing: border-box;
+}
+
+.error-message {
+    color: #d9534f;
+    font-size: 14px;
+    margin-top: 5px;
+    background-color: #f8d7da;
+    padding: 5px;
+    border-radius: 5px;
+    display: block;
+    max-width: 400px;
+    width: 100%;
+}
+
+.messages {
+    list-style: none;
+    padding: 10px;
+}
+
+.messages li {
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+}
+
+.success {
+    background-color: #d4edda;
+    color: #155724;
+}
+
+.error {
+    background-color: #f8d7da;
+    color: #721c24;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+    justify-content: sp;
+    padding-bottom: 0;
+}
+
+
+.profile-container {
+    display: flex;
+    flex-direction: row;
+    flex: 1;
+    min-height: calc(100vh - 60px);
+    /* Adjust for navbar/footer height */
+}
+
+/* Sidebar Styles */
+.sidebar {
+    width: 250px !important;
+    background-color: #1e419a !important;
+    color: white !important;
+    padding: 20px !important;
+    /* Full height sidebar */
+    position: fixed !important;
+    left: 0 !important;
+    margin-top: 10vh !important;
+    height: 100% !important;
+}
+
+.sidebar h3 {
+    text-align: center !important;
+    color: #ecf0f1 !important;
+}
+
+.sidebar ul {
+    list-style: none !important;
+    padding: 0 !important;
+}
+
+.sidebar ul li {
+    margin: 20px 0 !important;
+}
+
+.sidebar ul li a {
+    text-decoration: none !important;
+    color: #bdc3c7 !important;
+    display: block !important;
+    padding: 10px !important;
+    border-radius: 4px !important;
+    transition: background 0.3s !important;
+}
+
+.sidebar ul li a:hover {
+    background-color: #001b61 !important;
+    color: white !important;
+}
+
+/* Main Content Styles */
+.main-content {
+    margin-left: 250px;
+    /* Same width as sidebar */
+    padding: 30px;
+    background-color: white;
+    flex: 1;
+}
+
+h2 {
+    border-bottom: 2px solid #1e419a;
+    padding-bottom: 8px;
+    color: #1e419a;
+}
+
+.profile-details {
+    background: #ecf0f1;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.profile-details p {
+    font-size: 18px;
+    color: #2c3e50;
+    margin: 10px 0;
+}
+
+
+/* Main Content Wrapper */
+.main-content {
+    width: 100%;
+    max-width: 500px;
+    background: #ffffff;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin: 20px;
+    box-sizing: border-box;
+}
+
+/* Form Styles */
+form {
+    width: 100%;
+}
+
+form h3 {
+    color: #2980b9;
+    border-bottom: 1px solid #ccc;
+    padding-bottom: 5px;
+    margin-bottom: 15px;
+}
+
+form label {
+    display: block;
+    margin-bottom: 5px;
+    color: #2c3e50;
+    font-weight: bold;
+}
+
+form input[type="password"] {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0 20px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    display: block;
+}
+
+form button {
+    width: 100%;
+    background-color: #2980b9;
+    color: white;
+    border: none;
+    padding: 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+form button:hover {
+    background-color: #3498db;
+}
+
+/* Message Styles */
+.message {
+    position: fixed;
+    top: 80px; /* Adjust this based on your navbar height */
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1050; /* Ensure it appears above other elements */
+    width: 50%;
+    text-align: center;
+}
+
+.message.success {
+    background-color: #2ecc71;
+    color: white;
+}
+
+.message.error {
+    background-color: #e74c3c;
+    color: white;
+}
+/* Remove Bullet Points and Style Messages */
+ul.errorlist {
+    list-style-type: none;
+    /* Remove bullet points */
+    padding-left: 0;
+}
+
+ul.errorlist li {
+    color: #e74c3c;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.message.error {
+    font-weight: bold;
+}
+/* Style Password Requirement Messages */
+.password-help,
+.form-text.text-muted,
+form span.helptext,
+form ul.helptext {
+    font-family: Arial, sans-serif;
+    /* Match the rest of the form */
+    color: #2c3e50;
+    /* Consistent text color */
+    font-size: 14px;
+    margin-bottom: 10px;
+    display: block;
+    line-height: 1.5;
+}
+
+.main-content{
+    background-color: #f4f4f9;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-self: center;
+    margin-left: 60vh;
+}
+
+.custom-alert {
+    position: fixed;
+    top: 80px; /* Adjust this based on your navbar height */
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1050; /* Ensure it appears above other elements */
+    width: 35%;
+    text-align: center;
+    color: #155724;
+    background-color: #d4edda;
+    border-color: #c3e6cb;
+    font-family: sans-serif;
+    justify-content: center;
+    align-items: center;
+    padding: 12px 45px 12px 12px;  
+    margin: 0px 0px 16px 0px;
+}
+
+.close{
+    padding-left: 4rem;
+    border: none;
+    background-color: #d4edda;
+    cursor: pointer;
+}
+
+.container-mx-auto-p-6{
+    width: 40vw;
+    min-width: 280px;
+    min-height: 68vh;
+    margin: 13vh  auto 1vh 60vh;
+    padding: 2vw;
+    background: white;
+    border-radius: 8px;
+    text-align: center;
+    flex-direction: column;
+    justify-content: center;
+    box-shadow: 0px 0px 15px rgba(30, 65, 154, 0.8);
+    position: relative;
+    margin-bottom: 5vh;
+}
+
+.bio{
+    width: 75vh;
+}
+
+.email{
+    width: 75vh;
+    align-self: center;
+}
+
+form input[type="text"]{
+    width: 75vh;
+}
+
+.year-container {
+    display: flex;
+    align-items: center; /* Align items vertically */
+    gap: 10px; /* Space between label and dropdown */
+    flex-wrap: nowrap; /* Prevent wrapping */
+    justify-content: center;
+}
+
+.year-container label {
+    white-space: nowrap; /* Keep the label text in one line */
+    padding-top: 3vh;
+    padding-bottom: 3vh;
+}
+
+.year-container select {
+    padding-top: 1vh;
+    padding-bottom: 1vh;
+}
+ 
+/* Profile Image Style */
+.profile-picture {
+    width: 150px; /* Adjust size */
+    height: 150px; /* Adjust size */
+    object-fit: cover; /* Ensures correct cropping */
+    border-radius: 50%; /* Makes it circular */
+    margin-bottom: 0; /* Center if needed */
+    border: 0.5vh solid black;
+}
+
+/* Main Content Styling */
+.main-content {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    text-align: center;
+    padding: 5vh;
+    margin-top: 12vh;
+}
