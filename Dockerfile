@@ -1,4 +1,4 @@
-ARG PYTHON_VERSION=3.11
+ARG PYTHON_VERSION=3.11-slim
 
 FROM python:${PYTHON_VERSION}
 
@@ -16,6 +16,9 @@ RUN set -ex && \
     rm -rf /root/.cache/
 COPY . /code
 
-EXPOSE 8080
+ENV SECRET_KEY "h2VAo0XK4odJTzt5dngKCtlidI2lftVSZ2UUUTxxQ0m45ekixG"
+RUN python manage.py collectstatic --noinput
 
-CMD ["daphne", "-b", "0.0.0.0", "-p", "8080", "MocketPlace.asgi:application"]
+EXPOSE 8000
+
+CMD ["daphne","-b","0.0.0.0","-p","8000","MocketPlace.asgi:application"]
