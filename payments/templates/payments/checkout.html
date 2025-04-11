@@ -8,7 +8,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+  <link rel="stylesheet" href="{% static 'css/checkoutstyles.css' %}">
 
   <div class="secure-badge">
     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24">
@@ -109,20 +109,39 @@
     
     <footer>
     <div class="footer-links">
-      <a1 href="https://www.paypal.com/us/legalhub/paypal/privacy-full">Privacy Policy</a1>
-      <a1 href="https://www.paypalobjects.com/marketing/ua/pdf/US/en/privacy-full-021325.pdf">Terms of Service</a1>
-      <a1 href="https://www.paypal.com/us/cshelp/contact-us">Contact Support</a1>
+      <a href="https://www.paypal.com/us/legalhub/paypal/privacy-full">Privacy Policy</a>
+      <a href="https://www.paypalobjects.com/marketing/ua/pdf/US/en/privacy-full-021325.pdf">Terms of Service</a>
+      <a href="https://www.paypal.com/us/cshelp/contact-us">Contact Support</a>
     </div>
     <div>© 2025 PayPal. All rights reserved.</div>
   </footer>
 </div>
 
+<!-- to generate a random order number everytime a purchase is made -->
 <script>
 function generateOrderNumber() {
   let orderNum = "ORD-" + Math.floor(100000 + Math.random() * 900000);
   document.getElementById("order-number").textContent = orderNum;
 }
 window.onload = generateOrderNumber;
+</script>
+
+<!-- to allow footer to only appear when scrolled all the way down -->
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    window.addEventListener('scroll', function() {
+      const footer = document.querySelector('footer');
+      const scrollPosition = window.innerHeight + window.pageYOffset;
+      const bodyHeight = document.body.offsetHeight;
+      
+      // Show footer when scrolled to bottom (with a small buffer)
+      if (scrollPosition >= bodyHeight - 50) {
+        footer.style.display = 'block';
+      } else {
+        footer.style.display = 'none';
+      }
+    });
+  });
 </script>
 
 </body>

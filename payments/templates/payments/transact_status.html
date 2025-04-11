@@ -12,6 +12,31 @@
 </head>
 <body>
     <div class="payout-container">
+        <div class="payout-filters">
+            <form method="get" action="" class="filter-form">
+                <div class="form-group">
+                    <label for="status">Transactions:</label>
+                    <select name="status" id="status">
+                        <option value="">All</option>
+                        <option value="SUCCESS" {% if status_filter == 'SUCCESS' %}selected{% endif %}>Completed</option>
+                        <option value="PENDING" {% if status_filter == 'PENDING' %}selected{% endif %}>Pending</option>
+                        <option value="FAILED" {% if status_filter == 'FAILED' %}selected{% endif %}>Failed</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="days">Time period:</label>
+                    <select name="days" id="days">
+                        <option value="7" {% if days == 7 %}selected{% endif %}>Last 7 days</option>
+                        <option value="30" {% if days == 30 %}selected{% endif %}>Last 30 days</option>
+                        <option value="90" {% if days == 90 %}selected{% endif %}>Last 90 days</option>
+                    </select>
+                </div>
+                
+                <button type="submit" class="filter-btn">Apply Filters</button>
+            </form>
+        </div>
+
         <div class="payout-card">
             <div class="payout-header">
                 <h1>Payout Status</h1>
@@ -53,29 +78,3 @@
             {% endif %}
         </div>
     </div>
-    <div class="payout-filters">
-        <form method="get" action="" class="filter-form">
-            <div class="form-group">
-                <label for="status">Transactions:</label>
-                <select name="status" id="status">
-                    <option value="">All</option>
-                    <option value="SUCCESS" {% if status_filter == 'SUCCESS' %}selected{% endif %}>Completed</option>
-                    <option value="PENDING" {% if status_filter == 'PENDING' %}selected{% endif %}>Pending</option>
-                    <option value="FAILED" {% if status_filter == 'FAILED' %}selected{% endif %}>Failed</option>
-                </select>
-            </div>
-            
-            <div class="form-group">
-                <label for="days">Time period:</label>
-                <select name="days" id="days">
-                    <option value="7" {% if days == 7 %}selected{% endif %}>Last 7 days</option>
-                    <option value="30" {% if days == 30 %}selected{% endif %}>Last 30 days</option>
-                    <option value="90" {% if days == 90 %}selected{% endif %}>Last 90 days</option>
-                </select>
-            </div>
-            
-            <button type="submit" class="filter-btn">Apply Filters</button>
-        </form>
-    </div>
-</body>
-</html>

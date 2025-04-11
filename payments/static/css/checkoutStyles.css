@@ -90,16 +90,11 @@
   
   .order-summary {
     width: 100%;
+    -ms-flex-align: center;
     background-color: var(--white);
     border-radius: 8px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
     padding: 30px;
-  }
-  
-  @media (min-width: 768px) {
-    .order-summary {
-      width: 350px;
-    }
   }
   
   h2 {
@@ -161,7 +156,6 @@
   }
   
   a:link, a:visited{
-    background-color: var(--light-gray);
     color: var(--dark-gray);
     line-height: 1.6;
   }
@@ -271,8 +265,16 @@
   }
   
   footer {
-    margin-top: 20px;
-    padding: 20px 0;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background-color: var(--red);
+    padding: 5px 0;
+    margin-top: 5px;
+    border-top: 1px solid var(--gray);
+    z-index: 100;
+    display: none;
     text-align: center;
     font-size: 14px;
     color: var(--dark-gray);
@@ -282,9 +284,8 @@
     margin-bottom: 15px;
   }
   
-  .footer-links a1 {
+  .footer-links a {
     color: var(--blue);
-    text-decoration: none;
     margin: 0 10px;
   }
   
