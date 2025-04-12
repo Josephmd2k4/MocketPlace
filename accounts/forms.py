@@ -60,10 +60,7 @@ class CustomUserCreationForm(UserCreationForm):
 User = get_user_model()
 
 class CustomUserChangeForm(forms.ModelForm):
-    profile_image = forms.ImageField(
-        required=False, 
-        widget=forms.FileInput(attrs={'class': 'form-control'})
-    )
+    profile_image = forms.ImageField(required=False)
     bio = forms.CharField(
         widget=forms.Textarea(attrs={'class': 'form-control', 'placeholder': 'Tell us about yourself...'}), 
         required=False

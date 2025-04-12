@@ -23,7 +23,7 @@
                 {% for friend in friends %}
                     <li class="friend2">
                         {% if friend.profile.profile_image and friend.profile.profile_image.name %}
-                            <img src="{{ friend.profile.profile_image.url }}" alt="Profile Image" class="profile-pic2">
+                            <img src="{{ friend.profile.profile_image }}" alt="Profile Image" class="profile-pic2">
                         {% else %}
                             <img src="{% static 'accounts/images/default.jpg' %}" alt="Default Profile Picture" class="profile-pic2">
                         {% endif %}
@@ -36,7 +36,7 @@
         </div>
         <h2 class="chat-header">
             {% if target_user.profile.profile_image and target_user.profile.profile_image.name %}
-                <img src="{{ target_user.profile.profile_image.url }}" alt="Profile Image" class="profile-pic2">
+                <img src="{{ target_user.profile.profile_image }}" alt="Profile Image" class="profile-pic2">
             {% else %}
                 <img src="{% static 'accounts/images/default.jpg' %}" alt="Default Profile Picture" class="profile-pic2">
             {% endif %}

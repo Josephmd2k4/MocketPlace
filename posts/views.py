@@ -9,6 +9,10 @@ from .models import Media
 from accounts.models import User
 from django.urls import reverse
 from django.db.models import Q
+from supabase_storage import upload_file, get_file_url
+import logging
+
+logger = logging.getLogger(__name__)
 
 
 def home(request):
@@ -56,9 +60,26 @@ def createPost(request):
             post.user = request.user  
             post.save()
 
-            # Save multiple media files
             for file in files:
-                Media.objects.create(post=post, file=file)
+                # Generate a unique file path for Supabase storage
+                filename = f"posts/{post.id}/{file.name}"  # You can customize this path if needed
+
+                # If upload was successful, get the public URL
+                try:
+                    # Upload the file to Supabase
+                    upload_response = upload_file(file, filename)
+
+                    # If no error, get the public URL
+                    file_url = get_file_url(filename)
+
+                    # Save Media instance with the file URL
+                    logger.info(f"Trying to save file to DB: {file.name} → {file_url}")
+                    media = Media.objects.create(post=post, file_url=file_url)
+                    logger.info(f"Media saved: {media}")
+
+                except Exception as e:
+                    # Optionally log or print the error
+                    print(f"File upload failed: {e}")
 
             return redirect('/')  # Redirect to homepage or post detail
     else:

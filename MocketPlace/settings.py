@@ -12,8 +12,6 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 
 import os
 from pathlib import Path
-import os
-
 import dj_database_url
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -62,6 +60,10 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
+CSRF_TRUSTED_ORIGINS = [
+    'https://mocketplace.fly.dev',  
+]
+
 ROOT_URLCONF = 'MocketPlace.urls'
 
 TEMPLATES = [
@@ -87,9 +89,14 @@ ASGI_APPLICATION = 'MocketPlace.asgi.application'
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
 DATABASES = {
-    'default': dj_database_url.config(
-        default=os.environ.get('DATABASE_URL')
-    )
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'postgres',
+        'USER': 'postgres',
+        'PASSWORD': 'AfwaBETyQbUdxHwL',  
+        'HOST': 'db.ononxyegplbeomybosze.supabase.co',
+        'PORT': '5432',
+    }
 }
 
 
@@ -144,6 +151,9 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 MEDIA_URL = "/media/"
 MEDIA_ROOT = os.path.join(BASE_DIR / "posts/media")
+
+SUPABASE_URL = "https://ononxyegplbeomybosze.supabase.co"
+SUPABASE_API_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9ub254eWVncGxiZW9teWJvc3plIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDQzODYyNjYsImV4cCI6MjA1OTk2MjI2Nn0.W8zsrTMNNs7kg7UUSOz3RO0J4zCUNEbE8nFvNnQmVQI"
 
 CHANNEL_LAYERS = {
     "default": {

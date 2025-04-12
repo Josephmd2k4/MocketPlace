@@ -132,6 +132,8 @@
                                                 <span class="icon message-icon">✉️</span>
                                         {% elif notification.notification_type == 'OFFER' %}
                                                 <span class="icon offer-icon">💰</span>
+                                        {% elif notification.notification_type == 'FRIEND_ACCEPTED' %}
+                                                <span class="icon default-icon">🤝</span>
                                         {% else %}
                                             <span class="icon default-icon">📌</span>
                                         {% endif %}

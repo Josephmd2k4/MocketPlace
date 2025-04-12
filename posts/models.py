@@ -28,9 +28,9 @@ class Post(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, default=1)
 
 class Media(models.Model):
-    post = models.ForeignKey('Post', related_name='media_set', on_delete=models.CASCADE)
-    file = models.FileField(upload_to='posts/media/')
-    created_at = models.DateTimeField(auto_now_add=True)
+    post = models.ForeignKey(Post, related_name='media', on_delete=models.CASCADE)
+    file_url = models.URLField()  # Storing the URL of the media file on Supabase
+    uploaded_at = models.DateTimeField(auto_now_add=True)
 
 class Comment(models.Model):
     post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name="comments")

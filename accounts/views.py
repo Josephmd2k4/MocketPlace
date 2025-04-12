@@ -4,6 +4,7 @@ from django.contrib.auth.forms import AuthenticationForm
 from django.contrib import messages
 from django.urls import reverse
 from django.contrib.auth.models import User
+from supabase_storage import get_file_url, upload_file
 from .forms import CustomUserCreationForm  # Import the custom form
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import update_session_auth_hash
@@ -83,8 +84,25 @@ def edit_profile(request):
 
             # Save Profile fields
             profile = form.save(commit=False)  # Don't save to DB yet, we need to handle profile_image
+
             if form.cleaned_data.get('profile_image'):
-                profile.profile_image = form.cleaned_data['profile_image']
+                image = form.cleaned_data.get('profile_image')
+                filename = f"profiles/{request.user.id}/{image.name}"  # You can customize this path if needed
+
+                # If upload was successful, get the public URL
+                try:
+                    # Upload the file to Supabase
+                    upload_response = upload_file(image, filename)
+
+                    # If no error, get the public URL
+                    file_url = get_file_url(filename)
+
+                    profile.profile_image = file_url
+
+                except Exception as e:
+                    # Optionally log or print the error
+                    print(f"File upload failed: {e}")
+                
             profile.save()  # Save Profile model changes
             
             messages.success(request, "Your profile has been updated successfully.")

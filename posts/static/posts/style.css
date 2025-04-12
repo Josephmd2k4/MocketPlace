@@ -93,7 +93,7 @@ i {
 }
 
 #createListingForm input {
-    width: 105vh;
+    width: 95%;
     padding: 10px;
     margin: 8px 0;
     border: 1px solid #ccc;
@@ -104,7 +104,7 @@ i {
 #createListingForm textarea{
     height: 80px;  
     resize: none;  
-    width: 105vh;
+    width: 95%;
     padding: 10px;
     margin: 8px 0;
     border: 1px solid #ccc;

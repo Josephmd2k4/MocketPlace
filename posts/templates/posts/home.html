@@ -34,11 +34,11 @@
                 {% for friend in friends %}
                     <li class="friend">
                         {% if friend.profile.profile_image and friend.profile.profile_image.name %}
-                            <img src="{{ friend.profile.profile_image.url }}" alt="Profile Image" class="profile-pic">
+                            <img src="{{ friend.profile.profile_image}}" alt="Profile Image" class="profile-pic">
                         {% else %}
                             <img src="{% static 'accounts/images/default.jpg' %}" alt="Default Profile Picture" class="profile-pic">
                         {% endif %}
-                        {{ friend.username }}
+                        <a href="{% url 'messaging:dm' friend.username %}">{{ friend.username }}</a>
                     </li>
                 {% empty %}
                     <li class="friend">No friends found.</li>
@@ -54,18 +54,18 @@
                     data-target="#postModal{{ post.id }}"
                 >
                     <!-- Display the first image/video outside the modal -->
-                    {% for media in post.media_set.all %}
+                    {% for media in post.media.all %}
                         {% if forloop.first %}
-                            {% if media.file.url %}
-                                {% if media.file.url|ends_with:".mp4" or media.file.url|ends_with:".avi" or media.file.url|ends_with:".mov" %}
+                            {% if media.file_url %}
+                                {% if ".mp4" in media.file_url or ".avi" in media.file_url or ".mov" in media.file_url %}
                                     <!-- Display video -->
                                     <video class='homeVideo' controls>
-                                        <source src="{{ media.file.url }}" type="video/mp4">
+                                        <source src="{{ media.file_url }}" type="video/mp4">
                                         Your browser does not support the video tag.
                                     </video>
                                 {% else %}
                                     <!-- Display image -->
-                                    <img src="{{ media.file.url }}" alt="{{ post.title }}" class="imageHome">
+                                    <img src="{{ media.file_url }}" alt="{{ post.title }}" class="imageHome">
                                 {% endif %}
                             {% endif %}
                         {% endif %}
@@ -88,18 +88,18 @@
                             <!-- Bootstrap Carousel for images/videos -->
                             <div id="carousel{{ post.id }}" class="carousel slide" data-ride="carousel">
                                 <div class="carousel-inner">
-                                    {% for media in post.media_set.all %}
+                                    {% for media in post.media.all %}
                                         <div class="carousel-item {% if forloop.first %}active{% endif %}">
-                                            {% if media.file.url %}
-                                                {% if media.file.url|ends_with:".mp4" %}
+                                            {% if media.file_url %}
+                                                {% if ".mp4" in media.file_url or ".avi" in media.file_url or ".mov" in media.file_url %}
                                                     <!-- Display video -->
                                                     <video class="d-block w-100" controls>
-                                                        <source src="{{ media.file.url }}" type="video/mp4">
+                                                        <source src="{{ media.file_url }}" type="video/mp4">
                                                         Your browser does not support the video tag.
                                                     </video>
                                                 {% else %}
                                                     <!-- Display image -->
-                                                    <img src="{{ media.file.url }}" class="d-block w-100" alt="{{ post.title }}" style="max-width: 100%; max-height: 400px; object-fit: contain;">
+                                                    <img src="{{ media.file_url }}" class="d-block w-100" alt="{{ post.title }}" style="max-width: 100%; max-height: 400px; object-fit: contain;">
                                                 {% endif %}
                                             {% endif %}
                                         </div>

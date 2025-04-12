@@ -30,7 +30,7 @@
         <!-- Main Content -->
         <div class="main-content">
             {% if user.profile.profile_image %}
-                <img src="{{ user.profile.profile_image.url }}" alt="Profile Picture" class="profile-picture">
+                <img src="{{ user.profile.profile_image }}" alt="Profile Picture" class="profile-picture">
             {% else %}
                 <img src="{% static 'accounts/images/default.jpg' %}" alt="Default Profile Picture" class="profile-picture">
             {% endif %}

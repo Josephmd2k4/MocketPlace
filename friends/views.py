@@ -47,7 +47,7 @@ def accept_friend_request(request, request_id):
         notification = Notification.objects.create(
             recipient=friend_request.sender,
             sender=request.user,
-            notification_type='FRIEND_REQUEST_ACCEPTED',
+            notification_type='FRIEND_ACCEPTED',
             title=f"{request.user.username} accepted your friend request.",
             message_text=f"{request.user.username} has accepted your friend request. You are now friends.",
             friend_request_id=friend_request.id
