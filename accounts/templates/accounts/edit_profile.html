@@ -23,9 +23,9 @@
         <div class="sidebar">
             <h3>Profile Menu</h3>
             <ul>
-                <li><a href="{% url 'accounts:profile' %}">Overview</a></li>
-                <li><a href="{% url 'accounts:edit_profile' %}">Edit Profile</a></li>
-                <li><a href="{% url 'accounts:settings' %}">Settings</a></li>
+                <li><a href="{% url 'accounts:profile' username=user.username %}">Overview</a></li>
+                <li><a href="{% url 'accounts:edit_profile' username=user.username %}">Edit Profile</a></li>
+                <li><a href="{% url 'accounts:settings' username=user.username %}">Settings</a></li>
                 <li><a href="{% url 'accounts:logout' %}">Logout</a></li>
             </ul>
         </div>

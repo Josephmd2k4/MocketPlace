@@ -1,50 +1,55 @@
-    {% load static %}
-    <link rel="stylesheet" href="{% static 'accounts/style.css' %}">
-    {% include "posts/navbar.html" %}
-    {% if messages %}
-    <div class="messages">
-        {% for message in messages %}
-        <div class="alert {% if message.tags %}alert-{{ message.tags }}{% endif %}">
-            {{ message }}
-        </div>
-        {% endfor %}
+{% load static %}
+<link rel="stylesheet" href="{% static 'accounts/style.css' %}">
+{% include "posts/navbar.html" %}
+
+{% if messages %}
+<div class="messages">
+    {% for message in messages %}
+    <div class="alert {% if message.tags %}alert-{{ message.tags }}{% endif %}">
+        {{ message }}
     </div>
-    {% endif %}
+    {% endfor %}
+</div>
+{% endif %}
 
-    <div class="profile-container">
-        <!-- Sidebar -->
-        <div class="sidebar">
-            <h3>Profile Menu</h3>
-            <ul>
-                <li><a href="{% url 'accounts:profile' %}">Overview</a></li>
-                <li><a href="{% url 'accounts:edit_profile' %}">Edit Profile</a></li>
-                <li><a href="{% url 'accounts:settings' %}">Settings</a></li>
-                <li><a href="{% url 'accounts:logout' %}">Logout</a></li>
-            </ul>
-        </div>
+<div class="profile-container">
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <h3>Profile Menu</h3>
+        <ul>
+            <li><a href="{% url 'accounts:profile' username=user.username %}">Overview</a></li>
 
-        <!-- Main Content -->
-        <div class="main-content">
-            <<h2>{{ user.first_name }} {{ user.last_name }}</h2>
-            <p>Email: {{ user.email }}</p>
-
-            {% if user.profile.bio %}
-                <p><strong>Bio:</strong> {{ user.profile.bio }}</p>
-            {% else %}
-                <p>No bio available.</p>
+            {% if user == request.user %}
+            <li><a href="{% url 'accounts:edit_profile' username=user.username %}">Edit Profile</a></li>
+            <li><a href="{% url 'accounts:settings' username=user.username %}">Settings</a></li>
+            <li><a href="{% url 'accounts:logout' %}">Logout</a></li>
             {% endif %}
+        </ul>
+    </div>
 
-            {% if user.profile.year_in_school %}
-                <p><strong>Year:</strong> {{ user.profile.year_in_school }}</p>
-            {% else %}
-                <p>No year specified.</p>
-            {% endif %}
+    <!-- Main Content -->
+    <div class="main-content">
+        <h2>{{ user.get_full_name|default:user.username }}</h2>
+        <p>Email: {{ user.email }}</p>
 
-            {% if user.profile.major %}
-                <p><strong>Major:</strong> {{ user.profile.major }}</p>
-            {% else %}
-                <p>No major specified.</p>
-            {% endif %}
+        {% if user.profile.bio %}
+        <p><strong>Bio:</strong> {{ user.profile.bio }}</p>
+        {% else %}
+        <p>No bio available.</p>
+        {% endif %}
 
+        {% if user.profile.year_in_school %}
+        <p><strong>Year:</strong> {{ user.profile.year_in_school }}</p>
+        {% else %}
+        <p>No year specified.</p>
+        {% endif %}
 
-    {% include "posts/footer.html" %}
+        {% if user.profile.major %}
+        <p><strong>Major:</strong> {{ user.profile.major }}</p>
+        {% else %}
+        <p>No major specified.</p>
+        {% endif %}
+    </div>
+</div>
+
+{% include "posts/footer.html" %}
