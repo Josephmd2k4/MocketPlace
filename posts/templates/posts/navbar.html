@@ -30,37 +30,35 @@
         {% endif %}
 
         {% if request.resolver_match.url_name == 'notifications_list' %}
-            <ul class="navbar-notifications">
-                <li>Notifications 
-                    {% if unread_notifications_count > 0 %}
-                        <span class="notification-badge">{{ unread_notifications_count }}</span>
-                    {% endif %}
-                    {% if unread_notifications_count == 0 %}
-                        <span class="notification-badge">0</span>
-                    {% endif %}
-                </li>
-            </ul>
+        <ul class="navbar-notifications">
+            <li>Notifications
+                {% if unread_notifications_count > 0 %}
+                <span class="notification-badge">{{ unread_notifications_count }}</span>
+                {% else %}
+                <span class="notification-badge">0</span>
+                {% endif %}
+            </li>
+        </ul>
         {% else %}
         <nav>
             <ul class="navbar-links">
-                {% if user.is_authenticated %}
+                {% if request.user.is_authenticated %}
                 <li>
-                    <a href="{% url 'accounts:profile' username=user.username %}" class="navbar-button">
-                        Welcome, {{ user.first_name }} {{ user.last_name }}!
+                    <a href="{% url 'accounts:profile' username=request.user.username %}" class="navbar-button">
+                        Welcome, {{ request.user.first_name }} {{ request.user.last_name }}!
                     </a>
                 </li>
 
                 <li><a href="{% url 'accounts:logout' %}" class="navbar-button">LOGOUT</a></li>
 
-                    <li>
-                        <a href="{% url 'notifications:notifications_list' %}" class="navbar-button notification-wrapper">
-                            <i class="bi bi-bell"></i>
-                            {% if unread_notifications_count > 0 %}
-                                <span class="notification-circle"></span>
-                            {% endif %}
-                            
-                        </a>
-                    </li>
+                <li>
+                    <a href="{% url 'notifications:notifications_list' %}" class="navbar-button notification-wrapper">
+                        <i class="bi bi-bell"></i>
+                        {% if unread_notifications_count > 0 %}
+                        <span class="notification-circle"></span>
+                        {% endif %}
+                    </a>
+                </li>
                 {% else %}
                 <li><a href="{% url 'accounts:login' %}">LOGIN</a></li>
                 <li><a href="{% url 'accounts:register' %}">REGISTER</a></li>

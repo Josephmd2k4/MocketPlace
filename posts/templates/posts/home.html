@@ -38,7 +38,7 @@
                         {% else %}
                             <img src="{% static 'accounts/images/default.jpg' %}" alt="Default Profile Picture" class="profile-pic">
                         {% endif %}
-                        <a href="{% url 'messaging:dm' friend.username %}">{{ friend.username }}</a>
+                        <a href="{% url 'accounts:profile' username=friend.username %}">{{ friend.username }}</a>
                     </li>
                 {% empty %}
                     <li class="friend">No friends found.</li>
@@ -122,7 +122,7 @@
                             <p><strong>Description:</strong> {{ post.description }}</p>
                             <p><strong>Price:</strong> ${{ post.price }}</p>
                             <p><strong>User:</strong> 
-                                <a href="{% url 'messaging:dm' post.user.username %}">{{ post.user.username }}</a>
+                                <a href="{% url 'accounts:profile' username=post.user.username %}">{{ post.user.username }}</a>
                             </p>
 
                             <!-- Comments Section -->
