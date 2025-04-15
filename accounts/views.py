@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import get_object_or_404, render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib import messages
@@ -59,23 +59,31 @@ def logout_view(request):
     logout(request)
     return redirect('accounts:login')
 
-@login_required
-def profile_view(request):
+from django.shortcuts import get_object_or_404
+
+def profile_view(request, username):
+    user = get_object_or_404(User, username=username)
     unread_notifications_count = 0
-    if request.user.is_authenticated:
-        notifications = Notification.objects.filter(recipient=request.user).order_by('-created_at')
+    if request.user.is_authenticated and request.user == user:
+        notifications = Notification.objects.filter(recipient=user).order_by('-created_at')
         unread_notifications_count = notifications.filter(is_read=False).count()
-    return render(request, 'accounts/profile.html', {'user': request.user, 'unread_notifications_count': unread_notifications_count})
+    return render(request, 'accounts/profile.html', {
+        'user': user,
+        'unread_notifications_count': unread_notifications_count
+    })
+
 
 
 @login_required
-def edit_profile(request):
-    profile, created = Profile.objects.get_or_create(user=request.user)  # Ensure profile exists
+def edit_profile(request, username):
+    if request.user.username != username:
+        return redirect('accounts:profile', username=username)
+
+    profile, created = Profile.objects.get_or_create(user=request.user)
 
     if request.method == "POST":
         form = ProfileForm(request.POST, request.FILES,  instance=request.user.profile, user=request.user)
         if form.is_valid():
-            # Save user fields
             request.user.first_name = form.cleaned_data['first_name']
             request.user.last_name = form.cleaned_data['last_name']
             request.user.email = form.cleaned_data['email']
@@ -88,25 +96,46 @@ def edit_profile(request):
             profile.save()  # Save Profile model changes
             
             messages.success(request, "Your profile has been updated successfully.")
-            return redirect('accounts:profile')  # Redirect to profile page
+            return redirect('accounts:profile', username=request.user.username)
     else:
         form = ProfileForm(instance=profile, user=request.user)
 
     return render(request, 'accounts/edit_profile.html', {'form': form})
 
 
+
 @login_required
-def settings_view(request):
+def settings_view(request, username):
+    if request.user.username != username:
+        return redirect('accounts:profile', username=username)
+
     if request.method == "POST":
         form = CustomPasswordChangeForm(request.user, request.POST)
         if form.is_valid():
             user = form.save()
-            update_session_auth_hash(request, user)  # Keep the user logged in
+            update_session_auth_hash(request, user)
             messages.success(request, "Your password has been updated successfully.")
-            return redirect('accounts:settings')  # Stay on the settings page
+            return redirect('accounts:settings', username=username)
         else:
             messages.error(request, "Please correct the errors below.")
     else:
         form = CustomPasswordChangeForm(request.user)
 
     return render(request, 'accounts/settings.html', {'form': form})
+
+
+def user_profile_view(request, username):
+    user = get_object_or_404(User, username=username)
+    unread_notifications_count = 0
+    if request.user.is_authenticated and request.user == user:
+        notifications = Notification.objects.filter(recipient=user).order_by('-created_at')
+        unread_notifications_count = notifications.filter(is_read=False).count()
+    
+    return render(request, 'accounts/profile.html', {
+        'user': user,
+        'unread_notifications_count': unread_notifications_count
+    })
+@login_required
+def redirect_to_own_profile(request):
+    return redirect('accounts:profile', username=request.user.username)
+

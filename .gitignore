@@ -8,3 +8,5 @@ notifications/migrations/__pycache__/
 
 # Ignore sqlite
 db.sqlite3
+MocketPlace/__pycache__/settings.cpython-310.pyc
+MocketPlace/__pycache__/urls.cpython-310.pyc
