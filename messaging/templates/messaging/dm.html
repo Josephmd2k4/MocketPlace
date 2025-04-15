@@ -96,7 +96,7 @@
                 <div class="input-container">
                     <input type="text" id="id_message_send_input" name="message" placeholder="Type a message..." />
                     <label for="id_media_upload" class="file-upload-btn">+</label>
-                </div>  
+                </div>
                 <input type="file" id="id_media_upload" name="media" accept="image/*,video/*" hidden>   
                 <button type="submit" id="send-message">Send</button>
             </div>
@@ -111,98 +111,109 @@
             window.location.host +
             "/ws/chat/" + currentUser + "/" + targetUser + "/"
         );
-
+    
         ws.onopen = function () {
             console.log("Connected to WebSocket.");
         };
-
+    
         ws.onclose = function () {
             console.log("WebSocket connection closed.");
         };
-
+    
         ws.onerror = function (error) {
             console.error("WebSocket error:", error);
         };
-
+    
         const chatContainer = document.getElementById("id_chat_item_container");
         const messagesContainer = document.getElementById("id_messages_container");
-
+    
         window.onload = function () {
             chatContainer.scrollTop = 0;
         };
-
+    
         let isUserScrollingUp = false;
-
+    
         chatContainer.addEventListener("scroll", function () {
             isUserScrollingUp = chatContainer.scrollTop < chatContainer.scrollHeight - chatContainer.clientHeight - 100;
         });
-
+    
         ws.onmessage = function (e) {
             const data = JSON.parse(e.data);
-            console.log("Websocket Received message data:", data);  // Debug log for received data
+            console.log("WebSocket received data:", data);
         
             const div = document.createElement("div");
+            div.classList.add("message");
         
-            if(data.message != ''){
-                div.classList.add("message");
-                const messageContent = document.createElement("div");
-                messageContent.classList.add(data.username === currentUser ? "sent" : "received");
+            const messageContent = document.createElement("div");
+            messageContent.classList.add(data.username === currentUser ? "sent" : "received");
+        
+            if (data.message && data.message.trim() !== '') {
                 messageContent.innerHTML = data.message;
                 div.appendChild(messageContent);
             }
         
+            // Only try to display media if it exists
             if (data.media) {
-                let mediaElement;
-                console.log("Displaying media URL:", data.media);  // Debug log for media URL
-                if (data.media.match(/\.(jpeg|jpg|png|gif)$/)) {
-                    mediaElement = document.createElement("img");
-                    mediaElement.src = data.media;
+                const imagePattern = /\.(jpeg|jpg|png|gif)$/i;
+                const videoPattern = /\.(mp4|webm|ogg)$/i;
+        
+                const cleanMediaUrl = data.media.split('?')[0];
+        
+                if (imagePattern.test(cleanMediaUrl)) {
+                    console.log("Image media matched:", cleanMediaUrl);
+                    const mediaElement = document.createElement("img");
+                    mediaElement.src = cleanMediaUrl;
                     mediaElement.classList.add(data.username === currentUser ? "new-sent-chat-media" : "new-received-chat-media");
-                } else if (data.media.match(/\.(mp4|webm|ogg)$/)) {
-                    mediaElement = document.createElement("video");
-                    mediaElement.src = data.media;
+                    div.appendChild(mediaElement);
+                } else if (videoPattern.test(cleanMediaUrl)) {
+                    console.log("Video media matched:", cleanMediaUrl);
+                    const mediaElement = document.createElement("video");
+                    mediaElement.src = cleanMediaUrl;
                     mediaElement.controls = true;
                     mediaElement.classList.add(data.username === currentUser ? "new-sent-chat-media" : "new-received-chat-media");
+                    div.appendChild(mediaElement);
+                } else {
+                    console.log("No media match found for:", cleanMediaUrl);
                 }
-                div.appendChild(mediaElement);
             }
         
+            // Timestamp
             const timestamp = document.createElement("div");
             timestamp.classList.add(data.username === currentUser ? "sent-message-time" : "message-time");
             timestamp.innerHTML = data.timestamp === "Just Now" ? "Just Now" : data.timestamp + " ago";
             div.appendChild(timestamp);
         
             messagesContainer.appendChild(div);
-            if (data.media_url) {
-                const images = document.querySelectorAll('img.chat-media');
-                images.forEach(img => img.src = img.src); // Force the browser to reload images
-                window.location.reload(true);  // Hard reload
-            }
         
             if (!isUserScrollingUp) {
                 scrollToBottom();
             }
         };
-
+        
+    
+        // Scroll to the bottom of the chat container
+        function scrollToBottom() {
+            chatContainer.scrollTop = chatContainer.scrollHeight;
+        }
+    
         // Prevent the page from reloading when submitting the form
         document.getElementById("message-form").addEventListener("submit", async function (e) {
-            
             const messageInput = document.getElementById("id_message_send_input");
             const mediaInput = document.getElementById("id_media_upload");
             const message = messageInput.value.trim();
             let mediaUrl = null;
-
-            e.preventDefault()
-        
+    
+            e.preventDefault();
+    
             // Get the CSRF token from the page's cookie or hidden input
             const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
-        
+    
             // Handle file upload if there's a file selected
             if (mediaInput.files.length > 0) {
                 const file = mediaInput.files[0];
                 const formData = new FormData();
                 formData.append("file", file);
-        
+    
                 try {
                     const response = await fetch("/messaging/upload/", {
                         method: "POST",
@@ -212,16 +223,18 @@
                         }
                     });
                     const data = await response.json();
-                    mediaUrl = data.file_url;  // Get uploaded file URL
+                    if (data.file_url) {
+                        mediaUrl = data.file_url;  // Get uploaded file URL
+                    }
                 } catch (error) {
                     console.error("Error uploading media:", error);
                     return;
                 }
             }
-        
+    
+            // Send message via WebSocket
             if (message !== "" || mediaUrl) {
                 try {
-                    // Send message via WebSocket
                     ws.send(JSON.stringify({
                         "message": message,
                         "username": currentUser,
@@ -229,7 +242,7 @@
                         "timestamp": new Date().toISOString(),
                         "media_url": mediaUrl  // Send media URL only if available
                     }));
-                    console.log("Message sent:", message, mediaUrl);   
+                    console.log("Message sent:", message, mediaUrl);
                     // Clear inputs after sending the message
                     messageInput.value = '';
                     mediaInput.value = '';
@@ -240,18 +253,14 @@
                 console.log("Message is empty, not sending.");
             }
         });
-        
+    
         // Send message on Enter key
         document.getElementById("id_message_send_input").onkeyup = function (e) {
             if (e.key === "Enter") {
                 document.getElementById("send-message").click();
             }
         };
-
-
-
-
-
+    
         // Friend
         function sendFriendRequest(userId) {
             fetch(`/friends/send/${userId}/`, {

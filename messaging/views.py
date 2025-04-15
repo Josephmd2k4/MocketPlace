@@ -54,7 +54,7 @@ def upload_view(request):
     if request.method == 'POST' and request.FILES.get('file'):
         uploaded_file = request.FILES['file']
         file_name = uploaded_file.name
-        file_path = f"messages/{request}/{file_name}"
+        file_path = f"messages/{request.user.id}/{uploaded_file.name}"
 
         try:
             upload_response = upload_file(uploaded_file, file_path)
@@ -64,9 +64,8 @@ def upload_view(request):
             return JsonResponse({'file_url': file_url})
 
         except Exception as e:
-                    # Optionally log or print the error
-                    print(f"File upload failed: {e}")
+            print(f"File upload failed: {e}")
+            return JsonResponse({'error': 'Upload failed'}, status=500)
         
-        return JsonResponse({'file_url': file_url})
     return JsonResponse({'error': 'Invalid request'}, status=400)
         
