@@ -4,6 +4,8 @@ from django.contrib.auth.forms import AuthenticationForm
 from django.contrib import messages
 from django.urls import reverse
 from django.contrib.auth.models import User
+
+from posts.models import Post
 from .forms import CustomUserCreationForm  # Import the custom form
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import update_session_auth_hash
@@ -67,8 +69,10 @@ def profile_view(request, username):
     if request.user.is_authenticated and request.user == user:
         notifications = Notification.objects.filter(recipient=user).order_by('-created_at')
         unread_notifications_count = notifications.filter(is_read=False).count()
+    user_posts = Post.objects.filter(user=user).order_by('-created_at')
     return render(request, 'accounts/profile.html', {
         'user': user,
+        'user_posts': user_posts,
         'unread_notifications_count': unread_notifications_count
     })
 

@@ -430,3 +430,72 @@ form input[type="text"]{
     padding: 5vh;
     margin-top: 12vh;
 }
+
+.user-posts {
+    margin-top: 30px;
+    padding-top: 35px;
+    width: 100%;
+    max-width: 300px;
+    /* narrower than before */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    box-sizing: border-box;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.post-card {
+    width: 95%;
+    background-color: #ffffff;
+    border: 1px solid #ccc;
+    padding: 16px;
+    margin-bottom: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+    text-align: left;
+    box-sizing: border-box;
+}
+
+.post-card h4 {
+    color: #1e419a;
+    font-size: 20px;
+    margin-bottom: 10px;
+}
+
+.post-card p {
+    margin: 6px 0;
+    color: #333;
+}
+
+.post-card small {
+    color: #888;
+}
+
+.post-card .btn {
+    margin-top: 12px;
+    background-color: #1e419a;
+    color: white;
+    padding: 6px 12px;
+    font-size: 14px;
+    border: none;
+    border-radius: 6px;
+    text-decoration: none;
+    cursor: pointer;
+    display: inline-block;
+    width: auto;
+    max-width: 100%;
+    transition: background-color 0.3s;
+}
+
+.post-card .btn:hover {
+    background-color: #0d2d73;
+}
+.delete-btn {
+    background-color: #e74c3c;
+    margin-left: 10px;
+}
+
+.delete-btn:hover {
+    background-color: #c0392b;
+}

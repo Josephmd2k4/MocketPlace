@@ -1,19 +1,21 @@
-    {% load static %}
-    {% include "posts/navbar.html" %}
-    <link rel="stylesheet" href="{% static 'accounts/style.css' %}">
-    {% if messages %}
-        {% for message in messages %}
-            {% if message.tags == 'success' %}
-                <div class="custom-alert" role="alert">
-                    <strong>Success!</strong> 
-                    {{ message }}
-                    <button type="button" class="close" onclick="this.parentElement.style.display='none';">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-            {% endif %}
-        {% endfor %}
-    {% endif %}
+{% load static %}
+{% load humanize %}
+{% include "posts/navbar.html" %}
+<link rel="stylesheet" href="{% static 'accounts/style.css' %}">
+
+{% if messages %}
+{% for message in messages %}
+{% if message.tags == 'success' %}
+<div class="custom-alert" role="alert">
+    <strong>Success!</strong>
+    {{ message }}
+    <button type="button" class="close" onclick="this.parentElement.style.display='none';">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+{% endif %}
+{% endfor %}
+{% endif %}
 
 <div class="profile-container">
     <!-- Sidebar -->
@@ -21,7 +23,7 @@
         <h3>Profile Menu</h3>
         <ul>
             <li><a href="{% url 'accounts:profile' username=user.username %}">Overview</a></li>
-    
+
             {% if user == request.user %}
             <li><a href="{% url 'accounts:edit_profile' username=user.username %}">Edit Profile</a></li>
             <li><a href="{% url 'accounts:settings' username=user.username %}">Settings</a></li>
@@ -30,21 +32,19 @@
             <li><a href="{% url 'messaging:dm' target_user=user.username %}">Message</a></li>
             <li><button onclick="sendFriendRequest({{ user.id }})" class="btn">Add Friend</button></li>
             {% endif %}
-
         </ul>
     </div>
 
+    <!-- Main Content -->
+    <div class="main-content">
+        {% if user.profile.profile_image %}
+        <img src="{{ user.profile.profile_image.url }}" alt="Profile Picture" class="profile-picture">
+        {% else %}
+        <img src="{% static 'accounts/images/default.jpg' %}" alt="Default Profile Picture" class="profile-picture">
+        {% endif %}
 
-        <!-- Main Content -->
-        <div class="main-content">
-            {% if user.profile.profile_image %}
-                <img src="{{ user.profile.profile_image.url }}" alt="Profile Picture" class="profile-picture">
-            {% else %}
-                <img src="{% static 'accounts/images/default.jpg' %}" alt="Default Profile Picture" class="profile-picture">
-            {% endif %}
-
-            <h2>{{ user.first_name }} {{ user.last_name }}</h2>
-            <p>Email: {{ user.email }}</p>
+        <h2>{{ user.first_name }} {{ user.last_name }}</h2>
+        <p>Email: {{ user.email }}</p>
 
         {% if user.profile.bio %}
         <p><strong>Bio:</strong> {{ user.profile.bio }}</p>
@@ -58,12 +58,54 @@
         <p>No year specified.</p>
         {% endif %}
 
-            {% if user.profile.major %}
-                <p><strong>Major:</strong> {{ user.profile.major }}</p>
-            {% else %}
-                <p>No major specified.</p>
-            {% endif %}
-        </div>
+        {% if user.profile.major %}
+        <p><strong>Major:</strong> {{ user.profile.major }}</p>
+        {% else %}
+        <p>No major specified.</p>
+        {% endif %}
+    </div>
 
+    <!-- User Posts Section -->
+    <div class="user-posts">
+        <h3>{{ user.username }}'s Posts</h3>
+        {% if user_posts %}
+        {% for post in user_posts %}
+        <div class="post-card">
+            <h4>{{ post.title }}</h4>
+            <p>{{ post.description|truncatewords:20 }}</p>
+            <p><strong>Price:</strong> ${{ post.price }}</p>
+            <p><small>{{ post.created_at|naturaltime }}</small></p>
+            <a href="/?open_modal={{ post.id }}" class="btn">View Post</a>
+            {% if user == request.user %}
+            <form method="POST" action="{% url 'delete_post' post.id %}" style="display:inline;">
+                {% csrf_token %}
+                <button type="submit" class="btn delete-btn">Delete</button>
+            </form>
+            {% endif %}
+
+        </div>
+        {% endfor %}
+        {% else %}
+        <p>This user hasn't posted anything yet.</p>
+        {% endif %}
+    </div>
+</div>
+
+<script>
+    function sendFriendRequest(userId) {
+        fetch(`/friends/send/${userId}/`, {
+            method: 'POST',
+            headers: {
+                'X-CSRFToken': '{{ csrf_token }}',
+                'Content-Type': 'application/json'
+            }
+        })
+            .then(response => response.json())
+            .then(data => {
+                alert(data.message);
+            })
+            .catch(error => console.error('Error sending friend request:', error));
+    }
+</script>
 
 {% include "posts/footer.html" %}

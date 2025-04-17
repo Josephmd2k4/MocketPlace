@@ -82,3 +82,15 @@ def add_comment(request, post_id):
         # Redirect back to the post page (with a modal or open section)
         return redirect(f"{reverse('home')}?open_modal={post_id}")
 
+@login_required
+def delete_post(request, post_id):
+    post = get_object_or_404(Post, id=post_id)
+    
+    if post.user != request.user:
+        return redirect('home')  # Prevent deleting someone else's post
+
+    if request.method == 'POST':
+        post.delete()
+        return redirect('accounts:profile', username=request.user.username)
+
+    return redirect('accounts:profile', username=request.user.username)
