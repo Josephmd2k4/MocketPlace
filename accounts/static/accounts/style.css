@@ -432,10 +432,10 @@ form input[type="text"]{
 }
 
 .user-posts {
-    margin-top: 30px;
-    padding-top: 35px;
+    margin-top: 10vh;
+    padding-top: 3vh;
     width: 100%;
-    max-width: 300px;
+    max-width: 40vh;
     /* narrower than before */
     display: flex;
     flex-direction: column;
@@ -492,10 +492,22 @@ form input[type="text"]{
     background-color: #0d2d73;
 }
 .delete-btn {
-    background-color: #e74c3c;
+    background-color: #e74c3c !important;
     margin-left: 10px;
+    padding: 1.09vh !important;
 }
 
 .delete-btn:hover {
     background-color: #c0392b;
+}
+
+.main-content-profile{
+    width: 100%;
+    max-width: 500px;
+    background: #ffffff;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin: 20px;
+    box-sizing: border-box;
 }
