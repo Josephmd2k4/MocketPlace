@@ -27,7 +27,7 @@
                         {% else %}
                             <img src="{% static 'accounts/images/default.jpg' %}" alt="Default Profile Picture" class="profile-pic2">
                         {% endif %}
-                        {{ friend.username }}
+                        <a href="{% url 'messaging:dm' friend.username %}">{{ friend.username }}</a>
                     </li>
                 {% empty %}
                     <li class="friend2">No friends found.</li>
@@ -40,10 +40,7 @@
             {% else %}
                 <img src="{% static 'accounts/images/default.jpg' %}" alt="Default Profile Picture" class="profile-pic2">
             {% endif %}
-            {{ target_user.username }}
-            <button class="add-friend-btn" onclick="sendFriendRequest({{ target_user.id }})">
-                Add Friend
-            </button>
+            <a href="{% url 'accounts:profile' username=target_user.username %}">{{ target_user.username }}</a>
         </h2>
         
         <div class="chat__item__container" id="id_chat_item_container" style="overflow-y: auto; display: flex; flex-direction: column-reverse;">
@@ -248,25 +245,6 @@
             }
         };
 
-
-
-
-
-        // Friend
-        function sendFriendRequest(userId) {
-            fetch(`/friends/send/${userId}/`, {
-                method: 'POST',
-                headers: {
-                    'X-CSRFToken': '{{ csrf_token }}',
-                    'Content-Type': 'application/json'
-                }
-            })
-            .then(response => response.json())
-            .then(data => {
-                alert(data.message);
-            })
-            .catch(error => console.error('Error:', error));
-        }
     </script>
 </body>
 {% include "posts/footer.html" %}

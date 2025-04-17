@@ -38,7 +38,27 @@ body{
 }
 
 .friend2 {
-    margin-left: 1vh;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none !important;
+    color: #007bff !important;
+    background-color: transparent;
+}
+
+a{
+    text-decoration: none;
+    color: #007bff;
+}
+
+.friend2 img.profile-pic2 {
+    width: 5vh;  
+    height: 5vh; 
+    border-radius: 50%; 
+    object-fit: cover; 
+    border: .2vh solid #000000; 
+    margin-right: 10px; 
+    vertical-align: middle; 
 }
 
 /* chat box */
