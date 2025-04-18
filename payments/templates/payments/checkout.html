@@ -1,0 +1,78 @@
+{% include "posts/navbar.html" %}
+{% load static %}
+{% load bootstrap_icons %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <link rel="stylesheet" href="{% static 'css/checkoutstyles.css' %}">
+</head>
+
+<body>
+  <div class="container">
+      <div class="checkout-form">
+        <h2>Payment Information</h2>
+        
+        <div class="payment-methods">
+          <div class="payment-method active">
+            {% bs_icon 'credit-card-fill' %}
+            <p>Credit Card</p>
+          </div>
+          <div class="payment-method">
+            <div id="paypal-button-container"></div>
+            {% bs_icon 'paypal' %}
+          </div>
+          <div class="payment-method">
+            {% bs_icon 'apple' %}
+          </div>
+        </div>
+        
+        <div class="input-group">
+          <label for="cardName">Name on Card</label>
+          <input type="text" id="cardName" placeholder="Mocsie Rogers" />
+        </div>
+        
+        <div class="input-group">
+          <label for="cardNumber">Card Number</label>
+          <input type="text" id="cardNumber" placeholder="1234 5678 9012 3456" />
+        </div>
+        
+        <div class="card-inputs">
+          <div class="input-group card-expiry">
+            <label for="cardExpiry">Expiry Date</label>
+            <input type="text" id="cardExpiry" placeholder="MM/YY" />
+          </div>
+          <div class="input-group card-cvv">
+            <label for="cardCvv">CVV</label>
+            <input type="text" id="cardCvv" placeholder="123" />
+          </div>
+        </div>
+      
+      <div class="order-summary">
+        <h2>Order Summary</h2>
+        
+        <div class="order-item">
+          <div class="item-image"><img src="{{ media }}"></div>
+          <div class="item-details">
+            <div class="item-name">{{ title }}</div>
+            <div class="item-description">{{ desc }}</div>
+            <div class="item-price">$<span id="item-price">{{ price }}</span></div>
+          </div>  
+        </div>
+        
+        <div class="order-totals">
+          <div class="total-row">
+            <div>Subtotal</div>
+            <div>$<span id="subtotal">{{ price }}</span></div>
+          </div>
+        </div>
+        
+        <button class="button button-primary">Complete Payment</button>
+      
+      </div>
+</div>
+  </div>
+{% include "posts/footer.html" %}
+
+</body>
+</html>
