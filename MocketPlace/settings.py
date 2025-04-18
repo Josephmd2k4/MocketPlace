@@ -12,7 +12,19 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 
 import os
 from pathlib import Path
-import os
+import paypalrestsdk
+from django.conf import settings
+from datetime import datetime
+
+paypalrestsdk.configure({
+    "mode": 'sandbox',  # sandbox or live
+    "client_id": 'AR-8QjzWUOHJdpjWTMqTFgtvExqk42tC2wPZLNp-qFHGHqjV11VAVEFzqe_HbvyzituEcGSWxWtok6sD',
+    "client_secret": 'EI0eUZjgUu5lfgCHzWuHswCylR2ZSimbAhfzOwV4ed7tdhlVRMWGcuZ4CMajmpkMajQwis6iI3Ov4Uao'
+})
+
+PAYPAL_TEST = True  # Set to False for production
+PAYPAL_RECEIVER_EMAIL = 'cjefferys@mocs.flsouthern.edu'
+PAYPAL_REQUIRED_PARAMS = {'business': PAYPAL_RECEIVER_EMAIL}
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -45,6 +57,7 @@ INSTALLED_APPS = [
     'webpush',
     'notifications',
     'accounts.apps.AccountsConfig',
+    'payments',
     'channels',
     'messaging',
     'django.contrib.humanize',
@@ -134,7 +147,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
 STATIC_URL = '/static/'
-STATICFILES_DIRS = [BASE_DIR / "posts/static", "notifications/static"]
+STATICFILES_DIRS = [BASE_DIR / "posts/static", "notifications/static", "payments/static"]
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field

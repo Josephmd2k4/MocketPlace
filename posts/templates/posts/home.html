@@ -147,13 +147,39 @@
 
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            
                             {% if user.is_authenticated %}
-                                <form action="{% url 'notifications:buy_post' post.id %}" method="POST" id="buyForm{{ post.id }}">
-                                    {% csrf_token %}
-                                    <button type="submit" class="buy-button" data-toggle="alert" data-target="#successMessage">Buy</button>
-                                </form>
+                              <form action="{% url 'payment_view' post.id media.file|default:'default.jpg' %}" method="POST" id="buyForm{{ post.id }}">
+                                {% csrf_token %}
+                                <button type="submit" class="buy-button">Buy</button>
+                              </form>
+                            {% else %}
+                              <button type="button" class="buy-button" data-toggle="modal" data-target="#loginErrorModal">Buy</button>
                             {% endif %}
-                        </div>
+                          </div>
+                          
+                          <!-- Error Modal for unauthenticated users -->
+                          {% if not user.is_authenticated %}
+                          <div class="modal fade" id="loginErrorModal" tabindex="-1" role="dialog" aria-labelledby="loginErrorModalLabel" aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+                              <div class="modal-content">
+                                <div class="modal-header">
+                                  <h5 class="modal-title" id="loginErrorModalLabel">Authentication Required</h5>
+                                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                  </button>
+                                </div>
+                                <div class="modal-body">
+                                  You must be logged in to make a purchase.
+                                </div>
+                                <div class="modal-footer">
+                                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                  <a href="{% url 'login' %}" class="btn btn-primary">Login</a>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          {% endif %}
                     </div>
                 </div>
             </div>
