@@ -1,6 +1,5 @@
 {% include "posts/navbar.html" %}
 {% load static %}
-{% load bootstrap_icons %}
 
 <!DOCTYPE html>
 <html lang="en">
@@ -15,15 +14,16 @@
         
         <div class="payment-methods">
           <div class="payment-method active">
-            {% bs_icon 'credit-card-fill' %}
             <p>Credit Card</p>
           </div>
           <div class="payment-method">
             <div id="paypal-button-container"></div>
-            {% bs_icon 'paypal' %}
+            <p>PayPal</p>
+
           </div>
           <div class="payment-method">
-            {% bs_icon 'apple' %}
+            <p>Apple Pay</p>
+
           </div>
         </div>
         
