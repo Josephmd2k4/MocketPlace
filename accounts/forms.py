@@ -58,7 +58,7 @@ class ProfileForm(forms.ModelForm):
 class CustomUserCreationForm(UserCreationForm):
     first_name = forms.CharField(max_length=30, required=True, help_text="Required.")
     last_name = forms.CharField(max_length=30, required=True, help_text="Required.")
-    email = forms.EmailField(required=True, help_text="Must be an flsouthern.edu email.")
+    email = forms.EmailField(required=True, help_text="Must be an mocs.flsouthern.edu email.")
 
     class Meta:
         model = User
@@ -66,8 +66,8 @@ class CustomUserCreationForm(UserCreationForm):
 
     def clean_email(self):
         email = self.cleaned_data.get('email')
-        if not email.lower().endswith('@flsouthern.edu'):
-            raise forms.ValidationError("Email must be a flsouthern.edu address.")
+        if not email.lower().endswith('@mocs.flsouthern.edu'):
+            raise forms.ValidationError("Email must be a mocs.flsouthern.edu address.")
         return email
 
 User = get_user_model()
