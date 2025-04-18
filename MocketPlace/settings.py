@@ -22,6 +22,10 @@ paypalrestsdk.configure({
     "client_secret": 'EI0eUZjgUu5lfgCHzWuHswCylR2ZSimbAhfzOwV4ed7tdhlVRMWGcuZ4CMajmpkMajQwis6iI3Ov4Uao'
 })
 
+PAYPAL_TEST = True  # Set to False for production
+PAYPAL_RECEIVER_EMAIL = 'cjefferys@mocs.flsouthern.edu'
+PAYPAL_REQUIRED_PARAMS = {'business': PAYPAL_RECEIVER_EMAIL}
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -57,6 +61,8 @@ INSTALLED_APPS = [
     'messaging',
     'django.contrib.humanize',
     'django_bootstrap_icons',
+    'paypal.standard.ipn',
+    'paypal.standard.forms',
 ]
 
 MIDDLEWARE = [

@@ -1,7 +1,21 @@
 from django import forms
+from paypal.standard.forms import PayPalPaymentsForm
 
-class PayoutForm(forms.Form):
-    email = forms.EmailField(label="Recipient Email")
-    amount = forms.DecimalField(max_digits=10, decimal_places=2, min_value=0.01)
-    note = forms.CharField(widget=forms.Textarea, required=False)
-    currency = forms.ChoiceField(choices=[('USD', 'USD')])
+class PaymentForm(forms.Form):
+    amount = forms.DecimalField()
+    item_name = forms.CharField()
+        
+def __init__(self, *args, **kwargs):
+    request = kwargs.pop('request', None)
+    super().__init__(*args, **kwargs)
+    if request:
+        self.fields['paypal_form'] = PayPalPaymentsForm(initial={
+            'business': 'cjefferys@mocs.flsouthern.edu',
+            'amount': self.initial.get('amount', 0),
+            'post_title': self.initial.get('post_title', ''),
+            'unique_post_id': self.initial.get('post_id'),
+            'notify_url': request.build_absolute_uri('paypal/'),
+            'return_url': request.build_absolute_uri('checkout/<int:post_id>/'),
+            'cancel_return': request.build_absolute_uri('cancel/'),
+            'currency_code': 'USD',
+        })

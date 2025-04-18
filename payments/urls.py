@@ -1,9 +1,7 @@
-from django.urls import path
+from django.urls import path, include
 from . import views
+from posts.models import Post
 
 urlpatterns = [
-    path("checkout/", views.create_new_payout, name="general_checkout"),
-    path("status/", views.transact_status_view, name="transaction_status"),
-    path("paypal/", views.paypal_webhook, name="paypal_webhook"),
-    path("form/", views.payout_form, name="payout_form"),
+    path('payment/<int:post_id>/<path:media_file>', views.payment_view, name='payment_view'),
 ]

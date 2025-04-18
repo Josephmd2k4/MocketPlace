@@ -1,6 +1,8 @@
-import paypalrestsdk
+import paypalrestsdk, time, uuid
 from django.conf import settings
 from datetime import datetime
+from django.shortcuts import get_object_or_404
+from posts.models import Post
 
 # Configure the SDK
 paypalrestsdk.configure({
@@ -8,6 +10,45 @@ paypalrestsdk.configure({
     "client_id": 'AR-8QjzWUOHJdpjWTMqTFgtvExqk42tC2wPZLNp-qFHGHqjV11VAVEFzqe_HbvyzituEcGSWxWtok6sD',
     "client_secret": 'EI0eUZjgUu5lfgCHzWuHswCylR2ZSimbAhfzOwV4ed7tdhlVRMWGcuZ4CMajmpkMajQwis6iI3Ov4Uao'
 })
+
+def send_payout(post_id, amount, currency="USD"):
+    post = get_object_or_404(Post, id=post_id)
+    user_email = post.user.email
+
+    payout = paypalrestsdk.Payout({
+        "sender_batch_header": {
+            "sender_batch_id": str(uuid.uuid4()),
+            "email_subject": "New Transaction!",
+            "email_message": "You have received a transaction. Thanks for using FSC Mocketplace!"
+        },
+        "items": [
+            {
+                "recipient_type": "EMAIL",
+                "amount": {
+                    "value": str(amount)
+                },
+                "receiver": user_email,
+                "note": "Transaction for {post.title}"
+            }
+        ]
+    })
+
+    if payout.create(sync_mode=False):
+        payout_id = payout["batch_header"]["payout_batch_id"]
+        print("Payout created successfully :D")
+
+        # Save to the database
+        Payout.objects.create(
+            payout_id=payout_id,
+            amount=amount,
+            status="PENDING"
+        )
+
+        return payout
+
+    else:
+        print("Payout creation failed: ", payout.error)
+        return None
 
 def get_payout_details(payout_batch_id):
     """Get details for a specific payout batch"""
