@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
+from supabase_storage import get_file_url, upload_file
 from .models import Message  # Assuming Message model is where messages are stored
 from django.db.models import Q
 from friends.models import Friendship
@@ -53,15 +54,18 @@ def upload_view(request):
     if request.method == 'POST' and request.FILES.get('file'):
         uploaded_file = request.FILES['file']
         file_name = uploaded_file.name
-        file_path = os.path.join(settings.MEDIA_ROOT, file_name)
+        file_path = f"messages/{request.user.id}/{uploaded_file.name}"
 
-        # Save the file to the MEDIA_ROOT folder
-        with default_storage.open(file_path, 'wb+') as destination:
-            for chunk in uploaded_file.chunks():
-                destination.write(chunk)
+        try:
+            upload_response = upload_file(uploaded_file, file_path)
+            # If no error, get the public URL
+            file_url = get_file_url(file_path)
 
-        # Now construct the URL to the file
-        file_url = os.path.join(settings.MEDIA_URL, file_name)  # Construct the URL to the saved file
+            return JsonResponse({'file_url': file_url})
 
-        return JsonResponse({'file_url': file_url})
+        except Exception as e:
+            print(f"File upload failed: {e}")
+            return JsonResponse({'error': 'Upload failed'}, status=500)
+        
     return JsonResponse({'error': 'Invalid request'}, status=400)
+        

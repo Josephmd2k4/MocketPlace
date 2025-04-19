@@ -1,0 +1,32 @@
+# fly.toml app configuration file generated for mocketplace on 2025-04-09T22:05:37-04:00
+
+app = 'mocketplace'
+primary_region = 'mia'
+console_command = '/code/manage.py shell'
+
+[build]
+  release_command = "python manage.py collectstatic --noinput"
+
+[deploy]
+  release_command = "python manage.py migrate"
+
+
+[env]
+  PORT = '8000'
+
+[http_service]
+  internal_port = 8000
+  force_https = true
+  auto_stop_machines = 'stop'
+  auto_start_machines = true
+  min_machines_running = 0
+  processes = ['app']
+
+[[vm]]
+  memory = '1gb'
+  cpu_kind = 'shared'
+  cpus = 1
+
+[[statics]]
+  guest_path = "/code/staticfiles"
+  url_prefix = "/static/"

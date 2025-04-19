@@ -73,6 +73,7 @@ class CustomUserCreationForm(UserCreationForm):
 User = get_user_model()
 
 class CustomUserChangeForm(forms.ModelForm):
+    profile_image = forms.ImageField(required=False)
     email = forms.EmailField(
         required=False,
         widget=forms.EmailInput(attrs={
@@ -80,10 +81,6 @@ class CustomUserChangeForm(forms.ModelForm):
             'readonly': 'readonly',
             'style': 'background-color:#f1f1f1;'
         })
-    )
-    profile_image = forms.ImageField(
-        required=False,
-        widget=forms.FileInput(attrs={'class': 'form-control'})
     )
     bio = forms.CharField(
         widget=forms.Textarea(attrs={'class': 'form-control', 'placeholder': 'Tell us about yourself...'}),

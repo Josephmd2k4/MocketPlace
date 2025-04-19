@@ -12,19 +12,7 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 
 import os
 from pathlib import Path
-import paypalrestsdk
-from django.conf import settings
-from datetime import datetime
-
-paypalrestsdk.configure({
-    "mode": 'sandbox',  # sandbox or live
-    "client_id": 'AR-8QjzWUOHJdpjWTMqTFgtvExqk42tC2wPZLNp-qFHGHqjV11VAVEFzqe_HbvyzituEcGSWxWtok6sD',
-    "client_secret": 'EI0eUZjgUu5lfgCHzWuHswCylR2ZSimbAhfzOwV4ed7tdhlVRMWGcuZ4CMajmpkMajQwis6iI3Ov4Uao'
-})
-
-PAYPAL_TEST = True  # Set to False for production
-PAYPAL_RECEIVER_EMAIL = 'cjefferys@mocs.flsouthern.edu'
-PAYPAL_REQUIRED_PARAMS = {'business': PAYPAL_RECEIVER_EMAIL}
+import dj_database_url
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -37,31 +25,30 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-%jwl*%^!6an106-3o-qw8h@_kqe+wyibew(gy89a$%^&edoag('
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-APP_NAME = os.environ.get("MocketPlace")
-ALLOWED_HOSTS = [f"{APP_NAME}.fly.dev", "127.0.0.1"]
+ALLOWED_HOSTS = ['mocketplace.fly.dev']
 
 
 # Application definition
 
 INSTALLED_APPS = [
-    "posts.apps.PostsConfig",
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
-    'django.contrib.messages',
+    "posts.apps.PostsConfig",
     'daphne', 
     'django.contrib.staticfiles',
     'webpush',
     'notifications',
     'accounts.apps.AccountsConfig',
-    'payments',
+    'django.contrib.messages',
     'channels',
     'messaging',
     'django.contrib.humanize',
     'friends',
+    'payments',
 ]
 
 MIDDLEWARE = [
@@ -72,6 +59,10 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+]
+
+CSRF_TRUSTED_ORIGINS = [
+    'https://mocketplace.fly.dev',  
 ]
 
 ROOT_URLCONF = 'MocketPlace.urls'
@@ -100,8 +91,12 @@ ASGI_APPLICATION = 'MocketPlace.asgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'postgres',
+        'USER': 'postgres',
+        'PASSWORD': 'AfwaBETyQbUdxHwL',  
+        'HOST': 'db.ononxyegplbeomybosze.supabase.co',
+        'PORT': '5432',
     }
 }
 
@@ -147,7 +142,8 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
 STATIC_URL = '/static/'
-STATICFILES_DIRS = [BASE_DIR / "posts/static", "notifications/static", "payments/static"]
+STATICFILES_DIRS = [BASE_DIR / "posts/static", "notifications/static"]
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
@@ -156,6 +152,9 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 MEDIA_URL = "/media/"
 MEDIA_ROOT = os.path.join(BASE_DIR / "posts/media")
+
+SUPABASE_URL = "https://ononxyegplbeomybosze.supabase.co"
+SUPABASE_API_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9ub254eWVncGxiZW9teWJvc3plIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDQzODYyNjYsImV4cCI6MjA1OTk2MjI2Nn0.W8zsrTMNNs7kg7UUSOz3RO0J4zCUNEbE8nFvNnQmVQI"
 
 CHANNEL_LAYERS = {
     "default": {
