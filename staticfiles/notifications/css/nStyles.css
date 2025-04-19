@@ -181,7 +181,7 @@ a:hover {
 }
 
 .accept-btn {
-    background-color: #4CAF50; /* Green */
+    background-color: #1e419a; /* Green */
     color: white;
     padding: 10px;
     border: none;
@@ -189,7 +189,7 @@ a:hover {
 }
 
 .reject-btn {
-    background-color: #f44336; /* Red */
+    background-color: #cf202f; /* Red */
     color: white;
     padding: 10px;
     border: none;
@@ -198,4 +198,39 @@ a:hover {
 
 .accept-btn:hover, .reject-btn:hover {
     opacity: 0.8;
+}
+
+.buttons-container {
+    display: flex;
+    justify-content: start; 
+    gap: 2ch; 
+}
+
+button {
+    padding: 10px 20px;
+    cursor: pointer;
+    border: none;
+    border-radius: 5px;
+}
+
+.mark-all-read-btn {
+    background-color: #1e419a;; 
+    color: white;
+}
+
+.mark-all-read-btn:hover {
+    background-color: #1e419a;
+}
+
+.delete-all-btn {
+    background-color: #cf202f; 
+    color: white;
+}
+
+.delete-all-btn:hover {
+    background-color: #cf202f;
+}
+
+.delete-btn{
+    color: #cf202f;
 }

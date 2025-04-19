@@ -12,6 +12,7 @@
     justify-content: center;
     box-shadow: 0px 0px 15px rgba(30, 65, 154, 0.8);
     position: relative;
+    margin-bottom: 5vh;
 }
 
 .containerLogin{
@@ -532,4 +533,12 @@ form input[type="text"]{
     transition: background 0.3s !important;
     border: none;
     
+}
+
+.accounts-button{
+    background-color: #1e419a;
+}
+
+.accounts-button:hover {
+    background-color: #1e419a; 
 }

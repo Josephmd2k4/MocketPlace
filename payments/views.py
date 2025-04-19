@@ -21,16 +21,16 @@ def payment_view(request, post_id, media_file=None):
             media_to_display = media.file.url
         except Media.DoesNotExist:
             # If specified media doesn't exist, fall back to first media or default
-            media = post.media_set.first()
-            if media and media.file:
-                media_to_display = media.file.url
+            media = post.media.first()
+            if media and media.file_url:
+                media_to_display = media.file_url
             else:
                 media_to_display = static('images/default.jpg')
     else:
         # If no media_file specified or it's default, use first media or default
-        media = post.media_set.first()
-        if media and media.file:
-            media_to_display = media.file.url
+        media = post.media.first()
+        if media and media.file_url:
+            media_to_display = media.file_url
         else:
             media_to_display = static('images/default.jpg')
 

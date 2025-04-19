@@ -10,7 +10,7 @@
 <body>
     {% include "posts/navbar.html" %}
 
-    <div class="container">
+    <div class="containerLogin">
         <h2>LOGIN</h2>
 
         {% if messages %}
@@ -44,7 +44,7 @@
                 {% endif %}
             </div>
 
-            <button type="submit">Login</button>
+            <button type="submit" class="accounts-button">Login</button> 
         </form>
 
         <a href="{% url 'accounts:register' %}">Don't have an account? Register here.</a>
