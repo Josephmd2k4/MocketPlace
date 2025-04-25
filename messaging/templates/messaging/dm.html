@@ -27,10 +27,14 @@
                         {% else %}
                             <img src="{% static 'accounts/images/default.jpg' %}" alt="Default Profile Picture" class="profile-pic2">
                         {% endif %}
-                        <a href="{% url 'messaging:dm' friend.username %}">{{ friend.username }}</a>
+                        <a href="{% url 'messaging:dm' friend.username %}" style="color: #1e419a;">
+                            {{ friend.username }}
+                        </a>
                     </li>
                 {% empty %}
-                    <li class="friend2">No friends found.</li>
+                    <li class="friend2" style="color: black; margin-left: 2vh;">
+                        No friends found.
+                    </li>                
                 {% endfor %}
             </ul>
         </div>
@@ -40,7 +44,9 @@
             {% else %}
                 <img src="{% static 'accounts/images/default.jpg' %}" alt="Default Profile Picture" class="profile-pic2">
             {% endif %}
-            <a href="{% url 'accounts:profile' username=target_user.username %}">{{ target_user.username }}</a>
+            <a href="{% url 'accounts:profile' username=target_user.username %}" style="color: black;">
+                {{ target_user.username }}
+            </a>
         </h2>
         
         <div class="chat__item__container" id="id_chat_item_container" style="overflow-y: auto; display: flex; flex-direction: column-reverse;">

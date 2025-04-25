@@ -78,7 +78,8 @@ def send_post_notification(user, post_id):
         post = Post.objects.get(id=post_id)
         # Get all users who should be notified, excluding the current user
         friend_ids = Friendship.objects.filter(user=user).values_list('friend', flat=True)
-        users_to_notify = User.objects.filter(id__in=friend_ids)
+        mutual_friend_ids = Friendship.objects.filter(user__in=friend_ids, friend=user).values_list('user', flat=True)
+        users_to_notify = User.objects.filter(id__in=mutual_friend_ids)
         
         for recipient in users_to_notify:
             # Create notification record

@@ -90,7 +90,7 @@ def edit_profile(request, username):
         if form.is_valid():
             request.user.first_name = form.cleaned_data['first_name']
             request.user.last_name = form.cleaned_data['last_name']
-            request.user.email = form.cleaned_data['email']
+            request.user.email = request.user.email
             request.user.save()  # Save User model changes
 
             # Save Profile fields
